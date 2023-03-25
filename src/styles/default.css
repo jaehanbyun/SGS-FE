@@ -130,3 +130,40 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+/*기본 폰트 추가 */
+@font-face {
+  font-family: "Roboto";
+  src: url("../../public/fonts/Roboto-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+0020-007E;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../../public/fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  unicode-range: U+0020-007E;
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  src: url("../../public/fonts/NotoSansKR-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  unicode-range: U+AC00-D7AF;
+}
+
+@font-face {
+  font-family: "Noto Sans";
+  src: url("../../public/fonts/NotoSansKR-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  unicode-range: U+AC00-D7AF;
+}
+
+body {
+  font-family: "noto-sans", "roboto", sans-serif;
+}
