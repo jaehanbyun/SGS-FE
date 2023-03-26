@@ -1,0 +1,41 @@
+.item {
+  display: block;
+  margin: auto;
+}
+.container {
+  height: 100vh;
+  background-image: linear-gradient(to bottom, #eaabab 0%, #fff 100%);
+}
+:global .swiper-pagination-bullet {
+  background: gray !important;
+  opacity: 1 !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+:global .swiper-pagination-bullet-active {
+  background-color: white !important;
+}
+:global .swiper-button-prev,
+:global .swiper-button-next {
+  color: white !important;
+  height: 100% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 60px !important;
+  margin: 0 !important;
+  transition: 150ms ease-out !important;
+}
+:global .swiper-button-prev::after,
+:global .swiper-button-next::after {
+  font-weight: 600 !important;
+}
+:global .swiper-button-next {
+  right: 0 !important;
+}
+:global .swiper-button-prev {
+  left: 0 !important;
+}
+:global .swiper-button-prev:hover,
+:global .swiper-button-next:hover {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+}
