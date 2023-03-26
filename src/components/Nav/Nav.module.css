@@ -1,0 +1,26 @@
+.nav {
+  height: 80px;
+}
+.inner {
+  display: flex;
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  width: 34px;
+  height: 34px;
+}
+.logo p {
+  margin-left: 14px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
