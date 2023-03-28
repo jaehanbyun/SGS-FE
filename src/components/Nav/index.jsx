@@ -13,7 +13,7 @@ const Nav = () => {
       <div className={styles.inner}>
         <div>
           <a href="/" className={styles.logo}>
-            <img src="/images/webrtc_icon_138017.svg" />
+            <img alt="nav" src="/images/webrtc_icon_138017.svg" />
             <p>Study Hub</p>
           </a>
         </div>

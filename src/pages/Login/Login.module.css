@@ -1,8 +1,150 @@
-.login {
-    width: 30em;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: white;
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 2em;
+  background-image: linear-gradient(to bottom, #eaabab 0%, #fff 100%);
+}
+
+.header {
+  font-size: 2em;
+  font-weight: 600;
+  color: #232836;
+  text-align: center;
+}
+
+.form {
+  background: #ffffff;
+  border-radius: 3px;
+  max-width: 450px;
+  width: 100%;
+  padding: 1em 2em;
+}
+
+.form .field {
+  position: relative;
+  height: 3em;
+  width: 100%;
+  margin-top: 1em;
+  border-radius: 5px;
+}
+
+.field input,
+.field button {
+  height: 100%;
+  width: 100%;
+  border: none;
+  font-size: 1em;
+  font-weight: 400;
+  border-radius: 5px;
+}
+
+.field input {
+  outline: none;
+  padding: 0 15px;
+  border: 1px solid #cacaca;
+}
+
+.field input:focus {
+  border-bottom-width: 2px;
+}
+.field button {
+  color: #fff;
+  background-color: #0171d3;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.field button:hover {
+  background-color: #016dcb;
+}
+
+.formLink {
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.formLink span,
+.formLink span span {
+  font-size: 1em;
+  font-weight: 400;
+  color: #232836;
+}
+
+.form span span {
+  color: #0171d3;
+  text-decoration: none;
+}
+.form span span:hover {
+  text-decoration: underline;
+}
+
+.line {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background-color: #d4d4d4;
+  margin-top: 1em;
+}
+
+/* .line::before {
+  content: "Or";
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  color: #232836;
+  padding: 0 15px;
+} */
+
+.mediaOptions div {
+  display: flex;
+  background-color: #4267b2;
+}
+
+.facebook {
+  color: #fff;
+  background-color: #4267b2;
+}
+
+a.facebook .facebookIcon {
+  height: 28px;
+  width: 28px;
+  color: #0171d3;
+  font-size: 1em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.facebookIcon {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+}
+
+img.googleImg {
+  height: 1em;
+  width: 1em;
+  object-fit: cover;
+}
+
+a.google {
+  border: 1px solid #cacaca;
+}
+
+a.google span {
+  font-weight: 500;
+  opacity: 0.6;
+  color: #232836;
 }
