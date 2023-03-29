@@ -1,0 +1,4 @@
+.profile {
+  width: calc(100vw - 1020px - 260px);
+  background-color: bisque;
+}

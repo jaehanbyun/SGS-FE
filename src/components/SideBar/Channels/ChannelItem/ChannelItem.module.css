@@ -1,0 +1,50 @@
+.item {
+  display: flex;
+  text-decoration: none;
+  align-items: center;
+  height: 40px;
+  margin: 10px;
+  border-radius: 10px;
+  margin-bottom: 0;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.item:hover {
+  background-color: #ee8989;
+  transform: scale(1.05);
+}
+.item:hover .logo {
+  filter: invert(93%) sepia(100%) saturate(0%) hue-rotate(248deg)
+    brightness(106%) contrast(106%);
+}
+.item:hover p {
+  color: white;
+}
+.item .logo {
+  filter: invert(86%) sepia(14%) saturate(11%) hue-rotate(330deg)
+    brightness(96%) contrast(100%);
+  width: 40px;
+}
+.item p {
+  color: #d9d9d9;
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+/* active시 */
+:global .active--channel {
+  background-color: #ff7272;
+}
+:global .active--channel p {
+  color: white;
+}
+:global .active--channel .logo {
+  filter: invert(93%) sepia(100%) saturate(0%) hue-rotate(248deg)
+    brightness(106%) contrast(106%);
+}
+
+:global .active--channel:hover {
+  transform: none;
+  background-color: #ff7272;
+  cursor: default;
+}
