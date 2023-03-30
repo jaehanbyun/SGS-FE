@@ -16,7 +16,7 @@ export default function Visible() {
         padding: "5px",
       }}
     >
-      {visible ? "visibility_off" : "visibility"}
+      {visible ? "visibility" : "visibility_off"}
     </span>
   );
 }

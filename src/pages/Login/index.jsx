@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Signin from "../../components/Signin";
-import Signup from "../../components/Signup";
+import Signin from "../../components/Login/Signin";
+import Signup from "../../components/Login/Signup";
 import styles from "./Login.module.css";
 
 export default function Login() {
@@ -17,9 +17,9 @@ export default function Login() {
             {isLoginPage ? "로그인" : "회원가입"}
           </header>
           {isLoginPage ? (
-            <Signin toggleSign={toggleSign} />
+            <Signin isLogin={isLoginPage} toggleSign={toggleSign} />
           ) : (
-            <Signup toggleSign={toggleSign} />
+            <Signup isLogin={isLoginPage} toggleSign={toggleSign} />
           )}
         </div>
       </div>

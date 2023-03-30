@@ -17,3 +17,7 @@
 .form span span:hover {
   text-decoration: underline;
 }
+
+.signupLink {
+  cursor: pointer;
+}
