@@ -3,6 +3,8 @@
   align-items: center;
   height: 60px;
   border-bottom: 1px solid;
+  box-sizing: border-box;
+  cursor: pointer;
 }
 .item {
   display: flex;

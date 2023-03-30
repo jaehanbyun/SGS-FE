@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "./ChatRooms.module.css";
 import Room from "./Room";
-const ChatRooms = () => {
+const ChatRooms = ({ rooms }) => {
   return (
-    <div>
-      <Room />
+    <div className={styles.rooms}>
+      {rooms.map((room) => (
+        <Room room={room} key={room.roomId} />
+      ))}
     </div>
   );
 };
