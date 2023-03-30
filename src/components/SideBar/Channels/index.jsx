@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 import ChannelItem from "./ChannelItem";
 import styles from "./Channels.module.css";
 
@@ -13,6 +15,8 @@ const channel = [
 
 const Channels = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.container}>
       {channel.map((channel, index) => (
@@ -20,7 +24,10 @@ const Channels = () => {
           key={index}
           channel={channel}
           isActive={currentIndex === index}
-          onClick={() => setCurrentIndex(index)}
+          onClick={() => {
+            dispatch(setSelectedChannel(index));
+            setCurrentIndex(index);
+          }}
         />
       ))}
     </div>
