@@ -14,7 +14,7 @@ const Collect = () => {
           width={120}
           height={45}
           backgroundColor={"#ff7272"}
-          color={"#fff"}
+          color={"#e7e7e7"}
         />
       </div>
     </div>
