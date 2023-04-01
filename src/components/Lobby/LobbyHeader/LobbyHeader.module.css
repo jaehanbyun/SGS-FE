@@ -1,0 +1,25 @@
+.header {
+  background-color: #eaabab;
+  height: 70px;
+  display: flex;
+  align-items: center;
+}
+.item {
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.item:nth-child(1) {
+  flex-grow: 1;
+  display: block;
+}
+.item:nth-child(1) p {
+  margin-left: 20px;
+}
+
+.item:not(:nth-child(1)) {
+  flex-basis: 12%;
+}

@@ -1,0 +1,7 @@
+.rooms {
+  height: 640px;
+  overflow-y: scroll;
+}
+.rooms::-webkit-scrollbar {
+  display: none;
+}

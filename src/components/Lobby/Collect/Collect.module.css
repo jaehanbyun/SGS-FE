@@ -1,0 +1,38 @@
+.container {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+}
+.container input {
+  width: 600px;
+  height: 30px;
+  margin-left: 50px;
+}
+.container button {
+  margin-right: 30px;
+}
+.text {
+  width: 650px;
+  display: flex;
+  position: relative;
+}
+.text input {
+  border: 1px solid #383838;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.text img {
+  width: 28px;
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  filter: invert(19%) sepia(13%) saturate(6%) hue-rotate(33deg) brightness(92%)
+    contrast(87%);
+}
+.btn {
+  width: 150px;
+}

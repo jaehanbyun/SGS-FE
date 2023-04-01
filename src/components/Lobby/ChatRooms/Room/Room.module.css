@@ -1,0 +1,27 @@
+.room {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.item {
+  display: flex;
+  justify-content: center;
+}
+.item:nth-child(1) {
+  flex-grow: 1;
+  display: block;
+}
+.item:nth-child(1) p {
+  margin-left: 20px;
+}
+
+.item:not(:nth-child(1)) {
+  flex-basis: 12%;
+}
+
+.item img {
+  width: 34px;
+}
