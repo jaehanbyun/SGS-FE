@@ -1,0 +1,23 @@
+.formLink {
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.formLink span,
+.formLink span span {
+  font-size: 1em;
+  font-weight: 400;
+  color: #232836;
+}
+
+.form span span {
+  color: #0171d3;
+  text-decoration: none;
+}
+.form span span:hover {
+  text-decoration: underline;
+}
+
+.signupLink {
+  cursor: pointer;
+}

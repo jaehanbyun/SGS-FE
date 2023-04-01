@@ -1,0 +1,39 @@
+.form {
+  background: #ffffff;
+  border-radius: 3px;
+  max-width: 450px;
+  width: 100%;
+  padding: 1em 2em;
+}
+
+.form .field {
+  position: relative;
+  height: 3em;
+  width: 100%;
+  margin-top: 1em;
+  border-radius: 5px;
+}
+
+.field button {
+  height: 100%;
+  width: 100%;
+  border: none;
+  font-size: 1em;
+  font-weight: 400;
+  border-radius: 5px;
+  color: #fff;
+  background-color: rgb(255, 114, 114);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.field button:hover {
+  background-color: rgba(255, 114, 114, 0.9);
+}
+
+.formLink {
+  text-align: center;
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,22 @@
+.field {
+  position: relative;
+  height: 3em;
+  width: 100%;
+  margin-top: 1em;
+  border-radius: 5px;
+}
+
+.field input {
+  height: 100%;
+  width: 100%;
+  font-size: 1em;
+  font-weight: 400;
+  border-radius: 5px;
+  outline: none;
+  padding: 0 15px;
+  border: 1px solid #cacaca;
+}
+
+.field input:focus {
+  border-bottom-width: 2px;
+}
