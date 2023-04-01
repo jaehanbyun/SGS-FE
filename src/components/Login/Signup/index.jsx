@@ -18,7 +18,7 @@ export default function Signup({ isLogin, toggleSign }) {
           <Link className={styles.forgotPW}>비밀번호 찾기</Link>
         </div>
         <div className={`${styles.field} ${styles.buttonField}`}>
-          <button>Login</button>
+          <button>회원가입</button>
         </div>
       </form>
       <ToggleSign isLogin={isLogin} toggleSign={toggleSign} />

@@ -1,0 +1,10 @@
+.sidebar {
+  width: 260px;
+  background-color: #bc6a6a;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar .frame {
+  width: 100%;
+  height: 360px;
+}
