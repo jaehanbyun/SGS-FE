@@ -15,7 +15,7 @@ const Button = ({
     height: `${height}px`,
     backgroundColor: `${backgroundColor}`,
     color: `${color}`,
-    fontsize: `${fontsize}`,
+    fontSize: `${fontsize}px`,
   };
   return (
     <button className={styles.btn} style={style} onClick={onClick}>
