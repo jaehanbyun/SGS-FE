@@ -1,7 +1,10 @@
 import React from "react";
 import Button from "../../Button";
 import styles from "./Collect.module.css";
-const Collect = () => {
+const Collect = ({ setModalOpen }) => {
+  const onClick = () => {
+    setModalOpen(true);
+  };
   return (
     <div className={styles.container}>
       <div className={`${styles.item} ${styles.text}`}>
@@ -15,6 +18,7 @@ const Collect = () => {
           height={45}
           backgroundColor={"#ff7272"}
           color={"#e7e7e7"}
+          onClick={onClick}
         />
       </div>
     </div>
