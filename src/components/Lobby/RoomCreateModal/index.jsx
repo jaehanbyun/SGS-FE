@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
+import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 
@@ -7,14 +8,19 @@ const channelName = ["home", "초등", "중등", "고등", "대학생", "취업�
 
 const RoomCreateModal = ({ setModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
+  const ref = useRef();
+
   const onClick = () => {
     setModalOpen(false);
   };
+  useOnClickOutside(ref, () => {
+    setModalOpen(false);
+  });
 
   return (
     <div className={styles.container}>
       <div className={styles.modalWrapper}>
-        <div className={styles.modal}>
+        <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
             <p>채팅방 생성</p>
             <img src="images/exit.svg" alt="exit" onClick={onClick} />

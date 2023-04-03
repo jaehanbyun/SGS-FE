@@ -16,6 +16,7 @@
   top: 160px;
   border-radius: 10px;
   box-sizing: border-box;
+  animation: fadeIn 400ms;
 }
 .modal .top {
   position: relative;
@@ -71,17 +72,20 @@
   width: 350px;
   height: 22px;
 }
-.modal .contents li .separation label {
-  margin-right: 3px;
-}
-.modal .contents li .separation input {
-  margin-right: 30px;
-}
 .modal .contents li .participant select {
   width: 38px;
   height: 22px;
   margin-right: 10px;
+  cursor: pointer;
 }
+.modal .contents li .separation label {
+  cursor: pointer;
+}
+.modal .contents li .separation input {
+  margin-right: 30px;
+  cursor: pointer;
+}
+
 .modal .bottom {
   display: flex;
   width: 100%;
@@ -94,4 +98,17 @@
 }
 .modal .bottom button {
   display: block;
+}
+.modal .bottom button:hover {
+  background-color: #707070 !important;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
