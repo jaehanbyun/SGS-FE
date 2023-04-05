@@ -1,3 +1,5 @@
 .btn {
   padding: 1em;
+  filter: invert(78%) sepia(60%) saturate(1%) hue-rotate(75deg) brightness(98%)
+    contrast(95%);
 }

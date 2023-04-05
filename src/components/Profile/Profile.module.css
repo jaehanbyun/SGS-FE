@@ -3,14 +3,14 @@
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  max-width: 640px;
+  max-width: 400px;
   background-color: #bc6a6a;
 }
 
 .profileEdit {
   cursor: pointer;
   margin-top: 0.5em;
-  font-size: 2.5em;
-  border-radius: 5px;
-  padding: 0.2em 0.5em;
+  font-size: 2em;
+  border-radius: 15px;
+  padding: 0.2em 2em;
 }
