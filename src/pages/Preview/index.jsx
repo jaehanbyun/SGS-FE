@@ -29,7 +29,7 @@ const Preview = () => {
         <div>
           {images.map((image, index) => (
             <SwiperSlide key={index}>
-              <img className={styles.item} src={image} />
+              <img alt="item" className={styles.item} src={image} />
             </SwiperSlide>
           ))}
         </div>

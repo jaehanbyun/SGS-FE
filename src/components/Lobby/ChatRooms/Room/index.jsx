@@ -35,7 +35,7 @@ const Room = ({ room }) => {
         <p>{diff}</p>
       </div>
       <div className={styles.item}>
-        <img src="/images/add_box.svg" />
+        <img src="/images/add_box.svg" alt="이미지박스" />
       </div>
     </div>
   );
