@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import ChatRooms from "./ChatRooms";
 import Collect from "./Collect";
 import Home from "./Home";
 import styles from "./Lobby.module.css";
 import LobbyHeader from "./LobbyHeader";
+import RoomCreateModal from "./RoomCreateModal";
 
 const contents = [
   {
@@ -65,6 +66,7 @@ const channelName = [
 
 const Lobby = () => {
   const { selectedChannel } = useSelector((state) => state);
+  const [modalOpen, setModalOpen] = useState(false);
   const arr = contents.filter(
     (content) => content.roomChannel === channelName[selectedChannel]
   );
@@ -79,7 +81,8 @@ const Lobby = () => {
       <div className={styles.lobby}>
         <LobbyHeader />
         <ChatRooms rooms={arr} />
-        <Collect />
+        <Collect setModalOpen={setModalOpen} />
+        {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
       </div>
     );
   }

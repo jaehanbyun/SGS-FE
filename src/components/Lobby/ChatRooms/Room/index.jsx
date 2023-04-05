@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Room.module.css";
 const Room = ({ room }) => {
   const { roomName, curUser, maxUser, createdAt } = room;
-  function getTimeDifference(startDate, endDate) {
+  const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
     const seconds = Math.floor(timeDiff / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -18,7 +18,7 @@ const Room = ({ room }) => {
     } else {
       return `${seconds}초전`;
     }
-  }
+  };
   const diff = getTimeDifference(new Date(createdAt), new Date());
 
   return (
