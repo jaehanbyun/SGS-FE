@@ -1,10 +1,16 @@
-.name {
-  margin-top: 0.5em;
-  font-size: 3em;
+.info {
+  position: absolute;
+  top: 38vh;
 }
-
-.id {
-  margin-top: 0.2em;
-  color: #d9d9d9;
-  font-size: 1.5em;
+.info .name {
+  margin-top: 30px;
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+}
+.info .id {
+  margin-top: 10px;
+  color: #000;
+  font-size: 26px;
+  font-weight: 700;
 }

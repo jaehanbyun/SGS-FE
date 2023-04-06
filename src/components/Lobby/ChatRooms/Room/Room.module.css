@@ -6,6 +6,9 @@
   box-sizing: border-box;
   cursor: pointer;
 }
+.room:hover {
+  background-color: #e0e0e0;
+}
 .item {
   display: flex;
   justify-content: center;

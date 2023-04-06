@@ -1,10 +1,16 @@
-.studyText {
-  margin-top: 1em;
-  font-size: 2em;
+.container {
+  position: absolute;
+  bottom: 8em;
 }
-
+.studyText {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  font-size: 24px;
+  font-weight: 700;
+}
 .studyTime {
-  font-size: 2.5em;
-  margin-top: 0.2em;
-  color: #d9d9d9;
+  margin-top: 10px;
+  font-size: 60px;
+  color: #fff;
 }

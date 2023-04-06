@@ -2,15 +2,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  max-width: 640px;
+  width: 20vw;
   background-color: #bc6a6a;
 }
-
-.profileEdit {
-  cursor: pointer;
-  margin-top: 0.5em;
-  font-size: 2.5em;
-  border-radius: 5px;
-  padding: 0.2em 0.5em;
+.profile button {
+  border: 1px solid #4a4a4a;
+  margin-top: 20px;
+  position: absolute;
+  top: 50vh;
+}
+.profile button:hover {
+  background-color: #cdcdcd !important;
 }
