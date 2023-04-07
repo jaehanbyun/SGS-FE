@@ -1,21 +1,26 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useOnClickOutside } from "../../hooks";
 import Button from "../Button";
 import styles from "./ProfileModal.module.css";
 
 const ProfileModal = ({ setProfileModalOpen }) => {
+  const ref = useRef();
   const onClick = () => {
     setProfileModalOpen(false);
   };
+  useOnClickOutside(ref, () => {
+    setProfileModalOpen(false);
+  });
   return (
     <div className={styles.container}>
       <div className={styles.modalWrapper}>
-        <div className={styles.modal}>
+        <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
             <p>프로필 수정</p>
           </div>
           <div className={`${styles.imageWrapper} ${styles.content}`}>
             <div className={styles.image}>
-              <img src="images/account_circle.svg" alt="profile-image" />
+              <img src="images/account_circle.svg" alt="profileImage" />
             </div>
             <div className={styles.btn}>
               <button>사진 올리기</button>
@@ -39,8 +44,8 @@ const ProfileModal = ({ setProfileModalOpen }) => {
           </div>
           <div className={styles.bottom}>
             <Button
-              width={100}
-              height={40}
+              width={"100px"}
+              height={"40px"}
               text={"확인"}
               backgroundColor={"#535353"}
               color={"#fff"}
@@ -48,8 +53,8 @@ const ProfileModal = ({ setProfileModalOpen }) => {
               onClick={onClick}
             />
             <Button
-              width={100}
-              height={40}
+              width={"100px"}
+              height={"40px"}
               text={"취소"}
               backgroundColor={"#535353"}
               color={"#fff"}

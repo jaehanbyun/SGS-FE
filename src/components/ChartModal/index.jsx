@@ -1,24 +1,29 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import Button from "../Button";
 import Chart from "./Chart";
 import styles from "./ChartModal.module.css";
 import { offSelectedProfileIcon } from "../../redux/selectedProfileIcon/slice";
+import { useOnClickOutside } from "../../hooks";
 
 const ChartModal = () => {
+  const ref = useRef();
   const dispatch = useDispatch();
   const onClick = () => {
     dispatch(offSelectedProfileIcon());
   };
+  useOnClickOutside(ref, () => {
+    dispatch(offSelectedProfileIcon());
+  });
   return (
     <div className={styles.container}>
       <div className={styles.modalWrapper}>
-        <div className={styles.modal}>
+        <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
             <p>공부 시간</p>
             <Button
-              width={60}
-              height={30}
+              width={"60px"}
+              height={"30px"}
               text={"일별"}
               backgroundColor={"#535353"}
               color={"#fff"}
@@ -26,8 +31,8 @@ const ChartModal = () => {
               onClick={() => {}}
             />
             <Button
-              width={60}
-              height={30}
+              width={"60px"}
+              height={"30px"}
               text={"주별"}
               backgroundColor={"#535353"}
               color={"#fff"}
