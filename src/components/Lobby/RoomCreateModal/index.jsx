@@ -72,8 +72,8 @@ const RoomCreateModal = ({ setModalOpen }) => {
           </div>
           <div className={styles.bottom}>
             <Button
-              width={100}
-              height={40}
+              width={"100px"}
+              height={"40px"}
               text={"확인"}
               backgroundColor={"#535353"}
               color={"#fff"}
@@ -81,8 +81,8 @@ const RoomCreateModal = ({ setModalOpen }) => {
               onClick={onClick}
             />
             <Button
-              width={100}
-              height={40}
+              width={"100px"}
+              height={"40px"}
               text={"취소"}
               backgroundColor={"#535353"}
               color={"#fff"}

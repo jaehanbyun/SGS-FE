@@ -14,8 +14,8 @@ const Profile = ({ setProfileModalOpen }) => {
       <ProfileImg />
       <ProfileInfo />
       <Button
-        width={280}
-        height={40}
+        width={"18%"}
+        height={"4.5%"}
         text={"프로필 수정"}
         backgroundColor={"#e0e0e0"}
         color={"#000"}
