@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { useOnClickOutside } from "../../hooks";
 import Button from "../Button";
-import styles from "./ProfileModal.module.css";
+import styles from "./ProfileEditModal.module.css";
 
-const ProfileModal = ({ setProfileModalOpen }) => {
+const ProfileEditModal = ({ setProfileModalOpen }) => {
   const ref = useRef();
   const onClick = () => {
     setProfileModalOpen(false);
@@ -68,4 +68,4 @@ const ProfileModal = ({ setProfileModalOpen }) => {
   );
 };
 
-export default ProfileModal;
+export default ProfileEditModal;

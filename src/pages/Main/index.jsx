@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import ChartModal from "../../components/ChartModal";
 import Lobby from "../../components/Lobby";
 import Profile from "../../components/Profile";
-import ProfileModal from "../../components/ProfileModal";
+import ProfileEditModal from "../../components/ProfileEditModal";
 import SideBar from "../../components/SideBar";
 import styles from "./Main.module.css";
 
@@ -16,7 +16,7 @@ const Main = () => {
       <Lobby />
       <Profile setProfileModalOpen={setProfileModalOpen} />
       {profileModalOpen && (
-        <ProfileModal setProfileModalOpen={setProfileModalOpen} />
+        <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />
       )}
       {selectedProfileIcon[1] && <ChartModal />}
     </div>
