@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
-import Button from "../Button";
+import Button from "../../Button";
 import Chart from "./Chart";
 import styles from "./ChartModal.module.css";
-import { offSelectedProfileIcon } from "../../redux/selectedProfileIcon/slice";
-import { useOnClickOutside } from "../../hooks";
+import { offSelectedProfileIcon } from "../../../redux/selectedProfileIcon/slice";
+import { useOnClickOutside } from "../../../hooks";
 
 const ChartModal = () => {
   const ref = useRef();
