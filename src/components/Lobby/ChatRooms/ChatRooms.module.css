@@ -1,5 +1,5 @@
 .rooms {
-  height: 640px;
+  height: 80%;
   overflow-y: scroll;
 }
 .rooms::-webkit-scrollbar {
