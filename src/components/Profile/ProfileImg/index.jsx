@@ -2,12 +2,11 @@ import React from "react";
 import styles from "./ProfileImg.module.css";
 export default function ProfileImg() {
   return (
-    <div className={styles.imgBox}>
+    <div className={styles.container}>
       <img
         className={styles.img}
-        src="/images/profile.svg"
+        src="/images/account_circle.svg"
         alt="프로필"
-        fill="white"
       />
     </div>
   );

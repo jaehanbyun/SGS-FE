@@ -14,8 +14,8 @@ const Collect = ({ setModalOpen }) => {
       <div className={`${styles.item} ${styles.btn}`}>
         <Button
           text={"채팅방 생성"}
-          width={120}
-          height={45}
+          width={"120px"}
+          height={"45px"}
           backgroundColor={"#ff7272"}
           color={"#e7e7e7"}
           onClick={onClick}

@@ -1,8 +1,8 @@
-.imgBox {
-  margin-top: 5em;
+.container {
+  margin-top: 30px;
 }
 .img {
-  width: 18em;
-  background-color: white;
-  border-radius: 50%;
+  width: 270px;
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(104deg)
+    brightness(103%) contrast(101%);
 }

@@ -1,15 +1,28 @@
 import React from "react";
+import Button from "../Button";
 import styles from "./Profile.module.css";
 import ProfileBtns from "./ProfileBtns";
 import ProfileImg from "./ProfileImg";
 import ProfileInfo from "./ProfileInfo";
 import StudyTime from "./StudyTime";
-const Profile = () => {
+const Profile = ({ setProfileModalOpen }) => {
+  const onClick = () => {
+    setProfileModalOpen(true);
+  };
   return (
     <div className={styles.profile}>
       <ProfileImg />
       <ProfileInfo />
-      <button className={styles.profileEdit}>프로필 수정</button>
+      <Button
+        width={"18%"}
+        height={"4.5%"}
+        text={"프로필 수정"}
+        backgroundColor={"#e0e0e0"}
+        color={"#000"}
+        fontsize={18}
+        fontweight={700}
+        onClick={onClick}
+      />
       <StudyTime />
       <ProfileBtns />
     </div>

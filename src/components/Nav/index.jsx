@@ -19,8 +19,8 @@ const Nav = () => {
         </div>
         <div>
           <Button
-            width={113}
-            height={40}
+            width={"113px"}
+            height={"40px"}
             backgroundColor={"#ff7272"}
             text={"Open StudyHub"}
             color={"#fff"}

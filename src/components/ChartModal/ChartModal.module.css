@@ -1,0 +1,107 @@
+.container {
+  z-index: 9;
+}
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 71%);
+  display: flex;
+  justify-content: center;
+}
+.modal {
+  width: 700px;
+  height: 490px;
+  background-color: #e0e0e0;
+  position: absolute;
+  top: 140px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  animation: fadeIn 400ms;
+}
+.modal .top {
+  position: relative;
+  z-index: 10;
+}
+.modal .top p {
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  font-size: 24px;
+}
+.modal .top button:nth-child(2) {
+  position: absolute;
+  top: 10px;
+  right: 130px;
+}
+.modal .top button:nth-child(3) {
+  position: absolute;
+  top: 10px;
+  right: 60px;
+}
+.modal .top button:hover {
+  background-color: #707070 !important;
+}
+.modal .top img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  cursor: pointer;
+}
+.modal .contents {
+  width: 640px;
+  height: 400px;
+  background-color: #fff;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  border: 1px solid #707070;
+}
+.modal .contents .chart {
+  width: 600px;
+  height: 300px;
+  margin: auto;
+}
+.modal .contents .time {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  position: relative;
+}
+.modal .contents .time p {
+  font-size: 40px;
+}
+.modal .contents .time .prev,
+.modal .contents .time .next {
+  position: absolute;
+  font-size: 80px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: 200ms;
+  color: #303030;
+}
+.modal .contents .time .prev:hover,
+.modal .contents .time .next:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+.modal .contents .time .prev {
+  left: 15px;
+}
+.modal .contents .time .next {
+  right: 15px;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

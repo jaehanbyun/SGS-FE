@@ -9,13 +9,15 @@ const Button = ({
   backgroundColor,
   color,
   fontsize,
+  fontweight = 400,
 }) => {
   const style = {
-    width: `${width}px`,
-    height: `${height}px`,
+    width: `${width}`,
+    height: `${height}`,
     backgroundColor: `${backgroundColor}`,
     color: `${color}`,
     fontSize: `${fontsize}px`,
+    fontWeight: `${fontweight}`,
   };
   return (
     <button className={styles.btn} style={style} onClick={onClick}>

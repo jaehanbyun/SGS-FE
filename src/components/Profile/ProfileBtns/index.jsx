@@ -9,8 +9,8 @@ const profileButtons = [
 export default function ProfileBtns() {
   return (
     <div className={styles.btns}>
-      {profileButtons.map((pb) => (
-        <ProfileBtn key={pb} src={pb} />
+      {profileButtons.map((pb, index) => (
+        <ProfileBtn key={pb} src={pb} index={index} />
       ))}
     </div>
   );
