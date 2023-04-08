@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import ChartModal from "../../components/Modal/ChartModal";
+import CalendarModal from "../../components/CalendarModal";
+import ChartModal from "../../components/ChartModal";
 import Lobby from "../../components/Lobby";
 import Profile from "../../components/Profile";
 import ProfileEditModal from "../../components/Modal/ProfileEditModal";
@@ -18,6 +19,7 @@ const Main = () => {
       {profileModalOpen && (
         <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />
       )}
+      {selectedProfileIcon[0] && <CalendarModal />}
       {selectedProfileIcon[1] && <ChartModal />}
     </div>
   );
