@@ -4,7 +4,7 @@ import CalendarModal from "../../components/CalendarModal";
 import ChartModal from "../../components/ChartModal";
 import Lobby from "../../components/Lobby";
 import Profile from "../../components/Profile";
-import ProfileEditModal from "../../components/ProfileEditModal";
+import ProfileEditModal from "../../components/Modal/ProfileEditModal";
 import SideBar from "../../components/SideBar";
 import styles from "./Main.module.css";
 

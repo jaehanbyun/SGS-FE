@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { useOnClickOutside } from "../../hooks";
-import Button from "../Button";
+import { useOnClickOutside } from "../../../hooks";
+import Button from "../../Button";
 import styles from "./ProfileEditModal.module.css";
 
 const ProfileEditModal = ({ setProfileModalOpen }) => {
