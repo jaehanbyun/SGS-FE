@@ -26,6 +26,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
+        file: ./Dockerfile
         push: true
         tags: awbrg789/sgs-frontend:latest
       
