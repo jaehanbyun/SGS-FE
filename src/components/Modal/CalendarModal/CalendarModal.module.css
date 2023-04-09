@@ -1,0 +1,53 @@
+.container {
+  z-index: 9;
+}
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 71%);
+  display: flex;
+  justify-content: center;
+}
+.modal {
+  width: 560px;
+  height: 680px;
+  background-color: #e0e0e0;
+  position: absolute;
+  top: 40px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  animation: fadeIn 400ms;
+}
+.modal .contents {
+  width: 500px;
+  height: 600px;
+  background-color: #fff;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  border: 1px solid #707070;
+}
+.modal .top p {
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  font-size: 24px;
+}
+.modal .top img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  cursor: pointer;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
