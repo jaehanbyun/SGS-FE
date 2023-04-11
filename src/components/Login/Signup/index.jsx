@@ -5,7 +5,7 @@ import Input from "../Input";
 import ToggleSign from "../ToggleSign";
 import styles from "./Signup.module.css";
 
-export default function Signup({ isLogin, toggleSign }) {
+export default function Signup({ isLoginPage, toggleSign }) {
   return (
     <>
       <form className={styles.form}>
@@ -21,7 +21,7 @@ export default function Signup({ isLogin, toggleSign }) {
           <button>회원가입</button>
         </div>
       </form>
-      <ToggleSign isLogin={isLogin} toggleSign={toggleSign} />
+      <ToggleSign isLoginPage={isLoginPage} toggleSign={toggleSign} />
     </>
   );
 }

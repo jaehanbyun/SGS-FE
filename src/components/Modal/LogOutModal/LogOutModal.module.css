@@ -1,0 +1,49 @@
+.container {
+  z-index: 9;
+}
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 71%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal {
+  width: 440px;
+  height: 200px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  animation: fadeIn 400ms;
+}
+.modal .top {
+  height: 56px;
+  padding: 16px;
+}
+.modal h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+.modal .middle {
+  height: 74px;
+  padding: 0 8px 20px 16px;
+}
+.modal .bottom {
+  height: 70px;
+  background-color: #b0b0b0;
+  border-radius: 0 0 10px 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
