@@ -1,6 +1,7 @@
 .info {
   position: absolute;
   top: 38vh;
+  width: 80%;
 }
 .info .name {
   margin-top: 30px;
@@ -10,7 +11,7 @@
 }
 .info .id {
   margin-top: 10px;
-  color: #000;
-  font-size: 26px;
+  color: #272727;
+  font-size: 22px;
   font-weight: 700;
 }

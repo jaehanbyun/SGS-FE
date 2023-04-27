@@ -1,5 +1,6 @@
 import ProfileBtn from "./ProfileBtn";
 import styles from "./ProfileBtns.module.css";
+
 const profileButtons = [
   "/images/calendar.svg",
   "/images/chart.svg",
