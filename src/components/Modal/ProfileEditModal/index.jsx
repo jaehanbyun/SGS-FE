@@ -1,12 +1,26 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./ProfileEditModal.module.css";
 
 const ProfileEditModal = ({ setProfileModalOpen }) => {
   const ref = useRef();
-  const onClick = () => {
+  const fileRef = useRef();
+  const { selectedUserInfo } = useSelector((state) => state);
+  const [info, setInfo] = useState(selectedUserInfo);
+  const [profile, setProfile] = useState(info.profileImage);
+  const onExit = () => {
     setProfileModalOpen(false);
+  };
+  const onUploadImage = (e) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setProfile(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
   };
   useOnClickOutside(ref, () => {
     setProfileModalOpen(false);
@@ -20,19 +34,35 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
           </div>
           <div className={`${styles.imageWrapper} ${styles.content}`}>
             <div className={styles.image}>
-              <img src="images/account_circle.svg" alt="profileImage" />
+              <img src={`${profile}`} alt="profileImage" />
             </div>
             <div className={styles.btn}>
-              <button>사진 올리기</button>
+              <button>
+                <label>
+                  이미지 업로드
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileRef}
+                    onChange={onUploadImage}
+                  />
+                </label>
+              </button>
             </div>
           </div>
           <div className={`${styles.nickname} ${styles.content}`}>
             <p>닉네임</p>
-            <input type="text" />
+            <input
+              type="text"
+              value={info.name}
+              onChange={(e) => {
+                setInfo({ ...info, name: e.target.value });
+              }}
+            />
           </div>
           <div className={`${styles.email} ${styles.content}`}>
             <p>이메일</p>
-            <p>abcd1234@gmail.com</p>
+            <p>{info.email}</p>
           </div>
           <div className={`${styles.site} ${styles.content}`}>
             <p>웹사이트</p>
@@ -40,7 +70,15 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
           </div>
           <div className={`${styles.introduce} ${styles.content}`}>
             <p>소개</p>
-            <textarea cols="30" rows="6" />
+            <textarea
+              cols="30"
+              rows="6"
+              value={info.description}
+              onChange={(e) => {
+                setInfo({ ...info, description: e.target.value });
+                console.log(info);
+              }}
+            />
           </div>
           <div className={styles.bottom}>
             <Button
@@ -50,7 +88,7 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
               backgroundColor={"#535353"}
               color={"#fff"}
               fontsize={18}
-              onClick={onClick}
+              onClick={onExit}
             />
             <Button
               width={"100px"}
@@ -59,7 +97,7 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
               backgroundColor={"#535353"}
               color={"#fff"}
               fontsize={18}
-              onClick={onClick}
+              onClick={onExit}
             />
           </div>
         </div>
