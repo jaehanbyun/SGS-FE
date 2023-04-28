@@ -6,6 +6,22 @@
   padding: 1em 2em;
 }
 
+.form .input {
+  padding: 0 15px;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  border: 1px solid #cacaca;
+  border-radius: 5px;
+}
+.form .input:focus {
+  outline: none;
+  border: 2px solid #ff8888;
+}
+.form .input:not(:last-child) {
+  margin-bottom: 10px;
+}
+
 .form .field {
   position: relative;
   height: 3em;
