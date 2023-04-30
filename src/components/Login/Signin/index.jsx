@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setSelectedUserState } from "../../../redux/selectedUserState/slice";
-
 import ToggleSign from "../ToggleSign";
 import styles from "./Signin.module.css";
+import MockAdapter from "axios-mock-adapter";
 
 export default function Signin({ isLoginPage, toggleSign }) {
   const [id, setId] = useState("");
@@ -16,6 +16,19 @@ export default function Signin({ isLoginPage, toggleSign }) {
   const errRef = useRef();
   const pwdRef = useRef();
   useEffect(() => {
+    const mock = new MockAdapter(axios);
+    mock.onPost("/signin").reply((config) => {
+      console.log(config.data);
+      return [
+        200,
+        {
+          id: config.data.id,
+          email: "email",
+          accessToken: "QpwL5tke4Pnpja7X4",
+          refreshToken: "QpwL5tke4Pnpja7X4",
+        },
+      ];
+    });
     if (isError) {
       errRef.current.innerHTML =
         "아이디 또는 비밀번호를 잘못 입력했습니다.<br/>입력하신 내용을 다시 확인해주세요.";
@@ -26,7 +39,7 @@ export default function Signin({ isLoginPage, toggleSign }) {
       setIsError(false);
     }
   }, [isError]);
-  const onLoggin = async function (e) {
+  const onLogIn = async function (e) {
     try {
       e.preventDefault();
       if (id === "" || pwd === "") {
@@ -35,19 +48,24 @@ export default function Signin({ isLoginPage, toggleSign }) {
         errRef.current.style.display = "block";
         return;
       }
-      const res = await axios.post("https://reqres.in/api/login", {
-        email: id,
+      console.log(id, pwd);
+      if (id !== "abc12345" || pwd !== "abc12345@") {
+        console.log("??");
+        throw new Error();
+      }
+      const res = await axios.post("/signin", {
+        id: id,
         password: pwd,
       });
-      console.log(res);
+      console.log("data", res.data);
       dispatch(setSelectedUserState(true));
       navigate("/main");
     } catch (err) {
+      console.log(err);
       setIsError(true);
       throw new Error(err);
     }
   };
-
   return (
     <>
       <form className={styles.form}>
@@ -74,7 +92,7 @@ export default function Signin({ isLoginPage, toggleSign }) {
         </div>
         <div className={styles.err} ref={errRef}></div>
         <div className={`${styles.field} ${styles.buttonField}`}>
-          <button onClick={onLoggin}>로그인</button>
+          <button onClick={onLogIn}>로그인</button>
         </div>
       </form>
       <ToggleSign isLoginPage={isLoginPage} toggleSign={toggleSign} />
