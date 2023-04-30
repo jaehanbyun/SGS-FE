@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Preview from "./pages/Preview";
 import "./styles/default.css";
+import Success from "./pages/Success";
 
 const Layout = () => {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Preview />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/success" element={<Success />} />
           <Route path="/main" element={<Main />} />
         </Routes>
       </BrowserRouter>
