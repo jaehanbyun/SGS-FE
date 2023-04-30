@@ -21,7 +21,6 @@
 .form .input:not(:last-child) {
   margin-bottom: 10px;
 }
-
 .form .field {
   position: relative;
   height: 3em;
@@ -52,4 +51,20 @@
   margin-top: 0.5em;
   display: flex;
   justify-content: space-between;
+}
+
+.err {
+  padding-top: 10px;
+  font-size: 12px;
+  color: #ff003e;
+  display: none;
+  line-height: 1.25;
+}
+.err strong {
+  font-weight: 700;
+}
+.pwdErr {
+  margin-top: -13px;
+  margin-bottom: 3px;
+  margin-left: 2px;
 }
