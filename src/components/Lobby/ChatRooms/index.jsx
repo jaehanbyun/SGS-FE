@@ -49,7 +49,7 @@ const ChatRooms = ({ rooms, setRooms }) => {
       const newRooms = [...rooms, ...res.data];
       setRooms(newRooms);
     } catch (err) {
-      console.log(err);
+      setIsData(false);
       throw new Error(err);
     }
   };
@@ -75,7 +75,6 @@ const ChatRooms = ({ rooms, setRooms }) => {
       observer = new IntersectionObserver(handleInterSect);
       observer.observe(target.current);
     }
-    console.log(observer);
     return () => observer && observer.disconnect();
   }, [target, isData, isScroll, rooms]);
   return (
