@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Room.module.css";
+import { useNavigate } from "react-router-dom";
 const Room = ({ room }) => {
-  const { roomName, curUser, maxUser, createdAt } = room;
+  const { roomId, roomName, curUser, maxUser, createdAt } = room;
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
     const seconds = Math.floor(timeDiff / 1000);
@@ -20,9 +21,12 @@ const Room = ({ room }) => {
     }
   };
   const diff = getTimeDifference(new Date(createdAt), new Date());
-
+  const navigate = useNavigate();
   return (
-    <div className={styles.room}>
+    <div
+      className={styles.room}
+      onDoubleClick={() => navigate(`/room${roomId}`)}
+    >
       <div className={styles.item}>
         <p>{roomName}</p>
       </div>

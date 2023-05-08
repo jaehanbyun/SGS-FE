@@ -5,6 +5,7 @@ import Main from "./pages/Main";
 import Preview from "./pages/Preview";
 import "./styles/default.css";
 import Success from "./pages/Success";
+import ChatRoom from "./pages/ChatRoom";
 
 const Layout = () => {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/success" element={<Success />} />
           <Route path="/main" element={<Main />} />
+          <Route path="/room:roomId" element={<ChatRoom />} />
         </Routes>
       </BrowserRouter>
     </div>
