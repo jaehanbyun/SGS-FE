@@ -25,7 +25,7 @@ const Room = ({ room }) => {
   return (
     <div
       className={styles.room}
-      onDoubleClick={() => navigate(`/room${roomId}`)}
+      onDoubleClick={() => navigate(`/main/${roomId}`)}
     >
       <div className={styles.item}>
         <p>{roomName}</p>
