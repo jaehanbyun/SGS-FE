@@ -2,6 +2,7 @@ import React from "react";
 import Channels from "./Channels";
 import Header from "./Header";
 import styles from "./SideBar.module.css";
+import Groups from "./Groups";
 
 const SideBar = () => {
   return (
@@ -12,6 +13,7 @@ const SideBar = () => {
       </div>
       <div className={styles.frame}>
         <Header title={"그룹"} />
+        <Groups />
       </div>
     </div>
   );

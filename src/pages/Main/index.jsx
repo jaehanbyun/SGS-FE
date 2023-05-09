@@ -36,7 +36,6 @@ const Main = () => {
   }, [selectedUserState]);
   return (
     <div className={styles.main}>
-      <SideBar />
       <Lobby />
       <Profile setProfileModalOpen={setProfileModalOpen} />
       {profileModalOpen && (
