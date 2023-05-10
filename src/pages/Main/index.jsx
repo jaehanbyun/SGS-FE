@@ -23,17 +23,19 @@ const Main = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserState } = useSelector((state) => state);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  useEffect(() => {
-    if (selectedUserState) {
-      console.log("true");
-      dispatch(setSelectedUserInfo(data));
-    } else {
-      console.log("false");
-      navigate("/");
-    }
-  }, [selectedUserState]);
+
+  // useEffect(() => {
+  //   if (selectedUserState) {
+  //     console.log("true");
+  //     dispatch(setSelectedUserInfo(data));
+  //   } else {
+  //     console.log("false");
+  //     navigate("/");
+  //   }
+  // }, [selectedUserState]);
   return (
     <div className={styles.main}>
       <Lobby />
