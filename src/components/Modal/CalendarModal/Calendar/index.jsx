@@ -8,7 +8,7 @@ moment.locale("ko");
 export default function Calendar() {
   const [aps, setAps] = useState([]);
   const [highlighted, setHighlighted] = useState([]);
-  const [date, setDate] = useState();
+  const [date, setDate] = useState(new Date());
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [plan, setPlan] = useState("");
@@ -17,25 +17,31 @@ export default function Calendar() {
     const nd = d._i;
     setDate(nd);
   };
+
   const onChangePlan = (e) => {
     setPlan(e.target.value);
   };
   const addPlan = (e) => {
     e.preventDefault();
+    // if (start === "" || end === "" || plan === "") {
+    //   alert("시간과 계획을 빠짐없이 입력해주세요");
+    //   return;
+    // }
     const newAp = `${moment(date).format(
       "YY년 MM월 DD일"
     )} ${start} ~ ${end} ${plan}`;
     setAps([...aps, newAp]);
+
     setHighlighted([...highlighted, date]);
   };
 
   const isDayHighlighted = useCallback(
     (day) => {
       const thatDay = moment(day).format("l");
-      const filteredClass = highlighted.find(
+      const filteredDate = highlighted.find(
         (h) => moment(h).format("l") === thatDay
       );
-      if (filteredClass) {
+      if (filteredDate) {
         return true;
       }
       return false;
@@ -46,20 +52,14 @@ export default function Calendar() {
     <div className={styles.container}>
       <div>
         <DateSelector
-          initialDate={null}
+          initialDate={moment(new Date())}
           onDateChange={handleDateChange}
           isDayHighlighted={isDayHighlighted}
         />
-        <ol>
-          {aps.map((ap) => (
-            <li key={ap}>{ap}</li>
-          ))}
-        </ol>
       </div>
       <form className={styles.form}>
         <div>
           <span>시작시간: </span>
-
           <input
             type="time"
             value={start}
@@ -76,7 +76,7 @@ export default function Calendar() {
             value={end}
             onChange={(e) => {
               setEnd(e.target.value);
-              console.log(typeof e.target.value);
+              console.log(e.target.value);
             }}
           />
         </div>
@@ -97,6 +97,11 @@ export default function Calendar() {
           onClick={addPlan}
         />
       </form>
+      <ol>
+        {aps.map((ap) => (
+          <li key={ap}>{ap}</li>
+        ))}
+      </ol>
     </div>
   );
 }

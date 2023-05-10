@@ -1,6 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks";
+import { joinRoom, ws } from "../../../utils/websocket";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 
@@ -9,9 +11,26 @@ const channelName = ["home", "초등", "중등", "고등", "대학생", "취업�
 const RoomCreateModal = ({ setModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
   const ref = useRef();
-
-  const onClick = () => {
+  const roomNameRef = useRef();
+  const navigate = useNavigate();
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [isPublic, setIsPublic] = useState("public");
+  const createRoom = () => {
+    const roomName = roomNameRef.current.value;
+    if (roomName === "") {
+      setIsEmpty(true);
+      return;
+    }
     setModalOpen(false);
+    navigate(`/main/${selectedChannel}&${roomName}`);
+
+    joinRoom("aa", roomName);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const handlePublicity = (e) => {
+    setIsPublic(e.target.value);
   };
   useOnClickOutside(ref, () => {
     setModalOpen(false);
@@ -23,7 +42,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
         <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
             <p>채팅방 생성</p>
-            <img src="images/exit.svg" alt="exit" onClick={onClick} />
+            <img src="images/exit.svg" alt="exit" onClick={closeModal} />
           </div>
           <div className={styles.contents}>
             <ul>
@@ -34,7 +53,17 @@ const RoomCreateModal = ({ setModalOpen }) => {
               <li>
                 <p className={styles.option}>채팅방 제목</p>
                 <div className={styles.title}>
-                  <input type="text" placeholder="제목을 입력하세요." />
+                  <input
+                    ref={roomNameRef}
+                    type="text"
+                    placeholder="제목을 입력하세요."
+                    style={{ border: !isEmpty ? "" : "1px solid red" }}
+                  />
+                  {isEmpty && (
+                    <div style={{ color: "red", marginTop: "1px" }}>
+                      방제목을 입력해주세요.
+                    </div>
+                  )}
                 </div>
               </li>
               <li>
@@ -58,6 +87,8 @@ const RoomCreateModal = ({ setModalOpen }) => {
                     id="public"
                     value="public"
                     name="separation"
+                    checked={isPublic === "public"}
+                    onChange={handlePublicity}
                   />
                   <label htmlFor="private">비공개 그룹</label>
                   <input
@@ -65,6 +96,8 @@ const RoomCreateModal = ({ setModalOpen }) => {
                     id="private"
                     value="private"
                     name="separation"
+                    checked={isPublic === "private"}
+                    onChange={handlePublicity}
                   />
                 </div>
               </li>
@@ -78,7 +111,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
               backgroundColor={"#535353"}
               color={"#fff"}
               fontsize={18}
-              onClick={onClick}
+              onClick={createRoom}
             />
             <Button
               width={"100px"}
@@ -87,7 +120,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
               backgroundColor={"#535353"}
               color={"#fff"}
               fontsize={18}
-              onClick={onClick}
+              onClick={closeModal}
             />
           </div>
         </div>
