@@ -13,8 +13,7 @@ const channel = [
   ["취업준비", "/images/business.svg"],
 ];
 
-const Channels = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const Channels = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
 
   return (

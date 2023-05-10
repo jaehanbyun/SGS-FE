@@ -11,8 +11,7 @@ const Group = [
   ["스터디", "/images/account_circle.svg"],
 ];
 
-const Groups = () => {
-  const [currentIndex, setCurrentIndex] = useState(null);
+const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
   return (
     <div className={styles.container}>
@@ -20,10 +19,10 @@ const Groups = () => {
         <GroupItem
           key={index}
           group={group}
-          isActive={currentIndex === index}
+          isActive={currentIndex === index + 6}
           onClick={() => {
             dispatch(setSelectedGroup(index));
-            setCurrentIndex(index);
+            setCurrentIndex(index + 6);
           }}
         />
       ))}
