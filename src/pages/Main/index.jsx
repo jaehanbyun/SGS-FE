@@ -5,19 +5,12 @@ import ChartModal from "../../components/Modal/ChartModal";
 import Lobby from "../../components/Lobby";
 import Profile from "../../components/Profile";
 import ProfileEditModal from "../../components/Modal/ProfileEditModal";
-import SideBar from "../../components/SideBar";
 import styles from "./Main.module.css";
 import { useNavigate } from "react-router-dom";
 import LogOutModal from "../../components/Modal/LogOutModal";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
-
-const data = {
-  name: "김철수",
-  email: "abcd123@gmail.com",
-  profileImage: "/images/account_circle.svg",
-  studyTime: "12435",
-  description: "안녕하세요",
-};
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
 const Main = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
@@ -25,15 +18,36 @@ const Main = () => {
   const { selectedUserState } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const getUserInfo = async () => {
+    try {
+      const res = await axios.get("/user");
+      dispatch(setSelectedUserInfo(res.data));
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
   useEffect(() => {
+    const mock = new MockAdapter(axios);
+    mock.onGet("/user").reply(() => {
+      return [
+        200,
+        {
+          name: "김지우",
+          email: "abc12345@gmail.com",
+          profileImage: "/images/account_circle.svg",
+          studyTime: "24025",
+          description: "안녕하세요. 반갑습니다.",
+        },
+      ];
+    });
     if (selectedUserState) {
-      console.log("true");
-      dispatch(setSelectedUserInfo(data));
+      getUserInfo();
     } else {
-      console.log("false");
       navigate("/");
     }
   }, [selectedUserState]);
+
   return (
     <div className={styles.main}>
       <Lobby />

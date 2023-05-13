@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Channels from "./Channels";
+import Groups from "./Groups";
 import Header from "./Header";
 import styles from "./SideBar.module.css";
-import Groups from "./Groups";
 
-const SideBar = () => {
+const SideBar = React.memo(() => {
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <div className={styles.sidebar}>
@@ -21,6 +21,6 @@ const SideBar = () => {
       </div>
     </div>
   );
-};
+});
 
 export default SideBar;
