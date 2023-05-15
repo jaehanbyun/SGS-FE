@@ -16,7 +16,7 @@ jobs:
         ref: dev
     
     - name: Set up Docker Build
-      uses: docker/setup-build-action@v1
+      uses: docker/setup-buildx-action@v1
     
     - name: Get verion
       id: image
