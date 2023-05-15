@@ -49,4 +49,4 @@ jobs:
           docker pull ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
           docker stop ${{ env.ECR_REPOSITORY }} || true
           docker rm ${{ env.ECR_REPOSITORY }} || true
-          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ steps.image.outputs.image }}
