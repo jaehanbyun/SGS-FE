@@ -40,7 +40,7 @@ jobs:
           echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.verion}}"
 
     - name: Set up SSH
-      uses: appleboy/ssh-agent@v0.1.6
+      uses: appleboy/ssh-action@master
       with:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         host: ${{ secrets.EC2_IP }}
