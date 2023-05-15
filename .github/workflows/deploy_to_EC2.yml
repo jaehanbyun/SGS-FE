@@ -37,7 +37,7 @@ jobs:
       run: |
           docker build -t ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }} .
           docker push ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
-          echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.verion}}"
+          echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version}}"
 
     - name: Set up SSH
       uses: appleboy/ssh-action@master
