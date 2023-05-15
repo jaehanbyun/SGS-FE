@@ -6,17 +6,17 @@ env:
   ECR_REPOSITORY: sgs-frontend
 
 jobs:
-  buildpush:
+  build_push:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
     - name: Set up Docker Build
       uses: docker/setup-buildx-action@v1
     
-    - name: Get verion
+    - name: Get version
       id: image
       run: |
         VERSION=$(echo ${{ github.sha }} | cut -c1-8)
@@ -32,13 +32,14 @@ jobs:
         AWS_REGION : ap-northeast-2
         
     - name: Build Docker image
+      id: build_image
       run: |
           docker build -t ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }} .
           docker push ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
-          echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.verion}}"
+          echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version}}"
 
     - name: Set up SSH
-      uses: appleboy/ssh-agent@v0.1.6
+      uses: appleboy/ssh-action@master
       with:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         host: ${{ secrets.EC2_IP }}
@@ -47,4 +48,4 @@ jobs:
           docker pull ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
           docker stop ${{ env.ECR_REPOSITORY }} || true
           docker rm ${{ env.ECR_REPOSITORY }} || true
-          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ steps.build_image.outputs.image }}
