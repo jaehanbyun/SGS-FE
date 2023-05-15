@@ -18,7 +18,7 @@ jobs:
     - name: Set up Docker Build
       uses: docker/setup-buildx-action@v1
     
-    - name: Get verion
+    - name: Get version
       id: image
       run: |
         VERSION=$(echo ${{ github.sha }} | cut -c1-8)
@@ -34,6 +34,7 @@ jobs:
         AWS_REGION : ap-northeast-2
         
     - name: Build Docker image
+      id: build_image
       run: |
           docker build -t ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }} .
           docker push ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
@@ -49,4 +50,4 @@ jobs:
           docker pull ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
           docker stop ${{ env.ECR_REPOSITORY }} || true
           docker rm ${{ env.ECR_REPOSITORY }} || true
-          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ steps.image.outputs.image }}
+          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ steps.build_image.outputs.image }}
