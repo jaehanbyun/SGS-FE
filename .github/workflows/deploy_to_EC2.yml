@@ -1,0 +1,57 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: sgs-frontend
+
+jobs:
+  buildpush:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Set up Docker Builx
+      uses: docker/setup-buildx-action@v1
+    
+    - name: Get verion
+      id: image
+      run: |
+        VERSION=$(echo ${{ github.sha }} | cut -c1-8)
+        echo VERSION=$VERSION
+        echo "::set-output name=version::$VERSION
+
+    - name: Login to Amazon ECR
+      id: login_ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    - name: Build Docker image
+      run: |
+          docker build -t ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }} .
+          docker push ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+          echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.verion}}"
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.4.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_IP }} << EOF
+          docker pull ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+          docker stop ${{ env.ECR_REPOSITORY }} || true
+          docker rm ${{ env.ECR_REPOSITORY }} || true
+          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+        EOF
