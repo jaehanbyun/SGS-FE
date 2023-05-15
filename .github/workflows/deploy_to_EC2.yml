@@ -27,7 +27,7 @@ jobs:
       run: |
         VERSION=$(echo ${{ github.sha }} | cut -c1-8)
         echo VERSION=$VERSION
-        echo "::set-output name=version::$VERSION
+        echo "::set-output name=version::$VERSION"
 
     - name: Login to Amazon ECR
       id: login_ecr
