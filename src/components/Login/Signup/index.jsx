@@ -55,7 +55,6 @@ export default function Signup({ isLoginPage, toggleSign }) {
           },
         }
       );
-      console.log(res);
       emailRef.current.disabled = false;
       emailBtnRef.current.style.display = "block";
       idErrRef.current.style.color = "#03c75a";
@@ -90,12 +89,10 @@ export default function Signup({ isLoginPage, toggleSign }) {
         }
       );
       setSuccessCode(res.data.successCode.message);
-      console.log(res.data.successCode.message);
       emailErrRef.current.style.display = "none";
       authRef.current.style.display = "block";
       authBtnRef.current.style.display = "block";
     } catch (err) {
-      console.log(err);
       if (err.response.status === 500) {
         emailErrRef.current.innerHTML = "이미 인증된 메일입니다.";
         emailErrRef.current.style.color = "#ff003e";
@@ -106,8 +103,6 @@ export default function Signup({ isLoginPage, toggleSign }) {
   };
   const authEmail = (e) => {
     e.preventDefault();
-    console.log(authCode);
-    console.log(successCode);
     if (authCode === successCode) {
       pwdRef.current.disabled = false;
       confirmPwdRef.current.disabled = false;
@@ -147,7 +142,12 @@ export default function Signup({ isLoginPage, toggleSign }) {
       console.log(res.data);
       navigate("/success");
     } catch (err) {
-      throw new Error(err);
+      if (err.response.status === 500) {
+        errRef.current.innerHTML = "유효하지 않는 정보가 존재합니다.";
+        errRef.current.style.color = "#ff003e";
+        errRef.current.style.display = "block";
+        return;
+      }
     }
   };
   return (
