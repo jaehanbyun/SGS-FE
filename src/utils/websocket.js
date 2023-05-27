@@ -1,7 +1,9 @@
+import { Participant } from "./participants";
+import { WebRtcPeer } from "kurento-utils";
 export const ws = new WebSocket("wss://localhost:8443/socket");
 
-// // var participants = {};
-// // let name;
+var participants = {};
+let name;
 ws.addEventListener("open", () => {
   console.log("open");
 });
@@ -16,7 +18,7 @@ ws.onmessage = function (message) {
   switch (parsedMessage.id) {
     case "existingParticipants":
       console.info("!!!!!!!!!why existingParticipants");
-      //onExistingParticipants(parsedMessage);
+      onExistingParticipants(parsedMessage);
       break;
     case "newParticipantArrived":
       console.info("!!!!!!!!!why new");
@@ -79,7 +81,7 @@ ws.onmessage = function (message) {
 //   }
 // }
 
-const onExistingParticipants = (msg, name, roomName) => {
+function onExistingParticipants(msg) {
   var constraints = {
     audio: true,
     video: {
@@ -90,29 +92,29 @@ const onExistingParticipants = (msg, name, roomName) => {
       },
     },
   };
-  // console.log(name + " registered in room " + room);
-  // var participant = new Participant(name);
-  // participants[name] = participant;
-  // var video = participant.getVideoElement();
+  console.log(name + " registered in room ");
+  var participant = new Participant(name);
+  participants[name] = participant;
+  var video = participant.getVideoElement();
 
-  // var options = {
-  //   localVideo: video,
-  //   mediaConstraints: constraints,
-  //   onicecandidate: participant.onIceCandidate.bind(participant),
-  // };
-  // participant.rtcPeer = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(
-  //   options,
-  //   function (error) {
-  //     if (error) {
-  //       alert(error);
-  //       return console.error(error);
-  //     }
-  //     this.generateOffer(participant.offerToReceiveVideo.bind(participant));
-  //   }
-  // );
+  var options = {
+    localVideo: video,
+    mediaConstraints: constraints,
+    onicecandidate: participant.onIceCandidate.bind(participant),
+  };
 
-  // msg.members.forEach(receiveVideo);
-};
+  participant.rtcPeer = new WebRtcPeer.WebRtcPeerSendonly(options, function (
+    error
+  ) {
+    if (error) {
+      alert(error);
+      return console.error(error);
+    }
+    this.generateOffer(participant.offerToReceiveVideo.bind(participant));
+  });
+
+  msg.members.forEach(receiveVideo);
+}
 
 // function leaveRoom() {
 //   sendMessage({
@@ -170,7 +172,7 @@ export const joinRoom = (name, room) => {
   sendRequest(req);
 };
 
-const sendRequest = (msg) => {
+export const sendRequest = (msg) => {
   const jsonReq = JSON.stringify(msg);
   console.log("Sending message: " + jsonReq);
   ws.send(jsonReq);

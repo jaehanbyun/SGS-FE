@@ -1,91 +1,86 @@
+import { sendRequest } from "./websocket";
+
 const PARTICIPANT_MAIN_CLASS = "participant main";
 const PARTICIPANT_CLASS = "participant";
 
-class Participant {
-  constructor(userId, videoStatus, audioStatus) {
-    console.log(`참여자명 : ${userId}`);
-    this.userId = userId;
-    this.videoStatus = videoStatus;
-    this.audioStatus = audioStatus;
+export function Participant(userId, videoStatus, audioStatus) {
+  console.log("참여자명 : " + userId);
 
-    this.container = document.createElement("div");
-    this.container.className = this.isPresentMainParticipant()
-      ? PARTICIPANT_CLASS
-      : PARTICIPANT_MAIN_CLASS;
-    this.container.id = userId;
+  this.userId = userId;
+  this.videoStatus = videoStatus;
+  this.audioStatus = audioStatus;
 
-    this.span = document.createElement("span");
-    this.video = document.createElement("video");
-    this.rtcPeer = null;
+  var container = document.createElement("div");
+  container.className = isPresentMainParticipant()
+    ? PARTICIPANT_CLASS
+    : PARTICIPANT_MAIN_CLASS;
+  container.id = userId;
+  var span = document.createElement("span");
+  var video = document.createElement("video");
+  var rtcPeer;
 
-    this.container.appendChild(this.video);
-    this.container.appendChild(this.span);
-    this.container.onclick = this.switchContainerClass.bind(this);
-    document.getElementById("participants").appendChild(this.container);
+  container.appendChild(video);
+  container.appendChild(span);
+  container.onclick = switchContainerClass;
+  document.getElementById("participants").appendChild(container);
 
-    this.span.appendChild(document.createTextNode(userId));
+  span.appendChild(document.createTextNode(userId));
 
-    this.video.id = `video-${userId}`;
-    this.video.autoplay = true;
-    this.video.playsInline = true;
-    this.video.controls = false;
-  }
+  video.id = "video-" + userId;
+  video.autoplay = true;
+  video.playsInline = true;
+  video.controls = false;
 
-  getElement() {
-    return this.container;
-  }
+  this.getElement = function () {
+    return container;
+  };
 
-  getVideoElement() {
-    return this.video;
-  }
+  this.getVideoElement = function () {
+    return video;
+  };
 
-  offerToReceiveVideo(error, offerSdp, wp) {
-    if (error) {
-      console.error("sdp offer error");
-      return;
-    }
-    console.log("Invoking SDP offer callback function");
-    const msg = {
-      id: "receiveVideoFrom",
-      userId: this.userId,
-      sdpOffer: offerSdp,
-    };
-    sendMessage(msg);
-  }
-
-  onIceCandidate(candidate, wp) {
-    console.log(`Local candidate ${JSON.stringify(candidate)}`);
-
-    const message = {
-      id: "onIceCandidate",
-      userId: this.userId,
-      candidate,
-    };
-    sendMessage(message);
-  }
-
-  dispose() {
-    console.log(`Disposing participant ${this.userId}`);
-    this.rtcPeer.dispose();
-    this.container.parentNode.removeChild(this.container);
-  }
-
-  switchContainerClass() {
-    if (this.container.className === PARTICIPANT_CLASS) {
-      const elements = Array.prototype.slice.call(
+  function switchContainerClass() {
+    if (container.className === PARTICIPANT_CLASS) {
+      var elements = Array.prototype.slice.call(
         document.getElementsByClassName(PARTICIPANT_MAIN_CLASS)
       );
-      elements.forEach((item) => {
+      elements.forEach(function (item) {
         item.className = PARTICIPANT_CLASS;
       });
 
-      this.container.className = PARTICIPANT_MAIN_CLASS;
+      container.className = PARTICIPANT_MAIN_CLASS;
     } else {
-      this.container.className = PARTICIPANT_CLASS;
+      container.className = PARTICIPANT_CLASS;
     }
   }
 
-  isPresentMainParticipant() {
-    return document.getElementsByClassName(PARTICIPANT_MAIN_CLASS).length !== 0;
+  function isPresentMainParticipant() {
+    return document.getElementsByClassName(PARTICIPANT_MAIN_CLASS).length != 0;
   }
+
+  this.offerToReceiveVideo = function (error, offerSdp, wp) {
+    if (error) return console.error("sdp offer error");
+    console.log("Invoking SDP offer callback function");
+    var msg = { id: "receiveVideoFrom", userId: userId, sdpOffer: offerSdp };
+    sendRequest(msg);
+  };
+
+  this.onIceCandidate = function (candidate, wp) {
+    console.log("Local candidate" + JSON.stringify(candidate));
+
+    var message = {
+      id: "onIceCandidate",
+      userId: userId,
+      candidate: candidate,
+    };
+    sendRequest(message);
+  };
+
+  Object.defineProperty(this, "rtcPeer", { writable: true });
+
+  this.dispose = function () {
+    console.log("Disposing participant " + this.userId);
+    this.rtcPeer.dispose();
+    container.parentNode.removeChild(container);
+  };
 }
