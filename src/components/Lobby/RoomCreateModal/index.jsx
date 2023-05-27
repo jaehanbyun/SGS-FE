@@ -2,10 +2,8 @@ import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks";
-import { joinRoom, ws } from "../../../utils/websocket";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
-
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
 const RoomCreateModal = ({ setModalOpen }) => {
@@ -15,22 +13,65 @@ const RoomCreateModal = ({ setModalOpen }) => {
   const navigate = useNavigate();
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
-  const createRoom = () => {
+  const [maxUser, setMaxUser] = useState(3);
+  const createRoom = async () => {
     const roomName = roomNameRef.current.value;
     if (roomName === "") {
       setIsEmpty(true);
       return;
     }
-    setModalOpen(false);
-    navigate(`/main/${selectedChannel}&${roomName}`);
+    let age;
+    switch (selectedChannel) {
+      case 0:
+        age = "ELEMENTARY_SCHOOL";
+        break;
+      case 1:
+        age = "MIDDLE_SCHOOL";
+        break;
+      case 2:
+        age = "HIGH_SCHOOL";
+        break;
+      case 3:
+        age = "UNIVERSITY";
+        break;
+      case 4:
+        age = "BUSINESS";
+        break;
+      default:
+        break;
+    }
+    const roomCreate = {
+      userId: "donu",
+      roomType: isPublic === "public" ? true : false,
+      roomName,
+      maxUser,
+      roomChannel: age,
+    };
 
-    joinRoom("aa", roomName);
+    await fetch("//localhost:8080/room/group", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(roomCreate),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        setModalOpen(false);
+        navigate(`/main/${res.data.roomId}&${selectedChannel}&${roomName}`);
+      })
+      .catch((error) => console.log(error));
+
+    // joinRoom("aa", roomName);
   };
   const closeModal = () => {
     setModalOpen(false);
   };
   const handlePublicity = (e) => {
     setIsPublic(e.target.value);
+  };
+  const handleMaxUser = (e) => {
+    setMaxUser(e.target.value);
   };
   useOnClickOutside(ref, () => {
     setModalOpen(false);
@@ -69,7 +110,11 @@ const RoomCreateModal = ({ setModalOpen }) => {
               <li>
                 <p className={styles.option}>참여 인원</p>
                 <div className={styles.participant}>
-                  <select name="participant">
+                  <select
+                    name="participant"
+                    onChange={handleMaxUser}
+                    value={maxUser}
+                  >
                     <option value="three">3</option>
                     <option value="five">5</option>
                     <option value="seven">7</option>

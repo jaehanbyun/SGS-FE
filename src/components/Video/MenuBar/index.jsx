@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import Button from "../../Button";
 import styles from "./MenuBar.module.css";
+import { useNavigate } from "react-router-dom";
 
 const medias = [
   "/images/microphone.svg",
@@ -10,6 +11,7 @@ const medias = [
 ];
 
 const MenuBar = () => {
+  const navigate = useNavigate();
   return (
     <footer className={styles.menu}>
       <div className={styles.controller}>
@@ -38,6 +40,7 @@ const MenuBar = () => {
             backgroundColor={"#E81515"}
             text={"나가기"}
             color={"#fff"}
+            onClick={() => navigate("/main")}
           />
         </div>
       </div>
