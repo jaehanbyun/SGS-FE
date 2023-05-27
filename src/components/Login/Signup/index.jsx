@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ToggleSign from "../ToggleSign";
 import styles from "./Signup.module.css";
-import MockAdapter from "axios-mock-adapter";
-import axios from "axios";
+import axios from "../../../api/core";
 
 export default function Signup({ isLoginPage, toggleSign }) {
   const [userInfo, setUserInfo] = useState({
@@ -18,23 +17,13 @@ export default function Signup({ isLoginPage, toggleSign }) {
   const navigate = useNavigate();
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
+
   useEffect(() => {
-    const mock = new MockAdapter(axios);
-    mock.onPost("/users").reply((config) => {
-      console.log(config.data);
-      return [
-        200,
-        {
-          isSuccess: true,
-          code: "1000",
-          message: "success",
-        },
-      ];
-    });
     if (isError) {
       setIsError(false);
     }
   }, [isError]);
+
   const onSignUp = async (e) => {
     try {
       e.preventDefault();
@@ -55,7 +44,8 @@ export default function Signup({ isLoginPage, toggleSign }) {
         errRef.current.style.display = "block";
         return;
       }
-      const res = await axios.post("/users", {
+
+      const res = await axios.post("/auth/sign-up", {
         id: userInfo.id,
         email: userInfo.email,
         password: userInfo.pwd,
