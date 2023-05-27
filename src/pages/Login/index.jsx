@@ -17,9 +17,9 @@ export default function Login() {
             {isLoginPage ? "로그인" : "회원가입"}
           </header>
           {isLoginPage ? (
-            <Signin isLogin={isLoginPage} toggleSign={toggleSign} />
+            <Signin isLoginPage={isLoginPage} toggleSign={toggleSign} />
           ) : (
-            <Signup isLogin={isLoginPage} toggleSign={toggleSign} />
+            <Signup isLoginPage={isLoginPage} toggleSign={toggleSign} />
           )}
         </div>
       </div>
