@@ -62,13 +62,6 @@
   background-color: rgb(255, 114, 114, 0.9);
 }
 
-.formLink {
-  text-align: center;
-  margin-top: 0.5em;
-  display: flex;
-  justify-content: space-between;
-}
-
 .err {
   padding-top: 10px;
   font-size: 12px;

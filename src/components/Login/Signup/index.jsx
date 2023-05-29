@@ -245,10 +245,6 @@ export default function Signup({ isLoginPage, toggleSign }) {
             setUserInfo({ ...userInfo, confirmPwd: e.target.value });
           }}
         />
-        <div className={styles.formLink}>
-          <Link className={styles.forgotPW}>아이디 찾기</Link>
-          <Link className={styles.forgotPW}>비밀번호 찾기</Link>
-        </div>
         <div className={styles.err} ref={errRef}></div>
         <div className={`${styles.field} ${styles.buttonField}`}>
           <button onClick={onSignUp}>회원가입</button>
