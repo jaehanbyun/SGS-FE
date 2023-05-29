@@ -24,7 +24,6 @@ function App() {
           <Route path="/" element={<Preview />} />
           <Route path="/login" element={<Login />} />
           <Route path="/success" element={<Success />} />
-
           <Route path="/main" element={<Layout />}>
             <Route path="/main" element={<Main />} />
             <Route path="/main/:roomId" element={<ChatRoom />} />
