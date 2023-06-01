@@ -1,0 +1,16 @@
+.videos {
+  display: flex;
+  gap: 10px;
+}
+.video {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 1px solid greenyellow;
+  background-color: rgb(151, 149, 149);
+}
+
+.name {
+  position: absolute;
+  top: 80px;
+}

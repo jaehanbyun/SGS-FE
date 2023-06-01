@@ -1,0 +1,31 @@
+.menu {
+  display: flex;
+  width: 63.75vw;
+  position: absolute;
+  bottom: 0;
+  justify-content: space-between;
+  background-color: #eaabab;
+}
+
+.controller {
+  display: flex;
+}
+.studyTime {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 32px;
+  color: #ffffff;
+  gap: 5px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

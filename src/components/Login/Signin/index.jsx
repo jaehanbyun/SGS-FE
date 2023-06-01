@@ -45,6 +45,7 @@ export default function Signin({
         id: id,
         password: pwd,
       });
+      axios.defaults.withCredentials = true;
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${res.data.accountInfo.accessToken}`;
