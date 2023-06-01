@@ -16,37 +16,9 @@ const Main = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserState } = useSelector((state) => state);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const getUserInfo = async () => {
-    try {
-      const res = await axios.get("/user");
-      dispatch(setSelectedUserInfo(res.data));
-    } catch (err) {
-      throw new Error(err);
-    }
-  };
-  useEffect(() => {
-    const mock = new MockAdapter(axios);
-    mock.onGet("/user").reply(() => {
-      return [
-        200,
-        {
-          name: "김지우",
-          email: "abc12345@gmail.com",
-          profileImage: "/images/account_circle.svg",
-          studyTime: "24025",
-          description: "안녕하세요. 반갑습니다.",
-        },
-      ];
-    });
-    if (selectedUserState) {
-      getUserInfo();
-    } else {
-      navigate("/");
-    }
-  }, [selectedUserState]);
 
   return (
     <div className={styles.main}>
