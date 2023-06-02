@@ -50,7 +50,6 @@ export default function Signin({
         "Authorization"
       ] = `Bearer ${res.data.accountInfo.accessToken}`;
       console.log(res.data);
-      console.log(axios.defaults.headers.common);
       dispatch(setSelectedUserInfo({ id: id }));
       dispatch(setSelectedUserState(true));
       navigate("/main");
