@@ -6,7 +6,6 @@ import Preview from "./pages/Preview";
 import StudyRoom from "./pages/StudyRoom";
 import "./styles/default.css";
 import Success from "./pages/Success";
-import Test from "./Test";
 
 const Layout = () => {
   return (
@@ -22,7 +21,6 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="test" element={<Test />} />
           <Route path="/" element={<Preview />} />
           <Route path="/login" element={<Login />} />
           <Route path="/success" element={<Success />} />
