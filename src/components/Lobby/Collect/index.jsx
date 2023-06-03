@@ -1,8 +1,14 @@
 import React from "react";
 import Button from "../../Button";
 import styles from "./Collect.module.css";
+import { useSelector } from "react-redux";
 const Collect = ({ setModalOpen }) => {
+  const { selectedChannel } = useSelector((state) => state);
   const onClick = () => {
+    if (selectedChannel === 0) {
+      alert("홈 채널에서는 방을 생성 할 수 없습니다.");
+      return;
+    }
     setModalOpen(true);
   };
   return (
