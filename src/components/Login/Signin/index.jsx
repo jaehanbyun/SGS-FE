@@ -6,6 +6,7 @@ import ToggleSign from "../ToggleSign";
 import styles from "./Signin.module.css";
 import axios from "../../../api/core";
 import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
+import { connect } from "../../../utils/stomp";
 
 export default function Signin({
   setIsFindId,
@@ -20,6 +21,7 @@ export default function Signin({
   const dispatch = useDispatch();
   const errRef = useRef();
   const pwdRef = useRef();
+  var client = null;
 
   useEffect(() => {
     if (isError) {
@@ -50,7 +52,8 @@ export default function Signin({
         "Authorization"
       ] = `Bearer ${res.data.accountInfo.accessToken}`;
       console.log(res.data);
-      dispatch(setSelectedUserInfo({ id: id }));
+      client = connect(client);
+      dispatch(setSelectedUserInfo({ client: client, id: id }));
       dispatch(setSelectedUserState(true));
       navigate("/main");
     } catch (err) {
