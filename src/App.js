@@ -28,7 +28,7 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/main" element={<Layout />}>
             <Route path="/main" element={<Main />} />
-            <Route path="/main/:vidId" element={<StudyRoom />} />\
+            <Route path="/main/:roomId" element={<StudyRoom />} />\
           </Route>
         </Routes>
       </BrowserRouter>
