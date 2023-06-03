@@ -7,14 +7,14 @@ import Participants from "./Participants";
 import { useSelector } from "react-redux";
 
 const tmp = ["참가지1", "참가자2", "참가자3"];
-const Video = () => {
+const Video = ({ roomId }) => {
   return (
     <>
       <div className={styles.screen}>
         <div className={styles.videos}>
           <Participants participants={tmp} />
         </div>
-        <MenuBar />
+        <MenuBar roomId={roomId} />
         <Chatting />
       </div>
     </>

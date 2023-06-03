@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Video from "../../components/Video";
+import { useParams } from "react-router-dom";
 // import { useSelector } from "react-redux";
 // import Lobby from "../../components/Lobby";
 // import Profile from "../../components/Profile";
@@ -10,7 +11,8 @@ import Video from "../../components/Video";
 // import ChartModal from "../../components/Modal/ChartModal";
 
 const StudyRoom = () => {
-  return <Video />;
+  const { roomId } = useParams();
+  return <Video roomId={roomId} />;
 };
 
 export default StudyRoom;
