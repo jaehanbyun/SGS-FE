@@ -11,6 +11,10 @@ const store = configureStore({
     selectedUserState: selectedUserStateReducer.reducer,
     selectedUserInfo: selectedUserInfoReducer.reducer,
   },
+  middleware: (defaultMiddleware) =>
+    defaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;
