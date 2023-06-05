@@ -85,6 +85,7 @@ export default function Signup({ isLoginPage, toggleSign }) {
         {
           params: {
             email: userInfo.email,
+            type: "sign",
           },
         }
       );
