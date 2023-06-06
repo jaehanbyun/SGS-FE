@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Video from "../../components/Video";
 import { useParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import Lobby from "../../components/Lobby";
-// import Profile from "../../components/Profile";
-// import ProfileEditModal from "../../components/Modal/ProfileEditModal";
-// import SideBar from "../../components/SideBar";
-// import styles from "./Main.module.css";
-// import CalendarModal from "../../components/Modal/CalendarModal";
-// import ChartModal from "../../components/Modal/ChartModal";
+import { useSelector } from "react-redux";
+import { disconnect, subscribe, unsubscribe } from "../../utils/stomp";
 
 const StudyRoom = () => {
   const { roomId } = useParams();
+  const { selectedUserInfo } = useSelector((state) => state);
+  useEffect(() => {
+    subscribe(selectedUserInfo.client, roomId, null);
+
+    return () => {
+      unsubscribe(selectedUserInfo.client, roomId);
+      disconnect(selectedUserInfo.client);
+    };
+  }, []);
+
   return <Video roomId={roomId} />;
 };
 

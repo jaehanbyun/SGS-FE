@@ -53,7 +53,6 @@ const RoomCreateModal = ({ setModalOpen }) => {
       });
       console.log(res);
       setModalOpen(false);
-      moveRoom(selectedUserInfo.client, 0, res.data.data.roomId, null);
       navigate(`/main/${res.data.data.roomId}`);
     } catch (err) {
       console.log(err);

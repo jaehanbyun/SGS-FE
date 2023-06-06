@@ -17,7 +17,6 @@ const MenuBar = ({ roomId }) => {
 
   const navigate = useNavigate();
   const roomExit = () => {
-    moveRoom(selectedUserInfo.client, roomId, 0, null);
     navigate("/main");
   };
   return (
