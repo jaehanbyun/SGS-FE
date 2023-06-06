@@ -62,14 +62,13 @@ const FindPw = ({ setIsFindPage }) => {
   const changePwd = async () => {
     try {
       if (id === "" || email === "" || authCode === "" || pwd === "") {
-        console.log("fdsasf");
         msgRef.current.innerHTML =
           "<strong>회원정보</strong>를 빈칸없이 입력해 주세요.";
         msgRef.current.style.color = "#ff003e";
         msgRef.current.style.display = "block";
         return;
       }
-      const res = await axios.patch(`/auth/edit-password`, {
+      await axios.patch(`/auth/edit-password`, {
         id: id,
         email: email,
         password: pwd,
