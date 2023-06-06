@@ -1,52 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./ChatRooms.module.css";
 import Room from "./Room";
-import axios from "axios";
+import axios from "../../../api/core";
 import MockAdapter from "axios-mock-adapter";
-const ChatRooms = ({ rooms, setRooms }) => {
+import { useSelector } from "react-redux";
+
+const channelName = [
+  "",
+  "ELEMENTARY_SCHOOL",
+  "MIDDLE_SCHOOL",
+  "HIGH_SCHOOL",
+  "UNIVERSITY",
+  "BUSINESS",
+];
+
+const ChatRooms = ({ rooms, setRooms, nextRoomId }) => {
+  const { selectedChannel } = useSelector((state) => state);
   const target = useRef();
   const roomRef = useRef();
   const [isScroll, setIsScroll] = useState(false);
   const [isData, setIsData] = useState(true);
-  const mock = new MockAdapter(axios);
-  mock.onGet("/room").reply((config) => {
-    return [
-      200,
-      [
-        {
-          roomId: Math.floor(Math.random() * 90000) + 10000,
-          roomName: "추가 데이터",
-          roomChannel: "middle",
-          roomOwner: "user1",
-          curUser: 2,
-          maxUser: 5,
-          createdAt: "2023-01-31T18:01:22.2072675",
-        },
-        {
-          roomId: Math.floor(Math.random() * 90000) + 10000,
-          roomName: "추가 데이터",
-          roomChannel: "elemantary",
-          roomOwner: "user1",
-          curUser: 1,
-          maxUser: 3,
-          createdAt: "2023-03-30T15:01:22.2072675",
-        },
-        {
-          roomId: Math.floor(Math.random() * 90000) + 10000,
-          roomName: "추가 데이터",
-          roomChannel: "elemantary",
-          roomOwner: "user1",
-          curUser: 1,
-          maxUser: 3,
-          createdAt: "2023-01-31T18:01:22.2072675",
-        },
-      ],
-    ];
-  });
+
   const getRooms = async () => {
     try {
-      const res = await axios.get("/room");
-      const newRooms = [...rooms, ...res.data];
+      let res;
+      if (selectedChannel === 0) {
+        res = await axios.get("/room/group", {
+          params: {
+            lastRoomId: nextRoomId,
+          },
+        });
+      } else {
+        res = await axios.get("/room/group", {
+          params: {
+            lastRoomId: nextRoomId,
+            channel: channelName[selectedChannel],
+          },
+        });
+      }
+      console.log(res);
+      const newRooms = [...rooms, ...res.data.data];
       setRooms(newRooms);
     } catch (err) {
       setIsData(false);

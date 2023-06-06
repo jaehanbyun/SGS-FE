@@ -2,7 +2,9 @@ import React from "react";
 import moment from "moment";
 import Button from "../../Button";
 import styles from "./MenuBar.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { moveRoom } from "../../../utils/stomp";
 
 const medias = [
   "/images/microphone.svg",
@@ -10,8 +12,14 @@ const medias = [
   "/images/screen_share.svg",
 ];
 
-const MenuBar = () => {
+const MenuBar = ({ roomId }) => {
+  const { selectedUserInfo } = useSelector((state) => state);
+
   const navigate = useNavigate();
+  const roomExit = () => {
+    moveRoom(selectedUserInfo.client, roomId, 0, null);
+    navigate("/main");
+  };
   return (
     <footer className={styles.menu}>
       <div className={styles.controller}>
@@ -40,7 +48,7 @@ const MenuBar = () => {
             backgroundColor={"#E81515"}
             text={"나가기"}
             color={"#fff"}
-            onClick={() => navigate("/main")}
+            onClick={roomExit}
           />
         </div>
       </div>

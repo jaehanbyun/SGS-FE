@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setSelectedUserState } from "../../../redux/selectedUserState/slice";
 import ToggleSign from "../ToggleSign";
 import styles from "./Signin.module.css";
@@ -48,9 +48,8 @@ export default function Signin({
       axios.defaults.withCredentials = true;
       axios.defaults.headers.common[
         "Authorization"
-      ] = `Bearer ${res.data.accountInfo.accessToken}`;
-      console.log(res.data);
-      console.log(axios.defaults.headers.common);
+      ] = `Bearer ${res.data.data.accessToken}`;
+      console.log(res);
       dispatch(setSelectedUserInfo({ id: id }));
       dispatch(setSelectedUserState(true));
       navigate("/main");

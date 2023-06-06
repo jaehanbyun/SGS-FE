@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ToggleSign from "../ToggleSign";
 import styles from "./Signup.module.css";
 import axios from "../../../api/core";
@@ -46,7 +46,7 @@ export default function Signup({ isLoginPage, toggleSign }) {
         idErrRef.current.style.display = "block";
         return;
       }
-      const res = await axios.post(
+      await axios.post(
         `/auth/check-userid`,
         {},
         {
@@ -85,6 +85,7 @@ export default function Signup({ isLoginPage, toggleSign }) {
         {
           params: {
             email: userInfo.email,
+            type: "sign",
           },
         }
       );

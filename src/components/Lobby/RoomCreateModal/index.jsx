@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
+import axios from "../../../api/core";
+import { moveRoom } from "../../../utils/stomp";
+
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
 const RoomCreateModal = ({ setModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
+  const { selectedUserInfo } = useSelector((state) => state);
   const ref = useRef();
   const roomNameRef = useRef();
   const navigate = useNavigate();
@@ -15,54 +19,45 @@ const RoomCreateModal = ({ setModalOpen }) => {
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);
   const createRoom = async () => {
-    const roomName = roomNameRef.current.value;
-    if (roomName === "") {
-      setIsEmpty(true);
-      return;
+    try {
+      const roomName = roomNameRef.current.value;
+      if (roomName === "") {
+        setIsEmpty(true);
+        return;
+      }
+      let age;
+      switch (selectedChannel) {
+        case 1:
+          age = "ELEMENTARY_SCHOOL";
+          break;
+        case 2:
+          age = "MIDDLE_SCHOOL";
+          break;
+        case 3:
+          age = "HIGH_SCHOOL";
+          break;
+        case 4:
+          age = "UNIVERSITY";
+          break;
+        case 5:
+          age = "BUSINESS";
+          break;
+        default:
+          break;
+      }
+      const res = await axios.post("/room/group", {
+        roomType: isPublic === "public" ? true : false,
+        roomName,
+        maxUser,
+        roomChannel: age,
+      });
+      console.log(res);
+      setModalOpen(false);
+      moveRoom(selectedUserInfo.client, 0, res.data.data.roomId, null);
+      navigate(`/main/${res.data.data.roomId}`);
+    } catch (err) {
+      console.log(err);
     }
-    let age;
-    switch (selectedChannel) {
-      case 0:
-        age = "ELEMENTARY_SCHOOL";
-        break;
-      case 1:
-        age = "MIDDLE_SCHOOL";
-        break;
-      case 2:
-        age = "HIGH_SCHOOL";
-        break;
-      case 3:
-        age = "UNIVERSITY";
-        break;
-      case 4:
-        age = "BUSINESS";
-        break;
-      default:
-        break;
-    }
-    const roomCreate = {
-      userId: "donu",
-      roomType: isPublic === "public" ? true : false,
-      roomName,
-      maxUser,
-      roomChannel: age,
-    };
-
-    await fetch("//localhost:8080/room/group", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(roomCreate),
-    })
-      .then((response) => response.json())
-      .then((res) => {
-        setModalOpen(false);
-        navigate(`/main/${res.data.roomId}&${selectedChannel}&${roomName}`);
-      })
-      .catch((error) => console.log(error));
-
-    // joinRoom("aa", roomName);
   };
   const closeModal = () => {
     setModalOpen(false);
