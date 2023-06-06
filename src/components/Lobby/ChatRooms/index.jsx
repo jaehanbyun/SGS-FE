@@ -14,7 +14,7 @@ const channelName = [
   "BUSINESS",
 ];
 
-const ChatRooms = ({ rooms, setRooms, nextRoomId }) => {
+const ChatRooms = ({ rooms, setRooms, nextRoomId, setNextRoomId }) => {
   const { selectedChannel } = useSelector((state) => state);
   const target = useRef();
   const roomRef = useRef();
@@ -41,6 +41,7 @@ const ChatRooms = ({ rooms, setRooms, nextRoomId }) => {
       console.log(res);
       const newRooms = [...rooms, ...res.data.data];
       setRooms(newRooms);
+      setNextRoomId(newRooms[newRooms.length - 1].roomId);
     } catch (err) {
       setIsData(false);
       throw new Error(err);

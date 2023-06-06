@@ -60,7 +60,12 @@ const Lobby = React.memo(() => {
   return (
     <div className={styles.lobby}>
       <LobbyHeader />
-      <ChatRooms rooms={rooms} setRooms={setRooms} nextRoomId={nextRoomId} />
+      <ChatRooms
+        rooms={rooms}
+        setRooms={setRooms}
+        nextRoomId={nextRoomId}
+        setNextRoomId={setNextRoomId}
+      />
       <Collect setModalOpen={setModalOpen} />
       {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
     </div>

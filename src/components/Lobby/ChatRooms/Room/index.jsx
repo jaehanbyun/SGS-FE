@@ -30,7 +30,6 @@ const Room = ({ room }) => {
     <div
       className={styles.room}
       onDoubleClick={() => {
-        moveRoom(selectedUserInfo.client, 0, roomId, null);
         navigate(`/main/${roomId}`);
       }}
     >
