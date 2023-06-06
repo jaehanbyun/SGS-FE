@@ -21,7 +21,6 @@ export default function Signin({
   const dispatch = useDispatch();
   const errRef = useRef();
   const pwdRef = useRef();
-  var client = null;
 
   useEffect(() => {
     if (isError) {
@@ -50,10 +49,9 @@ export default function Signin({
       axios.defaults.withCredentials = true;
       axios.defaults.headers.common[
         "Authorization"
-      ] = `Bearer ${res.data.accountInfo.accessToken}`;
-      console.log(res.data);
-      client = connect(client);
-      dispatch(setSelectedUserInfo({ client: client, id: id }));
+      ] = `Bearer ${res.data.data.accessToken}`;
+      console.log(res);
+      dispatch(setSelectedUserInfo({ id: id }));
       dispatch(setSelectedUserState(true));
       navigate("/main");
     } catch (err) {

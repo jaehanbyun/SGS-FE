@@ -27,6 +27,17 @@
   top: 89px;
   right: 38px;
 }
+.form .authBtn {
+  position: absolute;
+  top: 148px;
+  right: 38px;
+}
+.form .pwdBtn {
+  position: absolute;
+  top: 13px;
+  right: 6px;
+  display: none;
+}
 
 .form .field {
   position: relative;
@@ -66,15 +77,4 @@
   margin-top: -13px;
   margin-bottom: 3px;
   margin-left: 2px;
-}
-
-.msg {
-  padding-top: 10px;
-  font-size: 12px;
-  color: #ff003e;
-  display: none;
-  line-height: 1.25;
-}
-.msg strong {
-  font-weight: 700;
 }
