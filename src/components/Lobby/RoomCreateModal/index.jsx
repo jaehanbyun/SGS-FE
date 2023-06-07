@@ -1,23 +1,28 @@
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 import axios from "../../../api/core";
 import { moveRoom } from "../../../utils/stomp";
+import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
 const RoomCreateModal = ({ setModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
-  const { selectedUserInfo } = useSelector((state) => state);
-  const ref = useRef();
-  const roomNameRef = useRef();
-  const navigate = useNavigate();
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);
+
+  const ref = useRef();
+  const roomNameRef = useRef();
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   const createRoom = async () => {
     try {
       const roomName = roomNameRef.current.value;
@@ -45,13 +50,16 @@ const RoomCreateModal = ({ setModalOpen }) => {
         default:
           break;
       }
-      const res = await axios.post("/room/group", {
+
+      const room = {
         roomType: isPublic === "public" ? true : false,
         roomName,
         maxUser,
         roomChannel: age,
-      });
-      console.log(res);
+      };
+
+      const res = await axios.post("/room/group", room);
+      dispatch(setSelectedRoomInfo({ ...room }));
       setModalOpen(false);
       navigate(`/main/${res.data.data.roomId}`);
     } catch (err) {

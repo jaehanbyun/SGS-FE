@@ -3,7 +3,7 @@ import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { moveRoom } from "../../../../utils/stomp";
-const Room = ({ room }) => {
+const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
   const { selectedUserInfo } = useSelector((state) => state);
 
@@ -26,6 +26,11 @@ const Room = ({ room }) => {
   };
   const diff = getTimeDifference(new Date(createdAt), new Date());
   const navigate = useNavigate();
+
+  const onClick = () => {
+    setRoomInfoModalOpen(true);
+  };
+
   return (
     <div
       className={styles.room}
@@ -45,7 +50,7 @@ const Room = ({ room }) => {
         <p>{diff}</p>
       </div>
       <div className={styles.item}>
-        <img src="/images/add_box.svg" alt="이미지박스" />
+        <img onClick={onClick} src="/images/add_box.svg" alt="이미지박스" />
       </div>
     </div>
   );

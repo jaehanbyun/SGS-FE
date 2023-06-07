@@ -17,15 +17,13 @@ const channelName = [
   "BUSINESS",
 ];
 
-const Lobby = React.memo(() => {
+const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [lastRoomId, setLastRoomId] = useState(100000);
   const [nextRoomId, setNextRoomId] = useState(null);
-  const arr = rooms.filter(
-    (content) => content.roomChannel === channelName[selectedChannel]
-  );
+
   const getRooms = async () => {
     try {
       let res;
@@ -65,6 +63,7 @@ const Lobby = React.memo(() => {
         setRooms={setRooms}
         nextRoomId={nextRoomId}
         setNextRoomId={setNextRoomId}
+        setRoomInfoModalOpen={setRoomInfoModalOpen}
       />
       <Collect setModalOpen={setModalOpen} />
       {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}

@@ -6,28 +6,24 @@ import Lobby from "../../components/Lobby";
 import Profile from "../../components/Profile";
 import ProfileEditModal from "../../components/Modal/ProfileEditModal";
 import styles from "./Main.module.css";
-import { useNavigate } from "react-router-dom";
 import LogOutModal from "../../components/Modal/LogOutModal";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
-import MockAdapter from "axios-mock-adapter";
-import axios from "../../api/core";
-import { Stomp } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 import { connect, subscribe, unsubscribe } from "../../utils/stomp";
+import RoomInfoModal from "../../components/Modal/RoomInfoModal";
 
 const Main = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [roomInfoModalOpen, setRoomInfoModalOpen] = useState(false);
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
-  const [chatList, setChatList] = useState([]);
 
   var client = null;
 
   useEffect(() => {
     client = connect(client);
-    dispatch(setSelectedUserInfo({ client: client }));
+    dispatch(setSelectedUserInfo({ ...selectedUserInfo, client: client }));
     console.log(selectedUserInfo);
     return () => {
       if (client.connected) {
@@ -38,7 +34,10 @@ const Main = () => {
 
   return (
     <div className={styles.main}>
-      <Lobby />
+      <Lobby setRoomInfoModalOpen={setRoomInfoModalOpen} />
+      {roomInfoModalOpen && (
+        <RoomInfoModal setRoomInfoModalOpen={setRoomInfoModalOpen} />
+      )}
       <Profile setProfileModalOpen={setProfileModalOpen} />
       {profileModalOpen && (
         <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />

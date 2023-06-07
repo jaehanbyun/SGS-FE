@@ -14,7 +14,13 @@ const channelName = [
   "BUSINESS",
 ];
 
-const ChatRooms = ({ rooms, setRooms, nextRoomId, setNextRoomId }) => {
+const ChatRooms = ({
+  rooms,
+  setRooms,
+  nextRoomId,
+  setNextRoomId,
+  setRoomInfoModalOpen,
+}) => {
   const { selectedChannel } = useSelector((state) => state);
   const target = useRef();
   const roomRef = useRef();
@@ -75,7 +81,11 @@ const ChatRooms = ({ rooms, setRooms, nextRoomId, setNextRoomId }) => {
     <div className={styles.rooms}>
       <div ref={roomRef}>
         {rooms.map((room) => (
-          <Room room={room} key={room.roomId} />
+          <Room
+            room={room}
+            key={room.roomId}
+            setRoomInfoModalOpen={setRoomInfoModalOpen}
+          />
         ))}
       </div>
       {isData && isScroll ? <div ref={target}></div> : null}
