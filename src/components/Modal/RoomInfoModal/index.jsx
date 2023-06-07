@@ -53,7 +53,6 @@ const RoomInfoModal = ({ roomInfoModalOpen, setRoomInfoModalOpen }) => {
 
   useEffect(() => {
     getRoomInfo();
-    console.log(new Date(roomInfo.createdAt));
   }, []);
 
   const onClick = () => {
