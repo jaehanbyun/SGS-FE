@@ -1,11 +1,9 @@
 import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { moveRoom } from "../../../../utils/stomp";
+
 const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
-  const { selectedUserInfo } = useSelector((state) => state);
 
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
@@ -28,7 +26,7 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    setRoomInfoModalOpen(true);
+    setRoomInfoModalOpen({ open: true, roomId: roomId });
   };
 
   return (

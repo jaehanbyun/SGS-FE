@@ -5,8 +5,6 @@ import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 import axios from "../../../api/core";
-import { moveRoom } from "../../../utils/stomp";
-import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
@@ -20,8 +18,6 @@ const RoomCreateModal = ({ setModalOpen }) => {
   const roomNameRef = useRef();
 
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const createRoom = async () => {
     try {
@@ -59,7 +55,6 @@ const RoomCreateModal = ({ setModalOpen }) => {
       };
 
       const res = await axios.post("/room/group", room);
-      dispatch(setSelectedRoomInfo({ ...room }));
       setModalOpen(false);
       navigate(`/main/${res.data.data.roomId}`);
     } catch (err) {

@@ -13,7 +13,10 @@ import RoomInfoModal from "../../components/Modal/RoomInfoModal";
 
 const Main = () => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const [roomInfoModalOpen, setRoomInfoModalOpen] = useState(false);
+  const [roomInfoModalOpen, setRoomInfoModalOpen] = useState({
+    open: false,
+    roomId: null,
+  });
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);
 
@@ -35,8 +38,11 @@ const Main = () => {
   return (
     <div className={styles.main}>
       <Lobby setRoomInfoModalOpen={setRoomInfoModalOpen} />
-      {roomInfoModalOpen && (
-        <RoomInfoModal setRoomInfoModalOpen={setRoomInfoModalOpen} />
+      {roomInfoModalOpen.open && (
+        <RoomInfoModal
+          setRoomInfoModalOpen={setRoomInfoModalOpen}
+          roomInfoModalOpen={roomInfoModalOpen}
+        />
       )}
       <Profile setProfileModalOpen={setProfileModalOpen} />
       {profileModalOpen && (
