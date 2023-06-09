@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
+import axios from "../../../../api/core";
 
 const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
@@ -25,17 +26,23 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
   const diff = getTimeDifference(new Date(createdAt), new Date());
   const navigate = useNavigate();
 
+  const joinRoom = async () => {
+    try {
+      await axios.post("/room/group/in", {
+        roomId: roomId,
+      });
+      navigate(`/main/${roomId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const onClick = () => {
     setRoomInfoModalOpen({ open: true, roomId: roomId });
   };
 
   return (
-    <div
-      className={styles.room}
-      onDoubleClick={() => {
-        navigate(`/main/${roomId}`);
-      }}
-    >
+    <div className={styles.room} onDoubleClick={joinRoom}>
       <div className={styles.item}>
         <p>{roomName}</p>
       </div>
