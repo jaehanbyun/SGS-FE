@@ -80,7 +80,9 @@ summary,
 time,
 mark,
 audio,
-video {
+video,
+textarea,
+input {
   margin: 0;
   padding: 0;
   border: 0;
@@ -166,4 +168,5 @@ table {
 
 body {
   font-family: "noto-sans", "roboto", sans-serif;
+  overflow: hidden;
 }
