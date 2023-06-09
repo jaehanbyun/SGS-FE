@@ -1,9 +1,8 @@
 .screen {
-  height: 100vw;
-  padding-bottom: 5vw;
-  width: 63.75vw;
+  width: 75%;
   z-index: 1;
   background-color: aqua;
+  position: relative;
 }
 
 .videos {

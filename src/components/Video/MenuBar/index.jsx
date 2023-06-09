@@ -3,8 +3,9 @@ import moment from "moment";
 import Button from "../../Button";
 import styles from "./MenuBar.module.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { moveRoom } from "../../../utils/stomp";
+import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 
 const medias = [
   "/images/microphone.svg",
@@ -14,9 +15,11 @@ const medias = [
 
 const MenuBar = ({ roomId }) => {
   const { selectedUserInfo } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const roomExit = () => {
+    dispatch(setSelectedChannel(0));
     navigate("/main");
   };
   return (
