@@ -14,8 +14,12 @@ const Collect = ({ setModalOpen }) => {
   return (
     <div className={styles.container}>
       <div className={`${styles.item} ${styles.text}`}>
-        <input type="text" maxLength={30} />
-        <img src="/images/search.svg" alt="search" />
+        {selectedChannel ? null : (
+          <>
+            <input type="text" maxLength={30} />
+            <img src="/images/search.svg" alt="search" />
+          </>
+        )}
       </div>
       <div className={`${styles.item} ${styles.btn}`}>
         <Button
