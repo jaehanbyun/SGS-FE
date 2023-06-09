@@ -32,7 +32,6 @@ const Collect = ({
           title: searchValue,
         },
       });
-      console.log(res);
       setRooms([...res.data.data]);
       setNextRoomId(res.data.data[res.data.data.length - 1].roomId);
       setIsScroll(false);
