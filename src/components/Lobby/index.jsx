@@ -59,17 +59,15 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
   };
   useEffect(() => {
     getRooms();
+    scrollRef.current.scrollTo(0, 0);
+    setIsScroll(false);
+    setIsData(true);
+    setIsSearch(false);
+    setSearchValue("");
   }, [selectedChannel, refresh]);
   return (
     <div className={styles.lobby}>
-      <LobbyHeader
-        setRefresh={setRefresh}
-        setIsScroll={setIsScroll}
-        setIsData={setIsData}
-        scrollRef={scrollRef}
-        setIsSearch={setIsSearch}
-        setSearchValue={setSearchValue}
-      />
+      <LobbyHeader setRefresh={setRefresh} />
       <ChatRooms
         scrollRef={scrollRef}
         rooms={rooms}

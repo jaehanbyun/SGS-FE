@@ -1,14 +1,7 @@
 import React from "react";
 import styles from "./LobbyHeader.module.css";
 
-const LobbyHeader = ({
-  scrollRef,
-  setRefresh,
-  setIsScroll,
-  setIsData,
-  setIsSearch,
-  setSearchValue,
-}) => {
+const LobbyHeader = ({ setRefresh }) => {
   return (
     <div className={styles.header}>
       <div className={styles.item}>
@@ -17,12 +10,7 @@ const LobbyHeader = ({
       <div className={styles.refresh}>
         <img
           onClick={() => {
-            scrollRef.current.scrollTo(0, 0);
             setRefresh((prev) => !prev);
-            setIsScroll(false);
-            setIsData(true);
-            setIsSearch(false);
-            setSearchValue("");
           }}
           src="/images/refresh.svg"
           alt="refresh"
