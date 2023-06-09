@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ChatRooms from "./ChatRooms";
 import Collect from "./Collect";
@@ -21,8 +21,12 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
-  const [lastRoomId, setLastRoomId] = useState(100000);
   const [nextRoomId, setNextRoomId] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
+  const [isData, setIsData] = useState(true);
+
+  const scrollRef = useRef();
 
   const getRooms = async () => {
     try {
@@ -30,13 +34,13 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
       if (selectedChannel === 0) {
         res = await axios.get("/room/group", {
           params: {
-            lastRoomId: lastRoomId,
+            lastRoomId: 100000,
           },
         });
       } else {
         res = await axios.get("/room/group", {
           params: {
-            lastRoomId: lastRoomId,
+            lastRoomId: 100000,
             channel: channelName[selectedChannel],
           },
         });
@@ -54,16 +58,26 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
   };
   useEffect(() => {
     getRooms();
-  }, [selectedChannel]);
+  }, [selectedChannel, refresh]);
   return (
     <div className={styles.lobby}>
-      <LobbyHeader />
+      <LobbyHeader
+        setRefresh={setRefresh}
+        setIsScroll={setIsScroll}
+        setIsData={setIsData}
+        scrollRef={scrollRef}
+      />
       <ChatRooms
+        scrollRef={scrollRef}
         rooms={rooms}
         setRooms={setRooms}
         nextRoomId={nextRoomId}
         setNextRoomId={setNextRoomId}
         setRoomInfoModalOpen={setRoomInfoModalOpen}
+        isScroll={isScroll}
+        setIsScroll={setIsScroll}
+        isData={isData}
+        setIsData={setIsData}
       />
       <Collect setModalOpen={setModalOpen} />
       {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}

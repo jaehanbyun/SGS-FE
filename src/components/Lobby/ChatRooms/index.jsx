@@ -15,17 +15,20 @@ const channelName = [
 ];
 
 const ChatRooms = ({
+  scrollRef,
   rooms,
   setRooms,
   nextRoomId,
   setNextRoomId,
   setRoomInfoModalOpen,
+  isScroll,
+  setIsScroll,
+  isData,
+  setIsData,
 }) => {
   const { selectedChannel } = useSelector((state) => state);
   const target = useRef();
   const roomRef = useRef();
-  const [isScroll, setIsScroll] = useState(false);
-  const [isData, setIsData] = useState(true);
 
   const getRooms = async () => {
     try {
@@ -78,7 +81,7 @@ const ChatRooms = ({
     return () => observer && observer.disconnect();
   }, [target, isData, isScroll, rooms]);
   return (
-    <div className={styles.rooms}>
+    <div ref={scrollRef} className={styles.rooms}>
       <div ref={roomRef}>
         {rooms.map((room) => (
           <Room
