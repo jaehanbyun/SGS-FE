@@ -25,6 +25,8 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
   const [refresh, setRefresh] = useState(false);
   const [isScroll, setIsScroll] = useState(false);
   const [isData, setIsData] = useState(true);
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const scrollRef = useRef();
 
@@ -45,11 +47,10 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
           },
         });
       }
-      if (res.status == 204) {
+      if (res.status === 204) {
         setRooms([]);
         return;
       }
-      console.log(res);
       setRooms([...res.data.data]);
       setNextRoomId(res.data.data[res.data.data.length - 1].roomId);
     } catch (err) {
@@ -66,6 +67,8 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
         setIsScroll={setIsScroll}
         setIsData={setIsData}
         scrollRef={scrollRef}
+        setIsSearch={setIsSearch}
+        setSearchValue={setSearchValue}
       />
       <ChatRooms
         scrollRef={scrollRef}
@@ -78,8 +81,19 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
         setIsScroll={setIsScroll}
         isData={isData}
         setIsData={setIsData}
+        isSearch={isSearch}
+        searchValue={searchValue}
       />
-      <Collect setModalOpen={setModalOpen} />
+      <Collect
+        setModalOpen={setModalOpen}
+        setRooms={setRooms}
+        setNextRoomId={setNextRoomId}
+        setIsScroll={setIsScroll}
+        setIsData={setIsData}
+        setIsSearch={setIsSearch}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
       {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
     </div>
   );

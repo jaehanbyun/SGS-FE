@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../Button";
 import styles from "./Collect.module.css";
 import { useSelector } from "react-redux";
-const Collect = ({ setModalOpen }) => {
+import axios from "../../../api/core";
+
+const Collect = ({
+  setNextRoomId,
+  setModalOpen,
+  setRooms,
+  setIsScroll,
+  setIsData,
+  setIsSearch,
+  searchValue,
+  setSearchValue,
+}) => {
   const { selectedChannel } = useSelector((state) => state);
+
   const onClick = () => {
     if (selectedChannel === 0) {
       alert("홈 채널에서는 방을 생성 할 수 없습니다.");
@@ -11,13 +23,44 @@ const Collect = ({ setModalOpen }) => {
     }
     setModalOpen(true);
   };
+
+  const searchRoom = async () => {
+    try {
+      const res = await axios.get("/room/group", {
+        params: {
+          lastRoomId: 100000,
+          title: searchValue,
+        },
+      });
+      console.log(res);
+      setRooms([...res.data.data]);
+      setNextRoomId(res.data.data[res.data.data.length - 1].roomId);
+      setIsScroll(false);
+      setIsData(true);
+      setIsSearch(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className={styles.container}>
       <div className={`${styles.item} ${styles.text}`}>
         {selectedChannel ? null : (
           <>
-            <input type="text" maxLength={30} />
-            <img src="/images/search.svg" alt="search" />
+            <input
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  searchRoom();
+                }
+              }}
+              value={searchValue}
+              type="text"
+              maxLength={30}
+            />
+            <img onClick={searchRoom} src="/images/search.svg" alt="search" />
           </>
         )}
       </div>

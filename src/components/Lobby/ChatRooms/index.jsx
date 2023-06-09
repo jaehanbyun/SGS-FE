@@ -25,6 +25,8 @@ const ChatRooms = ({
   setIsScroll,
   isData,
   setIsData,
+  isSearch,
+  searchValue,
 }) => {
   const { selectedChannel } = useSelector((state) => state);
   const target = useRef();
@@ -34,11 +36,20 @@ const ChatRooms = ({
     try {
       let res;
       if (selectedChannel === 0) {
-        res = await axios.get("/room/group", {
-          params: {
-            lastRoomId: nextRoomId,
-          },
-        });
+        if (isSearch) {
+          res = await axios.get("/room/group", {
+            params: {
+              lastRoomId: nextRoomId,
+              title: searchValue,
+            },
+          });
+        } else {
+          res = await axios.get("/room/group", {
+            params: {
+              lastRoomId: nextRoomId,
+            },
+          });
+        }
       } else {
         res = await axios.get("/room/group", {
           params: {
