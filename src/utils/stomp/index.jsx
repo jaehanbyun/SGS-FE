@@ -26,9 +26,9 @@ export const subscribe = (client, roomId, setChatList) => {
     (body) => {
       const json_body = JSON.parse(body.body);
       console.log(json_body);
-      /*if (setChatList !== null) {
+      if (setChatList !== null) {
         setChatList((_chat_list) => [..._chat_list, json_body]);
-      }*/
+      }
     },
     {
       Authorization: axios.defaults.headers.common.Authorization,
@@ -37,18 +37,17 @@ export const subscribe = (client, roomId, setChatList) => {
   );
 };
 
-export const publish = async (client, roomId) => {
+export const publish = async (client, roomId, type, content) => {
   if (!client.connected) {
     console.log("client disconnected");
     return;
   }
   try {
-    const res = await axios.post("/chat/send", {
-      messageType: "TEXT",
+    await axios.post("/chat/send", {
+      messageType: type,
       roomId: roomId,
-      content: "테스트중입니다.",
+      content: content,
     });
-    console.log(res);
   } catch (err) {
     console.log(err);
   }
