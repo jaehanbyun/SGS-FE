@@ -21,5 +21,18 @@
 }
 
 .item:not(:nth-child(1)) {
-  flex-basis: 12%;
+  flex-basis: 11%;
+}
+
+.refresh img {
+  margin-top: 3px;
+  width: 38px;
+  height: 38px;
+  filter: invert(19%) sepia(13%) saturate(6%) hue-rotate(33deg) brightness(92%)
+    contrast(87%);
+  cursor: pointer;
+  transition: 0.3s;
+}
+.refresh img:hover {
+  transform: rotate(270deg);
 }
