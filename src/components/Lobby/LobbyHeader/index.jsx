@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./LobbyHeader.module.css";
+
 const LobbyHeader = ({ scrollRef, setRefresh, setIsScroll, setIsData }) => {
   return (
     <div className={styles.header}>
@@ -10,7 +11,6 @@ const LobbyHeader = ({ scrollRef, setRefresh, setIsScroll, setIsData }) => {
         <img
           onClick={() => {
             scrollRef.current.scrollTo(0, 0);
-            console.log(scrollRef.current);
             setRefresh((prev) => !prev);
             setIsScroll(false);
             setIsData(true);
