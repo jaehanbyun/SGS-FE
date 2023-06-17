@@ -52,7 +52,7 @@ export default function Signin({
       console.log(res);
       dispatch(setSelectedUserInfo({ id: id }));
       dispatch(setSelectedUserState(true));
-      navigate("/main");
+      navigate("/main", { id });
     } catch (err) {
       console.log(err);
       setIsError(true);

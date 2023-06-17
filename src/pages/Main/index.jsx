@@ -14,21 +14,21 @@ import axios from "../../api/core";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { connect, subscribe, unsubscribe } from "../../utils/stomp";
-
-const Main = () => {
+// import { rtcConnect } from "../../utils/websocket";
+const Main = ({ signaling }) => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [chatList, setChatList] = useState([]);
-
   var client = null;
-
   useEffect(() => {
     client = connect(client);
-    dispatch(setSelectedUserInfo({ client: client }));
-    console.log(selectedUserInfo);
+    // rtc = rtcConnect();
+    dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
+    console.log("id", selectedUserInfo.id);
+    signaling.uid = selectedUserInfo.id;
     return () => {
       if (client.connected) {
         unsubscribe(client, 0);
@@ -38,7 +38,7 @@ const Main = () => {
 
   return (
     <div className={styles.main}>
-      <Lobby />
+      <Lobby signaling={signaling} />
       <Profile setProfileModalOpen={setProfileModalOpen} />
       {profileModalOpen && (
         <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />

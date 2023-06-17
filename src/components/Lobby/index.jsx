@@ -5,7 +5,6 @@ import Collect from "./Collect";
 import styles from "./Lobby.module.css";
 import LobbyHeader from "./LobbyHeader";
 import RoomCreateModal from "./RoomCreateModal";
-import MockAdapter from "axios-mock-adapter";
 import axios from "../../api/core";
 
 const channelName = [
@@ -17,7 +16,7 @@ const channelName = [
   "BUSINESS",
 ];
 
-const Lobby = React.memo(() => {
+const Lobby = React.memo(({ signaling }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -47,7 +46,7 @@ const Lobby = React.memo(() => {
         setRooms([]);
         return;
       }
-      console.log(res);
+      // console.log(res);
       setRooms([...res.data.data]);
       setNextRoomId(res.data.data[res.data.data.length - 1].roomId);
     } catch (err) {
@@ -61,13 +60,16 @@ const Lobby = React.memo(() => {
     <div className={styles.lobby}>
       <LobbyHeader />
       <ChatRooms
+        signaling={signaling}
         rooms={rooms}
         setRooms={setRooms}
         nextRoomId={nextRoomId}
         setNextRoomId={setNextRoomId}
       />
       <Collect setModalOpen={setModalOpen} />
-      {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
+      {modalOpen && (
+        <RoomCreateModal signaling={signaling} setModalOpen={setModalOpen} />
+      )}
     </div>
   );
 });
