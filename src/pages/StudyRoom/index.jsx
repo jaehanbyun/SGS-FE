@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Video from "../../components/Video";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import Lobby from "../../components/Lobby";
-// import Profile from "../../components/Profile";
-// import ProfileEditModal from "../../components/Modal/ProfileEditModal";
-// import SideBar from "../../components/SideBar";
-// import styles from "./Main.module.css";
-// import CalendarModal from "../../components/Modal/CalendarModal";
-// import ChartModal from "../../components/Modal/ChartModal";
+import { useSelector } from "react-redux";
+import { disconnect, subscribe, unsubscribe } from "../../utils/stomp";
+import VideoScreen from "../../components/VideoScreen";
 
-const StudyRoom = () => {
+const StudyRoom = ({ signaling }) => {
   const { roomId } = useParams();
-  return <Video roomId={roomId} />;
+  const { selectedUserInfo } = useSelector((state) => state);
+  useEffect(() => {
+    subscribe(selectedUserInfo.client, roomId, null);
+    signaling.uid = selectedUserInfo.id;
+    return () => {
+      unsubscribe(selectedUserInfo.client, roomId);
+      disconnect(selectedUserInfo.client);
+    };
+  }, [selectedUserInfo.client, roomId]);
+
+  return <VideoScreen signaling={signaling} roomId={roomId} />;
 };
 
 export default StudyRoom;

@@ -2,11 +2,12 @@ import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { moveRoom } from "../../../../utils/stomp";
-const Room = ({ room }) => {
-  const { roomId, roomName, curUser, maxUser, createdAt } = room;
-  const { selectedUserInfo } = useSelector((state) => state);
 
+const Room = ({ signaling, room }) => {
+  const { roomId, roomName, curUser, maxUser, createdAt } = room;
+  const {
+    selectedUserInfo: { id },
+  } = useSelector((state) => state);
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
     const seconds = Math.floor(timeDiff / 1000);
@@ -24,16 +25,14 @@ const Room = ({ room }) => {
       return `${seconds}초전`;
     }
   };
+  const enterRoom = () => {
+    signaling.joinRoom(id, roomId);
+    navigate(`/main/${roomId}`);
+  };
   const diff = getTimeDifference(new Date(createdAt), new Date());
   const navigate = useNavigate();
   return (
-    <div
-      className={styles.room}
-      onDoubleClick={() => {
-        moveRoom(selectedUserInfo.client, 0, roomId, null);
-        navigate(`/main/${roomId}`);
-      }}
-    >
+    <div className={styles.room} onDoubleClick={enterRoom}>
       <div className={styles.item}>
         <p>{roomName}</p>
       </div>

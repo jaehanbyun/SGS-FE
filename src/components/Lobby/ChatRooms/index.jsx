@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./ChatRooms.module.css";
 import Room from "./Room";
 import axios from "../../../api/core";
-import MockAdapter from "axios-mock-adapter";
 import { useSelector } from "react-redux";
 
 const channelName = [
@@ -14,7 +13,13 @@ const channelName = [
   "BUSINESS",
 ];
 
-const ChatRooms = ({ rooms, setRooms, nextRoomId }) => {
+const ChatRooms = ({
+  signaling,
+  rooms,
+  setRooms,
+  nextRoomId,
+  setNextRoomId,
+}) => {
   const { selectedChannel } = useSelector((state) => state);
   const target = useRef();
   const roomRef = useRef();
@@ -38,9 +43,10 @@ const ChatRooms = ({ rooms, setRooms, nextRoomId }) => {
           },
         });
       }
-      console.log(res);
+      // console.log(res);
       const newRooms = [...rooms, ...res.data.data];
       setRooms(newRooms);
+      setNextRoomId(newRooms[newRooms.length - 1].roomId);
     } catch (err) {
       setIsData(false);
       throw new Error(err);
@@ -74,7 +80,7 @@ const ChatRooms = ({ rooms, setRooms, nextRoomId }) => {
     <div className={styles.rooms}>
       <div ref={roomRef}>
         {rooms.map((room) => (
-          <Room room={room} key={room.roomId} />
+          <Room signaling={signaling} room={room} key={room.roomId} />
         ))}
       </div>
       {isData && isScroll ? <div ref={target}></div> : null}

@@ -5,7 +5,6 @@ import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 import axios from "../../../api/core";
-import { moveRoom } from "../../../utils/stomp";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
@@ -45,16 +44,26 @@ const RoomCreateModal = ({ setModalOpen }) => {
         default:
           break;
       }
-      const res = await axios.post("/room/group", {
-        roomType: isPublic === "public" ? true : false,
-        roomName,
-        maxUser,
-        roomChannel: age,
-      });
-      console.log(res);
-      setModalOpen(false);
-      moveRoom(selectedUserInfo.client, 0, res.data.data.roomId, null);
-      navigate(`/main/${res.data.data.roomId}`);
+      // const res = await axios.post("/room/group", {
+      //   roomType: isPublic === "public" ? true : false,
+      //   roomName,
+      //   maxUser,
+      //   roomChannel: age,
+      // });
+      await axios
+        .post("/room/group", {
+          roomType: isPublic === "public" ? true : false,
+          roomName,
+          maxUser,
+          roomChannel: age,
+        })
+        .then((res) => {
+          console.log(selectedUserInfo);
+          if (res.data.result === "SUCCESS") {
+            navigate(`/main/${res.data.data.roomId}`);
+            setModalOpen(false);
+          }
+        });
     } catch (err) {
       console.log(err);
     }

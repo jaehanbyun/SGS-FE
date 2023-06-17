@@ -4,11 +4,8 @@ import axios from "../../api/core";
 
 export const connect = (client) => {
   // 연결할 때
-  /*client.current.webSocketFactory = function () {
-    return new SockJS("http://13.209.245.103:8031/chat/connect");
-  };*/
   client = Stomp.over(() => {
-    return new SockJS("http://13.209.245.103:8031/chat/connect");
+    return new SockJS("http://13.209.245.103:8000/chat/connect");
   });
   client.connectHeaders = {
     Authorization: axios.defaults.headers.common.Authorization,
@@ -48,7 +45,7 @@ export const publish = async (client, roomId) => {
   try {
     const res = await axios.post("/chat/send", {
       messageType: "TEXT",
-      roomId: 1,
+      roomId: roomId,
       content: "테스트중입니다.",
     });
     console.log(res);
@@ -57,11 +54,10 @@ export const publish = async (client, roomId) => {
   }
 };
 
-export const moveRoom = (client, prevRoomId, roomId, setChatList) => {
-  client.unsubscribe(`sub-${prevRoomId}`, {
+export const unsubscribe = (client, roomId) => {
+  client.unsubscribe(`sub-${roomId}`, {
     Authorization: axios.defaults.headers.common.Authorization,
   });
-  subscribe(client, roomId, null);
 };
 
 export const disconnect = (client) => {

@@ -2,9 +2,7 @@ import React from "react";
 import moment from "moment";
 import Button from "../../Button";
 import styles from "./MenuBar.module.css";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { moveRoom } from "../../../utils/stomp";
+import { useNavigate } from "react-router-dom";
 
 const medias = [
   "/images/microphone.svg",
@@ -12,13 +10,11 @@ const medias = [
   "/images/screen_share.svg",
 ];
 
-const MenuBar = ({ roomId }) => {
-  const { selectedUserInfo } = useSelector((state) => state);
-
+const MenuBar = ({ signaling }) => {
   const navigate = useNavigate();
   const roomExit = () => {
-    moveRoom(selectedUserInfo.client, roomId, 0, null);
     navigate("/main");
+    signaling.leaveRoom();
   };
   return (
     <footer className={styles.menu}>
