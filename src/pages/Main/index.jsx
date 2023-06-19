@@ -9,12 +9,11 @@ import styles from "./Main.module.css";
 import { useNavigate } from "react-router-dom";
 import LogOutModal from "../../components/Modal/LogOutModal";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
-import MockAdapter from "axios-mock-adapter";
 import axios from "../../api/core";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { connect, subscribe, unsubscribe } from "../../utils/stomp";
-// import { rtcConnect } from "../../utils/websocket";
+
 const Main = ({ signaling }) => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const { selectedProfileIcon } = useSelector((state) => state);
@@ -25,10 +24,10 @@ const Main = ({ signaling }) => {
   var client = null;
   useEffect(() => {
     client = connect(client);
-    // rtc = rtcConnect();
     dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
     console.log("id", selectedUserInfo.id);
     signaling.uid = selectedUserInfo.id;
+    signaling.webSocket = new WebSocket("wss://localhost:8443/socket");
     return () => {
       if (client.connected) {
         unsubscribe(client, 0);
