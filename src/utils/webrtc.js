@@ -2,57 +2,11 @@ import { WebRtcPeer } from "kurento-utils";
 
 class Signaling {
   constructor() {
-    this.socket = new WebSocket("wss://localhost:8443/socket");
+    this.socket = null;
     this.userId = undefined;
-    this._participants = {};
-    this.socket.onmessage = (message) => {
-      var parsedMessage = JSON.parse(message.data);
-      if (parsedMessage.id !== "onIceCandidate")
-        console.info("Received message: " + message.data);
-
-      switch (parsedMessage.id) {
-        case "existingParticipants":
-          this.onExistingParticipants(parsedMessage);
-          break;
-        case "newParticipantArrived":
-          this.receiveVideo(parsedMessage.member);
-          break;
-        case "participantLeft":
-          this.onParticipantLeft(parsedMessage);
-          break;
-        case "receiveVideoAnswer":
-          this.receiveVideoResponse(parsedMessage);
-          break;
-        case "onIceCandidate":
-          this._participants[parsedMessage.userId].rtcPeer.addIceCandidate(
-            parsedMessage.candidate,
-            function (error) {
-              if (error) {
-                console.error("Error adding candidate: " + error);
-                alert(error);
-                return;
-              }
-            }
-          );
-          break;
-
-        // case 'videoStateAnswer' :
-        //   break;
-
-        // case 'audioStateAnswer' :
-        //   break;
-
-        // case 'timerStateAnswer' :
-        //   timerResponse(parsedMessage);
-        //   break;
-
-        // case 'myInfo' :
-        //   break;
-
-        default:
-          console.error("Unrecognized message", parsedMessage);
-      }
-    };
+    this.master = false;
+    this.warned = 0;
+    this._participants = new Map();
   }
 
   get participants() {
@@ -65,7 +19,12 @@ class Signaling {
   set uid(id) {
     this.userId = id;
   }
-
+  /**
+   * @param {WebSocket} ws
+   */
+  set webSocket(ws) {
+    this.socket = ws;
+  }
   sendMessage = (msg) => {
     const jsonReq = JSON.stringify(msg);
     console.log("Sending message: " + jsonReq);
@@ -89,7 +48,7 @@ class Signaling {
       type: "remote",
       rtcPeer: null,
     };
-    this._participants[user.id] = user;
+    this._participants.set(user.id, user);
     const options = {
       connectionConstraints: {
         offerToReceiveAudio: true,
@@ -132,7 +91,7 @@ class Signaling {
       type: "local",
       rtcPeer: null,
     };
-    this._participants[user.id] = user;
+    this._participants.set(user.id, user);
     const options = {
       mediaConstraints: constraints,
       onicecandidate: (candidate) => {
@@ -166,33 +125,32 @@ class Signaling {
   }
 
   receiveVideoResponse(result) {
-    this._participants[result.userId].rtcPeer.processAnswer(
-      result.sdpAnswer,
-      function (error) {
+    this._participants
+      .get(result.userId)
+      .rtcPeer.processAnswer(result.sdpAnswer, function (error) {
         if (error) {
           alert(error);
           return console.error(error);
         }
-      }
-    );
+      });
   }
 
   onParticipantLeft(request) {
     console.log("Participant " + request.userId + " left");
-    var participant = this._participants[request.userId];
+    var participant = this._participants.get(request.userId);
     participant.dispose();
-    delete this._participants[request.userId];
+    this._participants.delete(request.userId);
   }
 
   leaveRoom = () => {
     this.socket.send(JSON.stringify({ id: "leaveRoom" }));
-    for (const key in this._participants) {
-      this._participants[key].dispose();
+    for (const participant of this._participants) {
+      participant.dispose();
     }
   };
 
   addICECandidate = (candidate) => {
-    this._participants[this.userId].rtcPeer.addICECandidate(candidate);
+    this._participants.get(this.userId).rtcPeer.addICECandidate(candidate);
   };
 }
 
