@@ -10,6 +10,21 @@
   background-color: rgb(151, 149, 149);
 }
 
+.menuList {
+  /* display: none; */
+  border-radius: 5px;
+  background: white;
+  position: absolute;
+  margin: 8px;
+}
+
+.menuList > li {
+  margin: 8px;
+}
+
+.menuList > li:hover {
+  background: skyblue;
+}
 .name {
   position: absolute;
   top: 80px;

@@ -5,11 +5,13 @@
   bottom: 0;
   justify-content: space-between;
   background-color: #eaabab;
+  padding: 8px;
 }
 
 .controller {
   display: flex;
 }
+
 .studyTime {
   display: flex;
   flex-direction: column;
