@@ -49,7 +49,6 @@ export default function Signin({
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${res.data.data.accessToken}`;
-      console.log(res);
       dispatch(setSelectedUserInfo({ id: id }));
       dispatch(setSelectedUserState(true));
       navigate("/main", { id });
