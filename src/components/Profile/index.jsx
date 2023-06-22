@@ -6,6 +6,7 @@ import ProfileBtns from "./ProfileBtns";
 import ProfileImg from "./ProfileImg";
 import ProfileInfo from "./ProfileInfo";
 import StudyTime from "./StudyTime";
+import axios from "../../api/core";
 
 const Profile = React.memo(({ setProfileModalOpen }) => {
   const { selectedUserInfo } = useSelector((state) => state);
@@ -14,6 +15,23 @@ const Profile = React.memo(({ setProfileModalOpen }) => {
   const onClick = () => {
     setProfileModalOpen(true);
   };
+
+  const getUserInfo = async () => {
+    try {
+      console.log("id", selectedUserInfo.id);
+      const res = await axios.get("/auth/get-profile", {
+        params: {
+          id: selectedUserInfo.id,
+        },
+      });
+      console.log(res);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
   return (
     <div className={styles.profile}>
       <ProfileImg profileImage={profileImage} />
@@ -28,7 +46,7 @@ const Profile = React.memo(({ setProfileModalOpen }) => {
         fontweight={700}
         onClick={onClick}
       />
-      <StudyTime studyTime={studyTime} />
+      <StudyTime studyTime={0} />
       <ProfileBtns />
     </div>
   );

@@ -6,21 +6,21 @@ import Lobby from "../../components/Lobby";
 import Profile from "../../components/Profile";
 import ProfileEditModal from "../../components/Modal/ProfileEditModal";
 import styles from "./Main.module.css";
-import { useNavigate } from "react-router-dom";
 import LogOutModal from "../../components/Modal/LogOutModal";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
-import axios from "../../api/core";
-import { Stomp } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 import { connect, subscribe, unsubscribe } from "../../utils/stomp";
+import RoomInfoModal from "../../components/Modal/RoomInfoModal";
 
 const Main = ({ signaling }) => {
   const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [roomInfoModalOpen, setRoomInfoModalOpen] = useState({
+    open: false,
+    roomId: null,
+  });
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
-  const [chatList, setChatList] = useState([]);
   var client = null;
   useEffect(() => {
     client = connect(client);
@@ -37,7 +37,16 @@ const Main = ({ signaling }) => {
 
   return (
     <div className={styles.main}>
-      <Lobby signaling={signaling} />
+      <Lobby
+        signaling={signaling}
+        setRoomInfoModalOpen={setRoomInfoModalOpen}
+      />
+      {roomInfoModalOpen.open && (
+        <RoomInfoModal
+          setRoomInfoModalOpen={setRoomInfoModalOpen}
+          roomInfoModalOpen={roomInfoModalOpen}
+        />
+      )}
       <Profile setProfileModalOpen={setProfileModalOpen} />
       {profileModalOpen && (
         <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />

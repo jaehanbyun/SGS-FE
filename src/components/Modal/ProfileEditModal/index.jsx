@@ -3,13 +3,29 @@ import { useSelector } from "react-redux";
 import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./ProfileEditModal.module.css";
+import axios from "../../../api/core";
 
 const ProfileEditModal = ({ setProfileModalOpen }) => {
   const ref = useRef();
   const fileRef = useRef();
   const { selectedUserInfo } = useSelector((state) => state);
   const [info, setInfo] = useState(selectedUserInfo);
-  const [profile, setProfile] = useState(info.profileImage);
+
+  const onEdit = async () => {
+    try {
+      //console.log(info.name, info.description, selectedUserInfo.id);
+      const res = await axios.patch(`/auth/modify-profile`, {
+        id: selectedUserInfo.id,
+        name: info.name,
+        profileImage: info.profileImage,
+        description: info.description,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const onExit = () => {
     setProfileModalOpen(false);
   };
@@ -17,7 +33,7 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setProfile(reader.result);
+        setInfo({ ...info, profileImage: reader.result });
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -34,7 +50,7 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
           </div>
           <div className={`${styles.imageWrapper} ${styles.content}`}>
             <div className={styles.image}>
-              <img src={`${profile}`} alt="profileImage" />
+              <img src={`${info.profileImage}`} alt="profileImage" />
             </div>
             <div className={styles.btn}>
               <button>
@@ -76,7 +92,6 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
               value={info.description}
               onChange={(e) => {
                 setInfo({ ...info, description: e.target.value });
-                console.log(info);
               }}
             />
           </div>
@@ -88,7 +103,7 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
               backgroundColor={"#535353"}
               color={"#fff"}
               fontsize={18}
-              onClick={onExit}
+              onClick={onEdit}
             />
             <Button
               width={"100px"}

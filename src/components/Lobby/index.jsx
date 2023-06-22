@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ChatRooms from "./ChatRooms";
 import Collect from "./Collect";
@@ -16,37 +16,40 @@ const channelName = [
   "BUSINESS",
 ];
 
-const Lobby = React.memo(({ signaling }) => {
+const Lobby = React.memo(({ setRoomInfoModalOpen, signaling }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
-  const [lastRoomId, setLastRoomId] = useState(100000);
   const [nextRoomId, setNextRoomId] = useState(null);
-  const arr = rooms.filter(
-    (content) => content.roomChannel === channelName[selectedChannel]
-  );
+  const [refresh, setRefresh] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
+  const [isData, setIsData] = useState(true);
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  const scrollRef = useRef();
+
   const getRooms = async () => {
     try {
       let res;
       if (selectedChannel === 0) {
         res = await axios.get("/room/group", {
           params: {
-            lastRoomId: lastRoomId,
+            lastRoomId: 100000,
           },
         });
       } else {
         res = await axios.get("/room/group", {
           params: {
-            lastRoomId: lastRoomId,
+            lastRoomId: 100000,
             channel: channelName[selectedChannel],
           },
         });
       }
-      if (res.status == 204) {
+      if (res.status === 204) {
         setRooms([]);
         return;
       }
-      // console.log(res);
       setRooms([...res.data.data]);
       setNextRoomId(res.data.data[res.data.data.length - 1].roomId);
     } catch (err) {
@@ -55,16 +58,39 @@ const Lobby = React.memo(({ signaling }) => {
   };
   useEffect(() => {
     getRooms();
-  }, [selectedChannel]);
+    scrollRef.current.scrollTo(0, 0);
+    setIsScroll(false);
+    setIsData(true);
+    setIsSearch(false);
+    setSearchValue("");
+  }, [selectedChannel, refresh]);
   return (
     <div className={styles.lobby}>
-      <LobbyHeader />
+      <LobbyHeader setRefresh={setRefresh} />
       <ChatRooms
+        scrollRef={scrollRef}
         signaling={signaling}
         rooms={rooms}
         setRooms={setRooms}
         nextRoomId={nextRoomId}
         setNextRoomId={setNextRoomId}
+        setRoomInfoModalOpen={setRoomInfoModalOpen}
+        isScroll={isScroll}
+        setIsScroll={setIsScroll}
+        isData={isData}
+        setIsData={setIsData}
+        isSearch={isSearch}
+        searchValue={searchValue}
+      />
+      <Collect
+        setModalOpen={setModalOpen}
+        setRooms={setRooms}
+        setNextRoomId={setNextRoomId}
+        setIsScroll={setIsScroll}
+        setIsData={setIsData}
+        setIsSearch={setIsSearch}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
       />
       <Collect setModalOpen={setModalOpen} />
       {modalOpen && (

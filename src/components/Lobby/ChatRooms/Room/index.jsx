@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import axios from "../../../../api/core";
 
-const Room = ({ signaling, room }) => {
+const Room = ({ room, setRoomInfoModalOpen, signaling }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
   const {
     selectedUserInfo: { id },
@@ -25,14 +25,28 @@ const Room = ({ signaling, room }) => {
       return `${seconds}초전`;
     }
   };
-  const enterRoom = () => {
-    signaling.joinRoom(id, roomId);
-    navigate(`/main/${roomId}`);
-  };
+
   const diff = getTimeDifference(new Date(createdAt), new Date());
   const navigate = useNavigate();
+
+  const joinRoom = async () => {
+    try {
+      await axios.post("/room/group/in", {
+        roomId: roomId,
+      });
+      signaling.joinRoom(id, roomId);
+      navigate(`/main/${roomId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onClick = () => {
+    setRoomInfoModalOpen({ open: true, roomId: roomId });
+  };
+
   return (
-    <div className={styles.room} onDoubleClick={enterRoom}>
+    <div className={styles.room} onDoubleClick={joinRoom}>
       <div className={styles.item}>
         <p>{roomName}</p>
       </div>
@@ -45,7 +59,7 @@ const Room = ({ signaling, room }) => {
         <p>{diff}</p>
       </div>
       <div className={styles.item}>
-        <img src="/images/add_box.svg" alt="이미지박스" />
+        <img onClick={onClick} src="/images/add_box.svg" alt="이미지박스" />
       </div>
     </div>
   );

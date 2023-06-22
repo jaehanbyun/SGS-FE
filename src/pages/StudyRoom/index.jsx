@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
+import styles from "./StudyRoom.module.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { disconnect, subscribe, unsubscribe } from "../../utils/stomp";
 import VideoScreen from "../../components/VideoScreen";
+import Chat from "../../components/Chat";
 
 const StudyRoom = ({ signaling }) => {
   const { roomId } = useParams();
   const { selectedUserInfo } = useSelector((state) => state);
+  const [chatList, setChatList] = useState([]);
+
   const [studyTime, setStudyTime] = useState("");
   signaling.socket.onmessage = (message) => {
     var parsedMessage = JSON.parse(message.data);
@@ -59,7 +63,7 @@ const StudyRoom = ({ signaling }) => {
     }
   };
   useEffect(() => {
-    subscribe(selectedUserInfo.client, roomId, null);
+    subscribe(selectedUserInfo.client, roomId, setChatList);
     signaling.uid = selectedUserInfo.id;
     return () => {
       unsubscribe(selectedUserInfo.client, roomId);
@@ -68,7 +72,16 @@ const StudyRoom = ({ signaling }) => {
   }, [selectedUserInfo.client, roomId]);
 
   return (
-    <VideoScreen studyTime={studyTime} signaling={signaling} roomId={roomId} />
+    <div className={styles.studyroom}>
+      (
+      <VideoScreen
+        studyTime={studyTime}
+        signaling={signaling}
+        roomId={roomId}
+      />
+      )
+      <Chat roomId={roomId} chatList={chatList} setChatList={setChatList} />
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
@@ -10,13 +10,15 @@ const channelName = ["home", "초등", "중등", "고등", "대학생", "취업�
 
 const RoomCreateModal = ({ setModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
-  const { selectedUserInfo } = useSelector((state) => state);
-  const ref = useRef();
-  const roomNameRef = useRef();
-  const navigate = useNavigate();
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);
+
+  const ref = useRef();
+  const roomNameRef = useRef();
+
+  const navigate = useNavigate();
+
   const createRoom = async () => {
     try {
       const roomName = roomNameRef.current.value;
@@ -58,7 +60,6 @@ const RoomCreateModal = ({ setModalOpen }) => {
           roomChannel: age,
         })
         .then((res) => {
-          console.log(selectedUserInfo);
           if (res.data.result === "SUCCESS") {
             navigate(`/main/${res.data.data.roomId}`);
             setModalOpen(false);

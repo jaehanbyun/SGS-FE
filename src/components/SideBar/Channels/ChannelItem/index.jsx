@@ -1,16 +1,22 @@
 import React, { useEffect, useRef } from "react";
 //import styles from "./ChannelItem.module.css";
 import "./ChannelItem.css";
+import { useLocation } from "react-router";
 const ChannelItem = ({ channel, isActive, onClick }) => {
   const ref = useRef();
+  const location = useLocation();
 
   useEffect(() => {
-    if (isActive === true) {
-      ref.current.classList.add("active--channel");
-    } else {
+    if (location.pathname !== "/main") {
       ref.current.classList.remove("active--channel");
+    } else {
+      if (isActive === true) {
+        ref.current.classList.add("active--channel");
+      } else {
+        ref.current.classList.remove("active--channel");
+      }
     }
-  }, [isActive]);
+  }, [isActive, location.pathname]);
   return (
     <div>
       <div ref={ref} className="item" onClick={onClick}>

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 import ChannelItem from "./ChannelItem";
 import styles from "./Channels.module.css";
+import { useLocation, useNavigate } from "react-router";
 
 const channel = [
   ["홈", "/images/home.svg"],
@@ -15,6 +16,8 @@ const channel = [
 
 const Channels = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className={styles.container}>
@@ -24,6 +27,9 @@ const Channels = ({ currentIndex, setCurrentIndex }) => {
           channel={channel}
           isActive={currentIndex === index}
           onClick={() => {
+            if (location.pathname !== "") {
+              navigate("/main");
+            }
             dispatch(setSelectedChannel(index));
             setCurrentIndex(index);
           }}

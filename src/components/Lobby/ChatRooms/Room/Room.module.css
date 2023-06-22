@@ -22,9 +22,14 @@
 }
 
 .item:not(:nth-child(1)) {
-  flex-basis: 12%;
+  flex-basis: 11%;
 }
 
 .item img {
   width: 34px;
+  transition: 0.1s;
+}
+
+.item img:hover {
+  transform: scale(1.08);
 }

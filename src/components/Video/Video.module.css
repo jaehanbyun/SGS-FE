@@ -1,0 +1,12 @@
+.screen {
+  width: 75%;
+  z-index: 1;
+  background-color: aqua;
+  position: relative;
+}
+
+.videos {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

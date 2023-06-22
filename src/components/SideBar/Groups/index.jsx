@@ -4,16 +4,21 @@ import { setSelectedGroup } from "../../../redux/selectedGroup/slice";
 import GroupItem from "./GroupItem";
 import styles from "./Groups.module.css";
 import axios from "../../../api/core";
-import MockAdapter from "axios-mock-adapter";
+import { useNavigate } from "react-router";
+import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 
 const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
   const [groups, setGroups] = useState([]);
+
+  const navigate = useNavigate();
+
   const getGroups = async () => {
     try {
       const res = await axios.get("/room/group/private");
       setGroups([...res.data.data]);
     } catch (err) {
+      console.log(err);
       throw new Error(err);
     }
   };
@@ -29,8 +34,9 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
           group={group}
           isActive={currentIndex === index + 6}
           onClick={() => {
-            dispatch(setSelectedGroup(index));
+            dispatch(setSelectedChannel(index + 6));
             setCurrentIndex(index + 6);
+            navigate(`/main/${group.roomId}`);
           }}
         />
       ))}
