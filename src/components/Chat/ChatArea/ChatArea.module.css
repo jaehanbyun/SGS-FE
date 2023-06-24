@@ -40,6 +40,18 @@
   background-color: #ddd;
 }
 
+.chatArea .chatList .myTime,
+.chatArea .chatList .otherTime {
+  margin-top: 32px;
+  font-size: 10px;
+}
+.chatArea .chatList .myTime {
+  margin-right: 5px;
+}
+.chatArea .chatList .otherTime {
+  margin-left: 5px;
+}
+
 .chatArea .message {
   width: 100%;
   height: 20%;
