@@ -1,8 +1,9 @@
 .container {
   margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 .img {
-  width: 270px;
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(104deg)
-    brightness(103%) contrast(101%);
+  width: 80%;
 }
