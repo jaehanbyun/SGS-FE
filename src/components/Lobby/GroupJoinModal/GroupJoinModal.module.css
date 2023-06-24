@@ -1,0 +1,72 @@
+.container {
+  z-index: 9;
+}
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 71%);
+  display: flex;
+  justify-content: center;
+}
+.modal {
+  width: 460px;
+  height: 240px;
+  background-color: #e0e0e0;
+  position: absolute;
+  top: 200px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  animation: fadeIn 400ms;
+}
+.modal .top {
+  position: relative;
+  z-index: 10;
+}
+.modal .top p {
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  font-size: 24px;
+}
+.modal .top img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  cursor: pointer;
+}
+.modal .contents {
+  width: 400px;
+  height: 160px;
+  background-color: #fff;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  border: 1px solid #707070;
+}
+
+.modal .contents p {
+  margin: 20px 0 20px;
+  height: 40px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal .contents .code {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.modal .contents .code input {
+  padding-left: 5px;
+  height: 40px;
+  width: 90%;
+  border: 1px solid;
+}
+.modal .contents .code button {
+  position: absolute;
+  top: 8px;
+  right: 30px;
+}

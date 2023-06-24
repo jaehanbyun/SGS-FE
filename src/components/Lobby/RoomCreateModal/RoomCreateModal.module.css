@@ -71,6 +71,7 @@
 .modal .contents li .title input {
   width: 350px;
   height: 22px;
+  border: 1px solid;
 }
 .modal .contents li .participant select {
   width: 38px;
