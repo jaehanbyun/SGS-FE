@@ -5,7 +5,7 @@ import Button from "../../Button";
 import styles from "./ProfileEditModal.module.css";
 import axios from "../../../api/core";
 
-const ProfileEditModal = ({ setProfileModalOpen }) => {
+const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
   const ref = useRef();
   const fileRef = useRef();
   const { selectedUserInfo } = useSelector((state) => state);
@@ -21,6 +21,8 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
         description: info.description,
       });
       console.log(res);
+      setProfileModalOpen(false);
+      setUpdate((prev) => !prev);
     } catch (err) {
       console.log(err);
     }
