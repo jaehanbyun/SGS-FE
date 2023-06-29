@@ -18,7 +18,6 @@ const Profile = React.memo(({ setProfileModalOpen }) => {
 
   const getUserInfo = async () => {
     try {
-      console.log("id", selectedUserInfo.id);
       const res = await axios.get("/auth/get-profile", {
         params: {
           id: selectedUserInfo.id,

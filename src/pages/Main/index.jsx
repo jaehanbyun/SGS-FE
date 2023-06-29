@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CalendarModal from "../../components/Modal/CalendarModal";
 import ChartModal from "../../components/Modal/ChartModal";
@@ -8,7 +8,7 @@ import ProfileEditModal from "../../components/Modal/ProfileEditModal";
 import styles from "./Main.module.css";
 import LogOutModal from "../../components/Modal/LogOutModal";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
-import { connect, subscribe, unsubscribe } from "../../utils/stomp";
+import { connect, unsubscribe } from "../../utils/stomp";
 import RoomInfoModal from "../../components/Modal/RoomInfoModal";
 
 const Main = ({ signaling }) => {
@@ -23,16 +23,16 @@ const Main = ({ signaling }) => {
   const dispatch = useDispatch();
   var client = null;
   useEffect(() => {
-    client = connect(client);
-    dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
-    console.log("id", selectedUserInfo.id);
     signaling.uid = selectedUserInfo.id;
-    signaling.webSocket = new WebSocket("wss://localhost:8443/socket");
-    return () => {
-      if (client.connected) {
-        unsubscribe(client, 0);
-      }
-    };
+
+    // client = connect(client);
+    // dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
+
+    // return () => {
+    //   if (client.connected) {
+    //     unsubscribe(client, 0);
+    //   }
+    // };
   }, []);
 
   return (

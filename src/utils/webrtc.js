@@ -5,8 +5,7 @@ class Signaling {
     this.socket = null;
     this.userId = undefined;
     this.master = false;
-    this.warned = 0;
-    this._participants = new Map();
+    this._participants = {};
   }
 
   get participants() {
@@ -19,12 +18,7 @@ class Signaling {
   set uid(id) {
     this.userId = id;
   }
-  /**
-   * @param {WebSocket} ws
-   */
-  set webSocket(ws) {
-    this.socket = ws;
-  }
+
   sendMessage = (msg) => {
     const jsonReq = JSON.stringify(msg);
     console.log("Sending message: " + jsonReq);
@@ -42,13 +36,17 @@ class Signaling {
     this.sendMessage(req);
   };
 
-  receiveVideo = (sender) => {
+  receiveVideo = async (sender) => {
     const user = {
       id: sender.userId,
       type: "remote",
       rtcPeer: null,
+      studyTime: sender.studyTime,
+      timer: sender.timer,
+      video: sender.video,
+      audio: sender.audio,
     };
-    this._participants.set(user.id, user);
+    this._participants[user.id] = user;
     const options = {
       connectionConstraints: {
         offerToReceiveAudio: true,
@@ -75,7 +73,21 @@ class Signaling {
     });
   };
 
-  onExistingParticipants(msg) {
+  async myInfo(msg) {
+    const me = msg.member;
+    const user = {
+      id: this.userId,
+      type: "local",
+      rtcPeer: null,
+      studyTime: me.studyTime,
+      timer: false,
+      video: true,
+      audio: true,
+    };
+    this._participants[me.userId] = user;
+  }
+
+  async onExistingParticipants(msg) {
     var constraints = {
       audio: true,
       video: {
@@ -86,71 +98,69 @@ class Signaling {
         },
       },
     };
-    const user = {
-      id: this.userId,
-      type: "local",
-      rtcPeer: null,
-    };
-    this._participants.set(user.id, user);
+
+    const user = this._participants[this.userId];
     const options = {
       mediaConstraints: constraints,
       onicecandidate: (candidate) => {
         this.socket.send(
           JSON.stringify({
             id: "onIceCandidate",
-            userId: user.id,
+            userId: this.userId,
             candidate,
           })
         );
       },
     };
+
     user.rtcPeer = WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
       if (error) {
         alert(error);
         return console.error(error);
       }
     });
+
     user.rtcPeer.generateOffer((err, offerSdp) => {
       if (err) console.error("sdp offer error");
       console.log("Invoking SDP offer callback function");
       var msg = {
         id: "receiveVideoFrom",
-        userId: user.id,
+        userId: this.userId,
         sdpOffer: offerSdp,
       };
-      console.log("send message on onExistingParticipant");
       this.socket.send(JSON.stringify(msg));
     });
     msg.members.forEach(this.receiveVideo);
   }
 
-  receiveVideoResponse(result) {
-    this._participants
-      .get(result.userId)
-      .rtcPeer.processAnswer(result.sdpAnswer, function (error) {
+  async receiveVideoResponse(result) {
+    this._participants[result.userId].rtcPeer.processAnswer(
+      result.sdpAnswer,
+      function (error) {
         if (error) {
           alert(error);
           return console.error(error);
         }
-      });
+      }
+    );
   }
 
-  onParticipantLeft(request) {
+  async onParticipantLeft(request) {
     console.log("Participant " + request.userId + " left");
-    var participant = this._participants.get(request.userId);
-    participant.dispose();
-    this._participants.delete(request.userId);
+    var participant = this._participants[request.userId];
+    participant[request.userId].dispose();
+    delete this._participants[request.userId];
   }
 
   leaveRoom = () => {
     this.socket.send(JSON.stringify({ id: "leaveRoom" }));
-    for (const participant of this._participants) {
+    for (const participant of this._participants.values()) {
       participant.dispose();
     }
   };
 
   addICECandidate = (candidate) => {
-    this._participants.get(this.userId).rtcPeer.addICECandidate(candidate);
+    this._participants[this.userId].rtcPeer.addICECandidate(candidate);
   };
 }
 

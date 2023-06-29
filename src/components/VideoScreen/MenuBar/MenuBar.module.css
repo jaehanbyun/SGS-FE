@@ -1,7 +1,7 @@
 .menu {
   display: flex;
   height: 70px;
-  width: 100%;
+  width: 63.75vw;
   position: absolute;
   bottom: 0;
   justify-content: space-between;

@@ -120,10 +120,10 @@ const RoomCreateModal = ({ setModalOpen }) => {
                     onChange={handleMaxUser}
                     value={maxUser}
                   >
-                    <option value="three">3</option>
-                    <option value="five">5</option>
-                    <option value="seven">7</option>
-                    <option value="ten">10</option>
+                    <option value={3}>3</option>
+                    <option value={5}>5</option>
+                    <option value={7}>7</option>
+                    <option value={10}>10</option>
                   </select>
                   명
                 </div>

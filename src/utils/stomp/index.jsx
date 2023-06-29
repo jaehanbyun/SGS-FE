@@ -5,7 +5,7 @@ import axios from "../../api/core";
 export const connect = (client) => {
   // 연결할 때
   client = Stomp.over(() => {
-    return new SockJS("http://13.209.245.103:8000/chat/connect");
+    return new SockJS("http://13.209.245.103:8079/chat/connect");
   });
   client.connectHeaders = {
     Authorization: axios.defaults.headers.common.Authorization,

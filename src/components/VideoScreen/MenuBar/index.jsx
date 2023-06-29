@@ -1,43 +1,107 @@
-import React, { useState } from "react";
-import moment from "moment";
+import React, { useEffect, useState } from "react";
 import Button from "../../Button";
 import styles from "./MenuBar.module.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import useTimer from "../../../hooks/useTimer";
+import moment, { now } from "moment";
 
-const medias = [
-  "/images/microphone.svg",
-  "/images/video.svg",
-  "/images/screen_share.svg",
-];
-
-const MenuBar = ({ signaling }) => {
+const MenuBar = ({
+  participants,
+  signaling,
+  myVideo,
+  myAudio,
+  setMyVideo,
+  setMyAudio,
+}) => {
   const navigate = useNavigate();
-  const [timerState, setTimerState] = useState(false);
+  const {
+    selectedUserInfo: { id },
+  } = useSelector((state) => state);
   const [timerText, setTimerText] = useState("타이머 시작");
+  const [timerState, setTimerState] = useState(false);
+  const [showTime, setShowTime] = useState(participants[id]?.studyTime);
+  const [video, setVideo] = useState(true);
+  const [audio, setAudio] = useState(true);
+
+  const formattedTime = useTimer(participants[id]?.studyTime, timerState);
+
+  useEffect(() => {
+    setShowTime(formattedTime);
+  }, [formattedTime]);
+
+  const handleVideo = () => {
+    signaling.sendMessage({
+      id: "videoState",
+      userId: id,
+      video: !participants[id].video,
+    });
+    if (video) {
+      setVideo(false);
+      setMyVideo(false);
+    } else {
+      setVideo(true);
+      setMyVideo(true);
+    }
+    setVideo(!video);
+  };
+  const handleAudio = () => {
+    signaling.sendMessage({
+      id: "audioState",
+      userId: id,
+      audio: !participants[id].audio,
+    });
+    if (audio) {
+      setAudio(false);
+      setMyAudio(true);
+    } else {
+      setAudio(true);
+      setMyAudio(false);
+    }
+  };
   const handleTimer = () => {
     if (timerState) {
       setTimerState(false);
       setTimerText("타이머 시작");
+      signaling.sendMessage({
+        id: "timerState",
+        timerState: false,
+        time: moment().format("HH:mm:ss"),
+      });
     } else {
       setTimerState(true);
       setTimerText("타이머 정지");
+      signaling.sendMessage({
+        id: "timerState",
+        timerState: true,
+        time: moment().format("HH:mm:ss"),
+      });
     }
+    console.log(participants[id]);
   };
   const roomExit = () => {
     navigate("/main");
-    // signaling.leaveRoom();
     signaling.socket.close();
   };
+
   return (
     <footer className={styles.menu}>
       <div className={styles.controller}>
-        {medias.map((media) => (
-          <img key={media} src={media} alt="이미지" />
-        ))}
+        <img
+          onClick={handleAudio}
+          src={audio ? "/images/microphone.svg" : "/images/mic_off.svg"}
+          alt="이미지"
+        />
+        <img
+          onClick={handleVideo}
+          src={video ? "/images/video.svg" : "/images/video_off.svg"}
+          alt="이미지"
+        />
+        <img src="/images/screen_share.svg" alt="이미지" />
       </div>
       <div className={styles.studyTime}>
         <div>총 공부 시간</div>
-        <div>{moment(new Date()).format("HH:MM:ss")}</div>
+        <div>{showTime}</div>
       </div>
       <div className={styles.buttons}>
         <div className={styles.button}>

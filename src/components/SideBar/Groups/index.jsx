@@ -16,6 +16,7 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
   const getGroups = async () => {
     try {
       const res = await axios.get("/room/group/private");
+      console.log(res.data.data);
       setGroups([...res.data.data]);
     } catch (err) {
       console.log(err);

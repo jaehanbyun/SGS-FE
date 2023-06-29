@@ -31,7 +31,6 @@ function App() {
               path="/main/:roomId"
               element={<StudyRoom signaling={signaling} />}
             />
-            \
           </Route>
         </Routes>
       </BrowserRouter>

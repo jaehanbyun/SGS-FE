@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../api/core";
+import { useSelector } from "react-redux";
 
 const Room = ({ room, setRoomInfoModalOpen, signaling }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
@@ -31,11 +32,16 @@ const Room = ({ room, setRoomInfoModalOpen, signaling }) => {
 
   const joinRoom = async () => {
     try {
-      await axios.post("/room/group/in", {
-        roomId: roomId,
-      });
-      signaling.joinRoom(id, roomId);
-      navigate(`/main/${roomId}`);
+      await axios
+        .post("/room/group/in", {
+          roomId: roomId,
+        })
+        .then(console.log);
+      signaling.socket = new WebSocket("wss://localhost:8443/socket");
+      signaling.socket.onopen = () => {
+        signaling.joinRoom(id, roomId);
+        navigate(`/main/${roomId}`);
+      };
     } catch (err) {
       console.log(err);
     }
