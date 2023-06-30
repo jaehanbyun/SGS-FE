@@ -1,10 +1,10 @@
 .btn {
-  margin: 1em;
+  margin: 3%;
 }
 .btn img {
   filter: invert(93%) sepia(0%) saturate(36%) hue-rotate(137deg) brightness(97%)
     contrast(86%);
-  width: 45px;
+  width: 100%;
   cursor: pointer;
   transition: 250ms;
 }

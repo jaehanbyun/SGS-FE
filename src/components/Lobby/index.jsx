@@ -1,91 +1,106 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ChatRooms from "./ChatRooms";
 import Collect from "./Collect";
-import Home from "./Home";
 import styles from "./Lobby.module.css";
 import LobbyHeader from "./LobbyHeader";
 import RoomCreateModal from "./RoomCreateModal";
-
-const contents = [
-  {
-    roomId: "fdsa11",
-    roomName: "중등공부할 사람",
-    roomChannel: "middle",
-    roomOwner: "user1",
-    curUser: 2,
-    maxUser: 5,
-    createdAt: "2023-01-31T18:01:22.2072675",
-  },
-  {
-    roomId: "fda111",
-    roomName: "초등공부할 사람",
-    roomChannel: "elemantary",
-    roomOwner: "user1",
-    curUser: 1,
-    maxUser: 3,
-    createdAt: "2023-03-30T15:01:22.2072675",
-  },
-  {
-    roomId: "fa111",
-    roomName: "수학공부",
-    roomChannel: "elemantary",
-    roomOwner: "user1",
-    curUser: 1,
-    maxUser: 3,
-    createdAt: "2023-01-31T18:01:22.2072675",
-  },
-  {
-    roomId: "dsa111",
-    roomName: "과학공부할 사람",
-    roomChannel: "elemantary",
-    roomOwner: "user1",
-    curUser: 1,
-    maxUser: 3,
-    createdAt: "2023-04-01T13:01:22.2072675",
-  },
-  {
-    roomId: "fdsa11241",
-    roomName: "고등공부할 사람",
-    roomChannel: "high",
-    roomOwner: "user1",
-    curUser: 2,
-    maxUser: 3,
-    createdAt: "2023-01-31T18:01:22.2072675",
-  },
-];
+import MockAdapter from "axios-mock-adapter";
+import axios from "../../api/core";
+import GroupJoinModal from "./GroupJoinModal";
 
 const channelName = [
-  "home",
-  "elemantary",
-  "middle",
-  "high",
-  "univ",
-  "business",
+  "",
+  "ELEMENTARY_SCHOOL",
+  "MIDDLE_SCHOOL",
+  "HIGH_SCHOOL",
+  "UNIVERSITY",
+  "BUSINESS",
 ];
 
-const Lobby = () => {
+const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
-  const arr = contents.filter(
-    (content) => content.roomChannel === channelName[selectedChannel]
+  const [groupModalOpen, setGroupModalOpen] = useState(false);
+  const [rooms, setRooms] = useState([]);
+  const [nextRoomId, setNextRoomId] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
+  const [isData, setIsData] = useState(true);
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  const scrollRef = useRef();
+
+  const getRooms = async () => {
+    try {
+      let res;
+      if (selectedChannel === 0) {
+        res = await axios.get("/room/group", {
+          params: {
+            lastRoomId: 100000,
+          },
+        });
+      } else {
+        res = await axios.get("/room/group", {
+          params: {
+            lastRoomId: 100000,
+            channel: channelName[selectedChannel],
+          },
+        });
+      }
+      if (res.status === 204) {
+        setRooms([]);
+        return;
+      }
+      setRooms([...res.data.data]);
+      setNextRoomId(res.data.data[res.data.data.length - 1].roomId);
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+  useEffect(() => {
+    getRooms();
+    scrollRef.current.scrollTo(0, 0);
+    setIsScroll(false);
+    setIsData(true);
+    setIsSearch(false);
+    setSearchValue("");
+  }, [selectedChannel, refresh]);
+  return (
+    <div className={styles.lobby}>
+      <LobbyHeader setRefresh={setRefresh} />
+      <ChatRooms
+        scrollRef={scrollRef}
+        rooms={rooms}
+        setRooms={setRooms}
+        nextRoomId={nextRoomId}
+        setNextRoomId={setNextRoomId}
+        setRoomInfoModalOpen={setRoomInfoModalOpen}
+        isScroll={isScroll}
+        setIsScroll={setIsScroll}
+        isData={isData}
+        setIsData={setIsData}
+        isSearch={isSearch}
+        searchValue={searchValue}
+      />
+      <Collect
+        setModalOpen={setModalOpen}
+        setGroupModalOpen={setGroupModalOpen}
+        setRooms={setRooms}
+        setNextRoomId={setNextRoomId}
+        setIsScroll={setIsScroll}
+        setIsData={setIsData}
+        setIsSearch={setIsSearch}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
+      {groupModalOpen && (
+        <GroupJoinModal setGroupModalOpen={setGroupModalOpen} />
+      )}
+      {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
+    </div>
   );
-  if (selectedChannel === 0) {
-    return (
-      <div className={styles.lobby}>
-        <Home />
-      </div>
-    );
-  } else {
-    return (
-      <div className={styles.lobby}>
-        <LobbyHeader />
-        <ChatRooms rooms={arr} />
-        <Collect setModalOpen={setModalOpen} />
-        {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
-      </div>
-    );
-  }
-};
+});
 
 export default Lobby;

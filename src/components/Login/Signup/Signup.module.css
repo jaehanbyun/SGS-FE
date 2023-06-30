@@ -4,8 +4,24 @@
   max-width: 450px;
   width: 100%;
   padding: 1em 2em;
+  position: relative;
 }
-
+.form .validIdBtn {
+  position: absolute;
+  top: 30px;
+  right: 45px;
+}
+.form .emailBtn {
+  position: absolute;
+  top: 105px;
+  right: 45px;
+  font-size: 12px;
+}
+.form .authBtn {
+  position: absolute;
+  top: 163.5px;
+  right: 40px;
+}
 .form .input {
   padding: 0 15px;
   width: 100%;
@@ -46,13 +62,6 @@
   background-color: rgb(255, 114, 114, 0.9);
 }
 
-.formLink {
-  text-align: center;
-  margin-top: 0.5em;
-  display: flex;
-  justify-content: space-between;
-}
-
 .err {
   padding-top: 10px;
   font-size: 12px;
@@ -63,7 +72,7 @@
 .err strong {
   font-weight: 700;
 }
-.pwdErr {
+.detailErr {
   margin-top: -13px;
   margin-bottom: 3px;
   margin-left: 2px;

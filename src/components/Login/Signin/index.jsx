@@ -1,13 +1,18 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setSelectedUserState } from "../../../redux/selectedUserState/slice";
 import ToggleSign from "../ToggleSign";
 import styles from "./Signin.module.css";
-import MockAdapter from "axios-mock-adapter";
+import axios from "../../../api/core";
+import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 
-export default function Signin({ isLoginPage, toggleSign }) {
+export default function Signin({
+  setIsFindId,
+  setIsFindPage,
+  isLoginPage,
+  toggleSign,
+}) {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [isError, setIsError] = useState(false);
@@ -15,20 +20,8 @@ export default function Signin({ isLoginPage, toggleSign }) {
   const dispatch = useDispatch();
   const errRef = useRef();
   const pwdRef = useRef();
+
   useEffect(() => {
-    const mock = new MockAdapter(axios);
-    mock.onPost("/signin").reply((config) => {
-      console.log(config.data);
-      return [
-        200,
-        {
-          id: config.data.id,
-          email: "email",
-          accessToken: "QpwL5tke4Pnpja7X4",
-          refreshToken: "QpwL5tke4Pnpja7X4",
-        },
-      ];
-    });
     if (isError) {
       errRef.current.innerHTML =
         "아이디 또는 비밀번호를 잘못 입력했습니다.<br/>입력하신 내용을 다시 확인해주세요.";
@@ -48,16 +41,16 @@ export default function Signin({ isLoginPage, toggleSign }) {
         errRef.current.style.display = "block";
         return;
       }
-      console.log(id, pwd);
-      if (id !== "abc12345" || pwd !== "abc12345@") {
-        console.log("??");
-        throw new Error();
-      }
-      const res = await axios.post("/signin", {
+      const res = await axios.post("/auth/sign-in", {
         id: id,
         password: pwd,
       });
-      console.log("data", res.data);
+      axios.defaults.withCredentials = true;
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${res.data.data.accessToken}`;
+      console.log(res);
+      dispatch(setSelectedUserInfo({ id: id }));
       dispatch(setSelectedUserState(true));
       navigate("/main");
     } catch (err) {
@@ -87,8 +80,24 @@ export default function Signin({ isLoginPage, toggleSign }) {
           ref={pwdRef}
         />
         <div className={styles.formLink}>
-          <Link className={styles.forgotPW}>아이디 찾기</Link>
-          <Link className={styles.forgotPW}>비밀번호 찾기</Link>
+          <span
+            className={styles.forgotPW}
+            onClick={() => {
+              setIsFindId(true);
+              setIsFindPage(true);
+            }}
+          >
+            아이디 찾기
+          </span>
+          <span
+            className={styles.forgotPW}
+            onClick={() => {
+              setIsFindId(false);
+              setIsFindPage(true);
+            }}
+          >
+            비밀번호 찾기
+          </span>
         </div>
         <div className={styles.err} ref={errRef}></div>
         <div className={`${styles.field} ${styles.buttonField}`}>

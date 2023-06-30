@@ -5,6 +5,10 @@
   align-items: center;
   margin-top: 10px;
 }
+.form {
+  display: flex;
+  flex-direction: column;
+}
 .input {
   height: 100%;
   font-size: 1em;

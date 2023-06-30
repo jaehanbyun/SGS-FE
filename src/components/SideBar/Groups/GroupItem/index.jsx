@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 
 const GroupItem = ({ group, isActive, onClick }) => {
   const ref = useRef();
-
   useEffect(() => {
     if (isActive === true) {
       ref.current.classList.add("active--channel");
@@ -13,8 +12,12 @@ const GroupItem = ({ group, isActive, onClick }) => {
   return (
     <div>
       <div ref={ref} className="item" onClick={onClick}>
-        <img src={group[1]} className="logo" alt={`${group[0]}icon`} />
-        <p>{group[0]}</p>
+        <img
+          src={group.roomImage}
+          className="logo"
+          alt={`${group.roomName}icon`}
+        />
+        <p>{group.roomName}</p>
       </div>
     </div>
   );

@@ -1,7 +1,11 @@
 import React from "react";
 import styles from "./Room.module.css";
-const Room = ({ room }) => {
-  const { roomName, curUser, maxUser, createdAt } = room;
+import { useNavigate } from "react-router-dom";
+import axios from "../../../../api/core";
+
+const Room = ({ room, setRoomInfoModalOpen }) => {
+  const { roomId, roomName, curUser, maxUser, createdAt } = room;
+
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
     const seconds = Math.floor(timeDiff / 1000);
@@ -20,9 +24,25 @@ const Room = ({ room }) => {
     }
   };
   const diff = getTimeDifference(new Date(createdAt), new Date());
+  const navigate = useNavigate();
+
+  const joinRoom = async () => {
+    try {
+      await axios.post("/room/group/in", {
+        roomId: roomId,
+      });
+      navigate(`/main/${roomId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onClick = () => {
+    setRoomInfoModalOpen({ open: true, roomId: roomId });
+  };
 
   return (
-    <div className={styles.room}>
+    <div className={styles.room} onDoubleClick={joinRoom}>
       <div className={styles.item}>
         <p>{roomName}</p>
       </div>
@@ -35,7 +55,7 @@ const Room = ({ room }) => {
         <p>{diff}</p>
       </div>
       <div className={styles.item}>
-        <img src="/images/add_box.svg" alt="이미지박스" />
+        <img onClick={onClick} src="/images/add_box.svg" alt="이미지박스" />
       </div>
     </div>
   );

@@ -1,0 +1,60 @@
+.form {
+  background: #ffffff;
+  border-radius: 3px;
+  max-width: 450px;
+  width: 100%;
+  padding: 1em 2em;
+  position: relative;
+}
+.form input {
+  padding: 0 15px;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  border: 1px solid #cacaca;
+  border-radius: 5px;
+}
+.form input:focus {
+  outline: none;
+  border: 2px solid #ff8888;
+}
+.form > button {
+  position: absolute;
+  top: 29px;
+  right: 40px;
+}
+
+.form .field {
+  position: relative;
+  height: 3em;
+  width: 100%;
+  margin-top: 1em;
+  border-radius: 5px;
+}
+.field button {
+  height: 100%;
+  width: 100%;
+  border: none;
+  font-size: 1em;
+  font-weight: 400;
+  border-radius: 5px;
+  color: #fff;
+  background-color: rgb(255, 114, 114);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.field button:hover {
+  background-color: rgba(255, 114, 114, 0.9);
+}
+
+.msg {
+  padding-top: 10px;
+  font-size: 12px;
+  color: #ff003e;
+  display: none;
+  line-height: 1.25;
+}
+.msg strong {
+  font-weight: 700;
+}

@@ -1,6 +1,11 @@
 .lobby {
-  width: 63.75vw;
+  width: 75%;
   background-color: #f6f6f6;
   position: relative;
   z-index: 1;
+}
+@media (max-width: 1200px) {
+  .lobby {
+    width: 100%;
+  }
 }

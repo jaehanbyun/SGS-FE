@@ -1,7 +1,10 @@
 .rooms {
-  height: 80%;
+  height: calc(100% - 140px);
   overflow-y: scroll;
 }
 .rooms::-webkit-scrollbar {
-  display: none;
+  width: 6px;
+}
+.rooms::-webkit-scrollbar-thumb {
+  background-color: #c03c3c;
 }

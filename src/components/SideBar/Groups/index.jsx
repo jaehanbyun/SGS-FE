@@ -1,29 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectedGroup } from "../../../redux/selectedGroup/slice";
 import GroupItem from "./GroupItem";
 import styles from "./Groups.module.css";
+import axios from "../../../api/core";
+import { useNavigate } from "react-router";
+import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 
-const Group = [
-  ["정컴 모임", "/images/account_circle.svg"],
-  ["개발자 취준", "/images/account_circle.svg"],
-  ["부산대 모임", "/images/account_circle.svg"],
-  ["스터디", "/images/account_circle.svg"],
-];
-
-const Groups = () => {
-  const [currentIndex, setCurrentIndex] = useState(null);
+const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
+  const [groups, setGroups] = useState([]);
+
+  const navigate = useNavigate();
+
+  const getGroups = async () => {
+    try {
+      const res = await axios.get("/room/group/private");
+      setGroups([...res.data.data]);
+    } catch (err) {
+      console.log(err);
+      throw new Error(err);
+    }
+  };
+
+  useEffect(() => {
+    getGroups();
+  }, []);
   return (
     <div className={styles.container}>
-      {Group.map((group, index) => (
+      {groups.map((group, index) => (
         <GroupItem
           key={index}
           group={group}
-          isActive={currentIndex === index}
+          isActive={currentIndex === index + 6}
           onClick={() => {
-            dispatch(setSelectedGroup(index));
-            setCurrentIndex(index);
+            dispatch(setSelectedChannel(index + 6));
+            setCurrentIndex(index + 6);
+            navigate(`/main/${group.roomId}`);
           }}
         />
       ))}

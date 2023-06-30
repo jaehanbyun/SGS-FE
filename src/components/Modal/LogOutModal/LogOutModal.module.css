@@ -37,6 +37,12 @@
   display: flex;
   flex-direction: row-reverse;
 }
+.modal .bottom button:hover {
+  background-color: #707070 !important;
+}
+.modal .bottom button:nth-child(1):hover {
+  background-color: #ac2a2e !important;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;

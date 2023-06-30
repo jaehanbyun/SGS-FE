@@ -65,3 +65,13 @@
 .err strong {
   font-weight: 700;
 }
+
+.forgotPW {
+  font-size: 15px;
+  color: #0171d3;
+  text-decoration: none;
+  cursor: pointer;
+}
+.forgotPW:hover {
+  text-decoration: underline;
+}

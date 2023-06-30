@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
+  client: null,
+  id: "",
   name: "",
   email: "",
   profileImage: null,
@@ -14,8 +16,21 @@ const selectedUserInfoReducer = createSlice({
   reducers: {
     setSelectedUserInfo: (
       state,
-      { payload: { name, email, profileImage, studyTime, description } }
+      {
+        payload: {
+          client,
+          id,
+          name,
+          email,
+          profileImage,
+          studyTime,
+          description,
+        },
+      }
     ) => ({
+      ...state,
+      client,
+      id,
       name,
       email,
       profileImage,
