@@ -2,11 +2,16 @@ import React, { useRef, useState } from "react";
 import styles from "./GroupJoinModal.module.css";
 import { useOnClickOutside } from "../../../hooks";
 import axios from "../../../api/core";
+import { useDispatch } from "react-redux";
+import { setSelectedUserState } from "../../../redux/selectedUserState/slice";
+import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 
 const GroupJoinModal = ({ setGroupModalOpen }) => {
   const ref = useRef();
 
   const [code, setCode] = useState("");
+
+  const dispatch = useDispatch();
 
   const closeModal = () => {
     setGroupModalOpen(false);
@@ -15,7 +20,7 @@ const GroupJoinModal = ({ setGroupModalOpen }) => {
   const joinGroup = async () => {
     try {
       const res = await axios.post("room/group/private", {
-        roomCode: code,
+        roomCode: "4ef44023-c2ec-47aa-bfd3-75698242ff4b",
       });
       console.log(res);
       alert("그룹에 가입 되었습니다.");

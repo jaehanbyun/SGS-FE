@@ -57,7 +57,7 @@ const Participants = ({ participants }) => {
       {participants.map((participant) => (
         <li key={participant}>
           <video ref={vidRef} className={styles.video} />
-          <div className={styles.name}>{participant}</div>
+          <div className={styles.name}></div>
         </li>
       ))}
       <li>

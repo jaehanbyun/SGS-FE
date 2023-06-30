@@ -20,6 +20,8 @@ const Main = () => {
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);
 
+  const [update, setUpdate] = useState(false);
+
   const dispatch = useDispatch();
 
   var client = null;
@@ -27,7 +29,7 @@ const Main = () => {
   useEffect(() => {
     client = connect(client);
     dispatch(setSelectedUserInfo({ ...selectedUserInfo, client: client }));
-    console.log(selectedUserInfo);
+    setUpdate((prev) => !prev);
     return () => {
       if (client.connected) {
         unsubscribe(client, 0);
@@ -44,9 +46,12 @@ const Main = () => {
           roomInfoModalOpen={roomInfoModalOpen}
         />
       )}
-      <Profile setProfileModalOpen={setProfileModalOpen} />
+      <Profile setProfileModalOpen={setProfileModalOpen} update={update} />
       {profileModalOpen && (
-        <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />
+        <ProfileEditModal
+          setProfileModalOpen={setProfileModalOpen}
+          setUpdate={setUpdate}
+        />
       )}
       {selectedProfileIcon[0] && <CalendarModal />}
       {selectedProfileIcon[1] && <ChartModal />}

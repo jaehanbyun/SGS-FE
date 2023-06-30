@@ -1,6 +1,5 @@
 .screen {
   width: 75%;
-  z-index: 1;
   background-color: aqua;
   position: relative;
 }
