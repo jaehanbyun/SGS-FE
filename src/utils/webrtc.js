@@ -42,6 +42,7 @@ class Signaling {
       type: "remote",
       rtcPeer: null,
       studyTime: sender.studyTime,
+      onTime: sender.onTime,
       timer: sender.timer,
       video: sender.video,
       audio: sender.audio,
@@ -81,6 +82,7 @@ class Signaling {
       rtcPeer: null,
       studyTime: me.studyTime,
       timer: false,
+      master: false,
       video: true,
       audio: true,
     };
@@ -119,7 +121,9 @@ class Signaling {
         return console.error(error);
       }
     });
-
+    if (!msg.members.length) {
+      this._participants[this.userId].master = true;
+    }
     user.rtcPeer.generateOffer((err, offerSdp) => {
       if (err) console.error("sdp offer error");
       console.log("Invoking SDP offer callback function");
@@ -148,15 +152,16 @@ class Signaling {
   async onParticipantLeft(request) {
     console.log("Participant " + request.userId + " left");
     var participant = this._participants[request.userId];
-    participant[request.userId].dispose();
+    // participant[request.userId].dispose();
     delete this._participants[request.userId];
   }
 
   leaveRoom = () => {
     this.socket.send(JSON.stringify({ id: "leaveRoom" }));
-    for (const participant of this._participants.values()) {
-      participant.dispose();
-    }
+    // for (const participant of this._participants.values()) {
+    //   participant.dispose();
+    // }
+    this._participants = {};
   };
 
   addICECandidate = (candidate) => {

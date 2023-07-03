@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useTimer from "../../../hooks/useTimer";
 import moment, { now } from "moment";
+import axios from "../../../api/core";
 
 const MenuBar = ({
   participants,
@@ -13,6 +14,7 @@ const MenuBar = ({
   myAudio,
   setMyVideo,
   setMyAudio,
+  roomId,
 }) => {
   const navigate = useNavigate();
   const {
@@ -23,12 +25,25 @@ const MenuBar = ({
   const [showTime, setShowTime] = useState(participants[id]?.studyTime);
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);
-
+  const [isPrivate, setIsPrivate] = useState(false);
   const formattedTime = useTimer(participants[id]?.studyTime, timerState);
 
   useEffect(() => {
     setShowTime(formattedTime);
   }, [formattedTime]);
+
+  useEffect(() => {
+    const privateOrNot = async () => {
+      const res = await axios.get("/room/group/private");
+      if (
+        res.data &&
+        res.data.data.some((obj) => obj.roomId === Number(roomId))
+      ) {
+        setIsPrivate(true);
+      }
+    };
+    privateOrNot();
+  }, [roomId]);
 
   const handleVideo = () => {
     signaling.sendMessage({
@@ -79,6 +94,14 @@ const MenuBar = ({
     }
     console.log(participants[id]);
   };
+  const privateRoom = async () => {
+    const res = await axios.get("/room/group/private");
+    console.log(res);
+    if (res.data.data.some((obj) => obj.roomId === Number(roomId))) {
+      axios.patch("/room/group/private", { room_id: roomId }).then(console.log);
+      console.log("good");
+    }
+  };
   const roomExit = () => {
     navigate("/main");
     signaling.socket.close();
@@ -104,9 +127,21 @@ const MenuBar = ({
         <div>{showTime}</div>
       </div>
       <div className={styles.buttons}>
+        {isPrivate && (
+          <div className={styles.button}>
+            <Button
+              width={"108px"}
+              height={"40px"}
+              backgroundColor={"#FE9A2E"}
+              text={"초대코드 생성"}
+              color={"#fff"}
+              onClick={privateRoom}
+            />
+          </div>
+        )}
         <div className={styles.button}>
           <Button
-            width={"113px"}
+            width={"108px"}
             height={"40px"}
             backgroundColor={"#ADC37D"}
             text={timerText}
@@ -116,7 +151,7 @@ const MenuBar = ({
         </div>
         <div className={styles.button}>
           <Button
-            width={"113px"}
+            width={"108px"}
             height={"40px"}
             backgroundColor={"#E81515"}
             text={"나가기"}

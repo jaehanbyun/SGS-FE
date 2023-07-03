@@ -6,7 +6,7 @@ import MenuBar from "./MenuBar";
 import { useSelector } from "react-redux";
 import Participant from "./Participant";
 
-const VideoScreen = ({ participants, signaling }) => {
+const VideoScreen = ({ participants, signaling, roomId }) => {
   const { selectedUserInfo } = useSelector((state) => state);
   const [tmp, setTmp] = useState(false);
   const [displayMenu, setDisplayMenu] = useState(false);
@@ -25,8 +25,7 @@ const VideoScreen = ({ participants, signaling }) => {
           setClickedParticipant(null);
         }
       }}
-      className={styles.screen}
-    >
+      className={styles.screen}>
       <div className={styles.videoWrap}>
         <ul className={styles.videos}>
           {Object.entries(participants).map(([k, v]) => (
@@ -52,6 +51,7 @@ const VideoScreen = ({ participants, signaling }) => {
           myAudio={myAudio}
           setMyVideo={setMyVideo}
           setMyAudio={setMyAudio}
+          roomId={roomId}
         />
       )}
       {/* <Chatting /> */}

@@ -1,8 +1,14 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-const useTimer = (initialTime, timerState) => {
-  const startingTime = moment.duration(initialTime);
+const useTimer = (initialTime, timerState, onTime = "") => {
+  const startingTime = timerState
+    ? moment.duration(
+        moment()
+          .add(moment.duration(initialTime))
+          .diff(moment(onTime, "HH:mm:ss"))
+      )
+    : moment.duration(initialTime);
   const [elapsedTime, setElapsedTime] = useState(startingTime.asSeconds());
 
   useEffect(() => {

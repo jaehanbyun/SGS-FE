@@ -2,8 +2,12 @@ import styles from "./Member.module.css";
 import useTimer from "../../../../hooks/useTimer";
 import { useEffect, useState } from "react";
 const Member = ({ userId, participant, idx }) => {
-  const formattedTime = useTimer(participant.studyTime, participant.timer);
-  const [showTime, setShowTime] = useState("00:00:00");
+  const formattedTime = useTimer(
+    participant.studyTime,
+    participant.timer,
+    participant.onTime
+  );
+  const [showTime, setShowTime] = useState("");
   useEffect(() => {
     setShowTime(formattedTime);
   }, [participant, formattedTime]);
@@ -14,11 +18,15 @@ const Member = ({ userId, participant, idx }) => {
     else if (idx === 2) return "#CA994F";
   };
   return (
-    <li className={styles.li} style={{ background: setColor(idx) }}>
-      <img src="/image/profile" alt="profile" />
-      <div className={styles.userId}>{userId}</div>
-      <div className={styles.studyTime}>{showTime}</div>
-    </li>
+    <>
+      {showTime && (
+        <li className={styles.li} style={{ background: setColor(idx) }}>
+          <img src="/image/profile" alt="profile" />
+          <div className={styles.userId}>{userId}</div>
+          <div className={styles.studyTime}>{showTime}</div>
+        </li>
+      )}
+    </>
   );
 };
 
