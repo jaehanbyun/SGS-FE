@@ -6,6 +6,7 @@ import styles from "./Groups.module.css";
 import axios from "../../../api/core";
 import { useNavigate } from "react-router";
 import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
+import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
 
 const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
           isActive={currentIndex === index + 6}
           onClick={() => {
             dispatch(setSelectedChannel(index + 6));
+            dispatch(setSelectedRoomInfo({ type: false }));
             setCurrentIndex(index + 6);
             navigate(`/main/${group.roomId}`);
           }}

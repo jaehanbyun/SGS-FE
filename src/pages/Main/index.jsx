@@ -16,6 +16,7 @@ const Main = () => {
   const [roomInfoModalOpen, setRoomInfoModalOpen] = useState({
     open: false,
     roomId: null,
+    roomType: true,
   });
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);

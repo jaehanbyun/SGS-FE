@@ -13,7 +13,6 @@ const StudyRoom = () => {
 
   useEffect(() => {
     subscribe(selectedUserInfo.client, roomId, setChatList);
-
     return () => {
       unsubscribe(selectedUserInfo.client, roomId);
       disconnect(selectedUserInfo.client);
