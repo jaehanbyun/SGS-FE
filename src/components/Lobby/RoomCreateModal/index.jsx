@@ -5,6 +5,7 @@ import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 import axios from "../../../api/core";
+import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
@@ -18,6 +19,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
   const roomNameRef = useRef();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const createRoom = async () => {
     try {
@@ -56,6 +58,9 @@ const RoomCreateModal = ({ setModalOpen }) => {
 
       const res = await axios.post("/room/group", room);
       setModalOpen(false);
+      dispatch(
+        setSelectedRoomInfo({ type: isPublic === "public" ? true : false })
+      );
       navigate(`/main/${res.data.data.roomId}`);
     } catch (err) {
       console.log(err);
@@ -112,10 +117,10 @@ const RoomCreateModal = ({ setModalOpen }) => {
                     onChange={handleMaxUser}
                     value={maxUser}
                   >
-                    <option value="three">3</option>
-                    <option value="five">5</option>
-                    <option value="seven">7</option>
-                    <option value="ten">10</option>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                    <option value="10">10</option>
                   </select>
                   명
                 </div>

@@ -2,9 +2,12 @@ import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../api/core";
+import { useDispatch } from "react-redux";
+import { setSelectedRoomInfo } from "../../../../redux/selectedRoomInfo/slice";
 
 const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
+  const dispatch = useDispatch();
 
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
@@ -31,6 +34,7 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
       await axios.post("/room/group/in", {
         roomId: roomId,
       });
+      dispatch(setSelectedRoomInfo({ type: true }));
       navigate(`/main/${roomId}`);
     } catch (err) {
       console.log(err);
@@ -38,7 +42,7 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
   };
 
   const onClick = () => {
-    setRoomInfoModalOpen({ open: true, roomId: roomId });
+    setRoomInfoModalOpen({ open: true, roomId: roomId, roomType: true });
   };
 
   return (

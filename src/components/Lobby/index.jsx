@@ -5,7 +5,6 @@ import Collect from "./Collect";
 import styles from "./Lobby.module.css";
 import LobbyHeader from "./LobbyHeader";
 import RoomCreateModal from "./RoomCreateModal";
-import MockAdapter from "axios-mock-adapter";
 import axios from "../../api/core";
 import GroupJoinModal from "./GroupJoinModal";
 
