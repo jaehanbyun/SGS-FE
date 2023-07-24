@@ -24,6 +24,16 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
     }
   };
 
+  const privateIn = async (id) => {
+    try {
+      const res = await axios.post("/room/group/private/in", {
+        roomId: id,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getGroups();
   }, []);
@@ -38,6 +48,7 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
             dispatch(setSelectedChannel(index + 6));
             dispatch(setSelectedRoomInfo({ type: false }));
             setCurrentIndex(index + 6);
+            privateIn(group.roomId);
             navigate(`/main/${group.roomId}`);
           }}
         />
