@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedGroup } from "../../../redux/selectedGroup/slice";
 import GroupItem from "./GroupItem";
 import styles from "./Groups.module.css";
@@ -11,12 +11,17 @@ import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
 const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
   const [groups, setGroups] = useState([]);
+  const { selectedUpdate } = useSelector((state) => state);
 
   const navigate = useNavigate();
 
   const getGroups = async () => {
     try {
       const res = await axios.get("/room/group/private");
+      if (res.status === 204) {
+        setGroups([]);
+        return;
+      }
       setGroups([...res.data.data]);
     } catch (err) {
       console.log(err);
@@ -36,7 +41,7 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
 
   useEffect(() => {
     getGroups();
-  }, []);
+  }, [selectedUpdate]);
   return (
     <div className={styles.container}>
       {groups.map((group, index) => (
