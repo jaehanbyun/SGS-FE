@@ -4,6 +4,7 @@ import selectedProfileIconReducer from "./selectedProfileIcon/slice";
 import selectedUserStateReducer from "./selectedUserState/slice";
 import selectedUserInfoReducer from "./selectedUserInfo/slice";
 import selectedRoomInfoReducer from "./selectedRoomInfo/slice";
+import selectedUpdateReducer from "./selectedUpdate/slice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     selectedUserState: selectedUserStateReducer.reducer,
     selectedUserInfo: selectedUserInfoReducer.reducer,
     selectedRoomInfo: selectedRoomInfoReducer.reducer,
+    selectedUpdate: selectedUpdateReducer.reducer,
   },
   middleware: (defaultMiddleware) =>
     defaultMiddleware({

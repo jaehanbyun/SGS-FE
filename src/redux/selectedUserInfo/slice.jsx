@@ -8,6 +8,7 @@ const initState = {
   profileImage: null,
   studyTime: 0,
   description: "",
+  url: "",
 };
 
 const selectedUserInfoReducer = createSlice({
@@ -25,6 +26,7 @@ const selectedUserInfoReducer = createSlice({
           profileImage,
           studyTime,
           description,
+          url,
         },
       }
     ) => ({
@@ -36,6 +38,7 @@ const selectedUserInfoReducer = createSlice({
       profileImage,
       studyTime,
       description,
+      url,
     }),
   },
 });
