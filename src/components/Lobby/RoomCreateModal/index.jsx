@@ -6,6 +6,7 @@ import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 import axios from "../../../api/core";
 import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
+import { setSelectedUpdate } from "../../../redux/selectedUpdate/slice";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
@@ -61,7 +62,10 @@ const RoomCreateModal = ({ setModalOpen }) => {
       dispatch(
         setSelectedRoomInfo({ type: isPublic === "public" ? true : false })
       );
-      navigate(`/main/${res.data.data.roomId}`);
+      dispatch(setSelectedUpdate());
+      if (isPublic === "public") {
+        navigate(`/main/${res.data.data.roomId}`);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -85,7 +89,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
         <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
             <p>채팅방 생성</p>
-            <img src="images/exit.svg" alt="exit" onClick={closeModal} />
+            <img src="/images/exit.svg" alt="exit" onClick={closeModal} />
           </div>
           <div className={styles.contents}>
             <ul>
