@@ -1,7 +1,11 @@
 import styles from "./Member.module.css";
 import useTimer from "../../../../hooks/useTimer";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 const Member = ({ userId, participant, idx }) => {
+  const {
+    selectedUserInfo: { master },
+  } = useSelector((state) => state);
   const formattedTime = useTimer(
     participant.studyTime,
     participant.timer,
@@ -21,9 +25,10 @@ const Member = ({ userId, participant, idx }) => {
     <>
       {showTime && (
         <li className={styles.li} style={{ background: setColor(idx) }}>
-          <img src="/image/profile" alt="profile" />
+          <img src="/images/profile.svg" alt="profile" />
           <div className={styles.userId}>{userId}</div>
           <div className={styles.studyTime}>{showTime}</div>
+          {userId === master && <img src="/images/star.svg" alt="master" />}
         </li>
       )}
     </>
