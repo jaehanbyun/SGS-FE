@@ -4,7 +4,6 @@ class Signaling {
   constructor() {
     this.socket = null;
     this.userId = undefined;
-    this.master = false;
     this._participants = {};
   }
 
@@ -36,7 +35,7 @@ class Signaling {
     this.sendMessage(req);
   };
 
-  receiveVideo = async (sender) => {
+  receiveVideo = (sender) => {
     const user = {
       id: sender.userId,
       type: "remote",
@@ -48,12 +47,14 @@ class Signaling {
       audio: sender.audio,
     };
     this._participants[user.id] = user;
+
     const options = {
       connectionConstraints: {
         offerToReceiveAudio: true,
         offerToReceiveVideo: true,
       },
       onicecandidate: (candidate) => {
+        console.log("IceCandidate in receiveVideo");
         this.sendMessage({
           id: "onIceCandidate",
           userId: user.id,
@@ -64,7 +65,7 @@ class Signaling {
     user.rtcPeer = WebRtcPeer.WebRtcPeerRecvonly(options);
     user.rtcPeer.generateOffer((err, offerSdp) => {
       if (err) console.error("sdp offer error");
-      console.log("Invoking SDP offer callback function");
+      console.log("Invoking SDP offer callback function ###receiveVideo###");
       var msg = {
         id: "receiveVideoFrom",
         userId: user.id,
@@ -74,7 +75,7 @@ class Signaling {
     });
   };
 
-  async myInfo(msg) {
+  myInfo = (msg) => {
     const me = msg.member;
     const user = {
       id: this.userId,
@@ -82,14 +83,13 @@ class Signaling {
       rtcPeer: null,
       studyTime: me.studyTime,
       timer: false,
-      master: false,
       video: true,
       audio: true,
     };
     this._participants[me.userId] = user;
-  }
+  };
 
-  async onExistingParticipants(msg) {
+  onExistingParticipants = (msg) => {
     var constraints = {
       audio: true,
       video: {
@@ -105,53 +105,52 @@ class Signaling {
     const options = {
       mediaConstraints: constraints,
       onicecandidate: (candidate) => {
-        this.socket.send(
-          JSON.stringify({
-            id: "onIceCandidate",
-            userId: this.userId,
-            candidate,
-          })
-        );
+        console.log("IceCandidate in onExistingParticipants");
+        this.sendMessage({
+          id: "onIceCandidate",
+          userId: this.userId,
+          candidate,
+        });
       },
     };
 
-    user.rtcPeer = WebRtcPeer.WebRtcPeerSendonly(options, function (error) {
+    user.rtcPeer = WebRtcPeer.WebRtcPeerSendonly(options, (error) => {
       if (error) {
         alert(error);
         return console.error(error);
       }
-    });
-    if (!msg.members.length) {
-      this._participants[this.userId].master = true;
-    }
-    user.rtcPeer.generateOffer((err, offerSdp) => {
-      if (err) console.error("sdp offer error");
-      console.log("Invoking SDP offer callback function");
-      var msg = {
-        id: "receiveVideoFrom",
-        userId: this.userId,
-        sdpOffer: offerSdp,
-      };
-      this.socket.send(JSON.stringify(msg));
+      user.rtcPeer.generateOffer((err, offerSdp) => {
+        if (err) console.error("sdp offer error");
+        console.log(
+          "Invoking SDP offer callback function ###onExistingParticipants###"
+        );
+        var msg = {
+          id: "receiveVideoFrom",
+          userId: this.userId,
+          sdpOffer: offerSdp,
+        };
+        this.sendMessage(msg);
+      });
     });
     msg.members.forEach(this.receiveVideo);
-  }
+  };
 
-  async receiveVideoResponse(result) {
+  receiveVideoResponse = (result) => {
     this._participants[result.userId].rtcPeer.processAnswer(
       result.sdpAnswer,
       function (error) {
+        console.log("receiveVideoResponse function");
         if (error) {
           alert(error);
           return console.error(error);
         }
       }
     );
-  }
+  };
 
-  async onParticipantLeft(request) {
+  onParticipantLeft(request) {
     console.log("Participant " + request.userId + " left");
-    var participant = this._participants[request.userId];
+    // var participant = this._participants[request.userId];
     // participant[request.userId].dispose();
     delete this._participants[request.userId];
   }
