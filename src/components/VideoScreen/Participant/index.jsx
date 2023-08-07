@@ -1,60 +1,128 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./participant.module.css";
 import ProfileModal from "../../Modal/ProfileModal";
-import axios from "axios";
+import axios from "../../../api/core";
+import { useSelector } from "react-redux";
 
 const Participant = ({
-  myAudio,
   displayMenu,
   setDisplayMenu,
   participant,
   clickedParticipant,
   setClickedParticipant,
   tmp,
+  roomId,
+  isPublic,
 }) => {
   const vidRef = useRef();
   const [xy, setXY] = useState({ x: 0, y: 0 });
   const [openProfile, setOpenProfile] = useState(false);
-  const kickout = () => {
+  const { selectedUserInfo } = useSelector((state) => state);
+
+  const alertUser = (e) => {
+    e.preventDefault();
+    axios
+      .patch("/room/group/alert", {
+        roomType: isPublic,
+        roomId,
+        targetId: participant.id,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
+  const kickout = (e) => {
     console.log(participant);
-    axios.patch("//localhost:5001/room/group/kickout", {
-      roomType: false,
-      roomId: "135",
+    e.preventDefault();
+    axios
+      .patch("/room/group/kickout", {
+        roomType: isPublic,
+        roomId,
+        targetId: participant.id,
+      })
+      .then(console.log);
+  };
+
+  const delegate = (e) => {
+    e.preventDefault();
+    axios.patch("/room/group/delegate", {
+      roomType: isPublic,
+      roomId,
       targetId: participant.id,
     });
+    console.log(selectedUserInfo);
   };
   useEffect(() => {
     vidRef.current.srcObject =
       participant.type === "local"
         ? participant.rtcPeer?.getLocalStream()
         : participant.rtcPeer?.getRemoteStream();
-    // console.log(participant.rtcPeer.getRemoteStream());
-    // console.log(participant.rtcPeer.getLocalStream());
-  }, [participant, tmp]);
-  useEffect(() => {
-    vidRef.current.muted = myAudio;
-  }, [myAudio]);
+    vidRef.current.muted = !participant.audio;
+    participant.video ? vidRef.current.play() : vidRef.current.pause();
+    console.log(participant.audio);
+  }, [participant, tmp, selectedUserInfo.master]);
+
   const openMenu = (e) => {
+    e.preventDefault();
     setXY({ x: e.clientX, y: e.clientY });
     setClickedParticipant(participant);
     setDisplayMenu(true);
   };
+
   return (
     <>
-      <li onClick={openMenu}>
-        <video className={styles.video} ref={vidRef} autoPlay playsInline />
-        <div className={styles.name}>{participant.type}</div>
-        <button onClick={() => console.log(participant)}>participant</button>
+      <li className={styles.participant} onClick={openMenu}>
+        <video
+          id={participant.id}
+          className={styles.video}
+          ref={vidRef}
+          autoPlay
+          playsInline
+        />
+        <p className={styles.name}>{participant.id}</p>
       </li>
       {displayMenu && clickedParticipant === participant && (
         <ul
           className={styles.menuList}
           style={{ top: `${xy.y}px`, left: `${xy.x}px` }}
         >
-          <li onClick={() => vidRef.current.pause()}>경고</li>
-          <li onClick={kickout}>강퇴</li>
-          <li onClick={() => console.log(clickedParticipant)}>방장 위임</li>
-          <li onClick={() => setOpenProfile(true)}>프로필 보기</li>
+          <li
+            className={`${
+              selectedUserInfo.id === selectedUserInfo.master &&
+              participant.id !== selectedUserInfo.id
+                ? styles.master
+                : styles.normal
+            }`}
+            onClick={alertUser}
+          >
+            경고
+          </li>
+          <li
+            className={`${
+              selectedUserInfo.id === selectedUserInfo.master &&
+              participant.id !== selectedUserInfo.id
+                ? styles.master
+                : styles.normal
+            }`}
+            onClick={kickout}
+          >
+            강퇴
+          </li>
+          <li
+            className={`${
+              selectedUserInfo.id === selectedUserInfo.master &&
+              participant.id !== selectedUserInfo.id
+                ? styles.master
+                : styles.normal
+            }`}
+            onClick={delegate}
+          >
+            방장 위임
+          </li>
+          <li className={styles.profileLi} onClick={() => setOpenProfile(true)}>
+            프로필 보기
+          </li>
         </ul>
       )}
       {openProfile && <ProfileModal setOpen={setOpenProfile} />}
