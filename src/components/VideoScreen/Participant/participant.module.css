@@ -1,17 +1,17 @@
-.videos {
-  display: flex;
-  gap: 10px;
-}
 .video {
-  position: relative;
-  width: 100px;
-  height: 100px;
+  width: 160px;
+  height: 120px;
   border: 1px solid greenyellow;
   background-color: rgb(151, 149, 149);
 }
 
+.name {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .menuList {
-  /* display: none; */
+  z-index: 100;
   border-radius: 5px;
   background: white;
   position: absolute;
@@ -20,12 +20,24 @@
 
 .menuList > li {
   margin: 8px;
+  user-select: none;
+}
+
+.master:hover,
+.profileLi:hover {
+  background: skyblue;
   cursor: pointer;
 }
 
-.menuList > li:hover {
-  background: skyblue;
+.normal {
+  color: gray;
 }
+
+.normal:hover {
+  background: white;
+  cursor: auto;
+}
+
 .name {
   position: absolute;
   top: 80px;

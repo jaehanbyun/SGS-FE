@@ -1,6 +1,8 @@
 .screen {
-  padding-bottom: 5vw;
-  width: 63.75vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   z-index: 1;
   background-color: aqua;
 }
@@ -14,13 +16,6 @@
 .videos {
   display: flex;
   gap: 10px;
-}
-.video {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  border: 1px solid greenyellow;
-  background-color: rgb(151, 149, 149);
 }
 
 .name {
