@@ -2,13 +2,14 @@ import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../api/core";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedUserInfo } from "../../../../redux/selectedUserInfo/slice";
 
-const Room = ({ room, setRoomInfoModalOpen, signaling }) => {
+const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
-  const {
-    selectedUserInfo: { id },
-  } = useSelector((state) => state);
+  const { selectedUserInfo } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
     const seconds = Math.floor(timeDiff / 1000);
@@ -36,12 +37,12 @@ const Room = ({ room, setRoomInfoModalOpen, signaling }) => {
         .post("/room/group/in", {
           roomId: roomId,
         })
-        .then(console.log);
-      signaling.socket = new WebSocket("wss://localhost:8443/socket");
-      signaling.socket.onopen = () => {
-        signaling.joinRoom(id, roomId);
-        navigate(`/main/${roomId}`);
-      };
+        .then((res) => {
+          console.log(res.data.data);
+          const master = res.data.data.roomOwner;
+          dispatch(setSelectedUserInfo({ ...selectedUserInfo, master }));
+          navigate(`/main/${roomId}`);
+        });
     } catch (err) {
       console.log(err);
     }

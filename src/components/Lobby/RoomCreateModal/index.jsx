@@ -5,6 +5,7 @@ import { useOnClickOutside } from "../../../hooks";
 import Button from "../../Button";
 import styles from "./RoomCreateModal.module.css";
 import axios from "../../../api/core";
+import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
@@ -13,7 +14,8 @@ const RoomCreateModal = ({ setModalOpen }) => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);
-
+  const { selectedUserInfo } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const ref = useRef();
   const roomNameRef = useRef();
 
@@ -62,6 +64,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
         .then((res) => {
           if (res.data.result === "SUCCESS") {
             navigate(`/main/${res.data.data.roomId}`);
+            dispatch(setSelectedUserInfo({...selectedUserInfo, master: selectedUserInfo.id}))
             setModalOpen(false);
           }
         });
