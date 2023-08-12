@@ -11,7 +11,7 @@ import RoomCodeModal from "./RoomCodeModal/RoomCodeModal";
 const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
   const navigate = useNavigate();
   const {
-    selectedUserInfo: { id, master },
+    selectedUserInfo: { id },
   } = useSelector((state) => state);
   const [timerText, setTimerText] = useState("타이머 시작");
   const [timerState, setTimerState] = useState(false);
@@ -26,6 +26,10 @@ const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
     setShowTime(formattedTime);
   }, [formattedTime]);
 
+  useEffect(() => {
+    setAudio(true);
+    setVideo(true);
+  }, [roomId]);
   const handleVideo = () => {
     signaling.sendMessage({
       id: "videoState",
