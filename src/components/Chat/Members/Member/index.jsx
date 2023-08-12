@@ -28,7 +28,7 @@ const Member = ({ userId, participant, idx }) => {
           <img src="/images/profile.svg" alt="profile" />
           <div className={styles.userId}>{userId}</div>
           <div className={styles.studyTime}>{showTime}</div>
-          {userId === master && <img src="/images/star.svg" alt="master" />}
+          {master && <img src="/images/star.svg" alt="master" />}
         </li>
       )}
     </>

@@ -38,8 +38,12 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
       const res = await axios.post("/room/group/in", {
         roomId: roomId,
       });
-      const master = res.data.data.roomOwner;
-      dispatch(setSelectedUserInfo({ ...selectedUserInfo, master }));
+      dispatch(
+        setSelectedUserInfo({
+          ...selectedUserInfo,
+          master: res.data.data.roomOwner === selectedUserInfo.id,
+        })
+      );
       dispatch(setSelectedRoomInfo({ type: true }));
       navigate(`/main/${roomId}`);
     } catch (err) {

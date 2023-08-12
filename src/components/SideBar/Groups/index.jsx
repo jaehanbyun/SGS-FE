@@ -40,7 +40,8 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
           master: res.data.data.roomOwner === selectedUserInfo.id,
         })
       );
-      console.log(selectedUserInfo);
+      console.log("userInfo", selectedUserInfo);
+      console.log("res", res.data.data);
     } catch (err) {
       console.log(err);
     }
