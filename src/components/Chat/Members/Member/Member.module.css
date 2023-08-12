@@ -6,6 +6,7 @@
   gap: 16px;
   width: 100%;
   font-size: 32px;
-  background: "#4A4F5A";
+  background: rgb(195, 44, 109);
+  border: 1px solid rgb(210, 210, 183);
   /* align-items: center; */
 }

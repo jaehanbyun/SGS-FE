@@ -116,7 +116,8 @@ const Participant = ({
         >
           <li
             className={`${
-              selectedUserInfo.master && participant.id !== selectedUserInfo.id
+              selectedUserInfo.id === selectedUserInfo.master &&
+              participant.id !== selectedUserInfo.id
                 ? styles.master
                 : styles.normal
             }`}
@@ -126,7 +127,8 @@ const Participant = ({
           </li>
           <li
             className={`${
-              selectedUserInfo.master && participant.id !== selectedUserInfo.id
+              selectedUserInfo.id === selectedUserInfo.master &&
+              participant.id !== selectedUserInfo.id
                 ? styles.master
                 : styles.normal
             }`}
@@ -136,7 +138,8 @@ const Participant = ({
           </li>
           <li
             className={`${
-              selectedUserInfo.master && participant.id !== selectedUserInfo.id
+              selectedUserInfo.id === selectedUserInfo.master &&
+              participant.id !== selectedUserInfo.id
                 ? styles.master
                 : styles.normal
             }`}

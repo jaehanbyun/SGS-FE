@@ -41,7 +41,7 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
       dispatch(
         setSelectedUserInfo({
           ...selectedUserInfo,
-          master: res.data.data.roomOwner === selectedUserInfo.id,
+          master: res.data.data.roomOwner,
         })
       );
       dispatch(setSelectedRoomInfo({ type: true }));

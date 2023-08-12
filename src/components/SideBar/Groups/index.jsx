@@ -37,7 +37,7 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
       dispatch(
         setSelectedUserInfo({
           ...selectedUserInfo,
-          master: res.data.data.roomOwner === selectedUserInfo.id,
+          master: res.data.data.roomOwner,
         })
       );
       console.log("userInfo", selectedUserInfo);

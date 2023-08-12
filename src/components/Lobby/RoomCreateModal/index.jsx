@@ -63,7 +63,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
       dispatch(
         setSelectedUserInfo({
           ...selectedUserInfo,
-          master: true,
+          master: selectedUserInfo.id,
         })
       );
       dispatch(
