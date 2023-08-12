@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedGroup } from "../../../redux/selectedGroup/slice";
 import GroupItem from "./GroupItem";
 import styles from "./Groups.module.css";
 import axios from "../../../api/core";
 import { useNavigate } from "react-router";
 import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
+import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 
 const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
   const [groups, setGroups] = useState([]);
   const { selectedUpdate } = useSelector((state) => state);
-
+  const { selectedUserInfo } = useSelector((state) => state);
   const navigate = useNavigate();
 
   const getGroups = async () => {
@@ -34,6 +34,13 @@ const Groups = ({ currentIndex, setCurrentIndex }) => {
       const res = await axios.post("/room/group/private/in", {
         roomId: id,
       });
+      dispatch(
+        setSelectedUserInfo({
+          ...selectedUserInfo,
+          master: res.data.data.roomOwner,
+        })
+      );
+      console.log(selectedUserInfo);
     } catch (err) {
       console.log(err);
     }
