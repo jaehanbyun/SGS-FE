@@ -8,6 +8,7 @@ const initState = {
   email: "",
   profileImage: null,
   description: "",
+  url: "",
 };
 
 const selectedUserInfoReducer = createSlice({
@@ -17,7 +18,17 @@ const selectedUserInfoReducer = createSlice({
     setSelectedUserInfo: (
       state,
       {
-        payload: { client, master, id, name, email, profileImage, description },
+        payload: {
+          client,
+          master,
+          id,
+          name,
+          email,
+          profileImage,
+          studyTime,
+          description,
+          url,
+        },
       }
     ) => ({
       ...state,
@@ -28,6 +39,7 @@ const selectedUserInfoReducer = createSlice({
       email,
       profileImage,
       description,
+      url,
     }),
   },
 });

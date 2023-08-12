@@ -6,6 +6,7 @@ import styles from "./Lobby.module.css";
 import LobbyHeader from "./LobbyHeader";
 import RoomCreateModal from "./RoomCreateModal";
 import axios from "../../api/core";
+import GroupJoinModal from "./GroupJoinModal";
 
 const channelName = [
   "",
@@ -19,6 +20,7 @@ const channelName = [
 const Lobby = React.memo(({ setRoomInfoModalOpen, signaling }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
+  const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [nextRoomId, setNextRoomId] = useState(null);
   const [refresh, setRefresh] = useState(false);
@@ -84,6 +86,7 @@ const Lobby = React.memo(({ setRoomInfoModalOpen, signaling }) => {
       />
       <Collect
         setModalOpen={setModalOpen}
+        setGroupModalOpen={setGroupModalOpen}
         setRooms={setRooms}
         setNextRoomId={setNextRoomId}
         setIsScroll={setIsScroll}
@@ -92,7 +95,9 @@ const Lobby = React.memo(({ setRoomInfoModalOpen, signaling }) => {
         searchValue={searchValue}
         setSearchValue={setSearchValue}
       />
-      <Collect setModalOpen={setModalOpen} />
+      {groupModalOpen && (
+        <GroupJoinModal setGroupModalOpen={setGroupModalOpen} />
+      )}
       {modalOpen && (
         <RoomCreateModal signaling={signaling} setModalOpen={setModalOpen} />
       )}

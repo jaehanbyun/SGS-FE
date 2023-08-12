@@ -16,9 +16,12 @@ const Main = ({ signaling }) => {
   const [roomInfoModalOpen, setRoomInfoModalOpen] = useState({
     open: false,
     roomId: null,
+    roomType: true,
   });
   const { selectedProfileIcon } = useSelector((state) => state);
   const { selectedUserInfo } = useSelector((state) => state);
+
+  const [update, setUpdate] = useState(false);
 
   const dispatch = useDispatch();
   var client = null;
@@ -26,8 +29,8 @@ const Main = ({ signaling }) => {
     signaling.uid = selectedUserInfo.id;
 
     client = connect(client);
-    dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
-
+    dispatch(setSelectedUserInfo({ ...selectedUserInfo, client: client }));
+    setUpdate((prev) => !prev);
     return () => {
       if (client.connected) {
         unsubscribe(client, 0);
@@ -48,9 +51,12 @@ const Main = ({ signaling }) => {
           roomInfoModalOpen={roomInfoModalOpen}
         />
       )}
-      <Profile setProfileModalOpen={setProfileModalOpen} />
+      <Profile setProfileModalOpen={setProfileModalOpen} update={update} />
       {profileModalOpen && (
-        <ProfileEditModal setProfileModalOpen={setProfileModalOpen} />
+        <ProfileEditModal
+          setProfileModalOpen={setProfileModalOpen}
+          setUpdate={setUpdate}
+        />
       )}
       {selectedProfileIcon[0] && <CalendarModal />}
       {selectedProfileIcon[1] && <ChartModal />}

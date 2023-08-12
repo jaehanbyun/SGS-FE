@@ -1,29 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
-  userId: null,
-  roomType: null,
-  roomId: null,
-  roomName: "",
-  maxUser: null,
-  roomChannel: "",
+  type: true,
 };
 
 const selectedRoomInfoReducer = createSlice({
   name: "selectedRoomInfo",
   initialState: initState,
   reducers: {
-    setSelectedRoomInfo: (
-      state,
-      { payload: { userId, roomType, roomId, roomName, maxUser, roomChannel } }
-    ) => ({
+    setSelectedRoomInfo: (state, { payload: { type } }) => ({
       ...state,
-      userId,
-      roomType,
-      roomId,
-      roomName,
-      maxUser,
-      roomChannel,
+      type,
     }),
   },
 });

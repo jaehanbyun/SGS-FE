@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
 import styles from "./Profile.module.css";
 import ProfileBtns from "./ProfileBtns";
@@ -7,29 +7,47 @@ import ProfileImg from "./ProfileImg";
 import ProfileInfo from "./ProfileInfo";
 import StudyTime from "./StudyTime";
 import axios from "../../api/core";
+import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
 
-const Profile = React.memo(({ setProfileModalOpen }) => {
+const Profile = React.memo(({ setProfileModalOpen, update }) => {
   const { selectedUserInfo } = useSelector((state) => state);
   const { name, email, profileImage, studyTime, description } =
     selectedUserInfo;
+
+  const dispatch = useDispatch();
+
   const onClick = () => {
     setProfileModalOpen(true);
   };
 
   const getUserInfo = async () => {
     try {
-      const res = await axios.get("/auth/get-profile", {
-        params: {
-          id: selectedUserInfo.id,
-        },
-      });
-      console.log(res);
+      const res = await axios.get("/auth/get-profile");
+      let { name, profileImage, description, email, url } = res.data.data;
+      if (name === null) {
+        const ranNum = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
+        name = `익명#${ranNum}`;
+      }
+      if (profileImage === null) {
+        profileImage = "/images/profile.svg";
+      }
+      console.log(selectedUserInfo);
+      dispatch(
+        setSelectedUserInfo({
+          ...selectedUserInfo,
+          name,
+          email,
+          profileImage,
+          description,
+          url,
+        })
+      );
     } catch (err) {}
   };
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [update]);
 
   return (
     <div className={styles.profile}>

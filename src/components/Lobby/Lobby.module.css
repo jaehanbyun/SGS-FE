@@ -4,3 +4,8 @@
   position: relative;
   z-index: 1;
 }
+@media (max-width: 1200px) {
+  .lobby {
+    width: 100%;
+  }
+}

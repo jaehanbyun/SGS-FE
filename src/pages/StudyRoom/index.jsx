@@ -10,6 +10,7 @@ import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
 const StudyRoom = ({ signaling }) => {
   const { roomId } = useParams();
   const { selectedUserInfo } = useSelector((state) => state);
+  const { selectedRoomInfo } = useSelector((state) => state);
   const [chatList, setChatList] = useState([]);
   const [participants, setParticipants] = useState({});
   const dispatch = useDispatch();

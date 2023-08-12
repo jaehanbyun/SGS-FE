@@ -5,7 +5,7 @@ import Button from "../../Button";
 import styles from "./ProfileEditModal.module.css";
 import axios from "../../../api/core";
 
-const ProfileEditModal = ({ setProfileModalOpen }) => {
+const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
   const ref = useRef();
   const fileRef = useRef();
   const { selectedUserInfo } = useSelector((state) => state);
@@ -19,8 +19,11 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
         name: info.name,
         profileImage: info.profileImage,
         description: info.description,
+        url: info.url,
       });
       console.log(res);
+      setProfileModalOpen(false);
+      setUpdate((prev) => !prev);
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +85,13 @@ const ProfileEditModal = ({ setProfileModalOpen }) => {
           </div>
           <div className={`${styles.site} ${styles.content}`}>
             <p>웹사이트</p>
-            <input type="text" />
+            <input
+              type="text"
+              value={info.url}
+              onChange={(e) => {
+                setInfo({ ...info, url: e.target.value });
+              }}
+            />
           </div>
           <div className={`${styles.introduce} ${styles.content}`}>
             <p>소개</p>

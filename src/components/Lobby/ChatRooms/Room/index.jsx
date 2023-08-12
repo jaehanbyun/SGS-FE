@@ -2,8 +2,10 @@ import React from "react";
 import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../api/core";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUserInfo } from "../../../../redux/selectedUserInfo/slice";
+import { setSelectedRoomInfo } from "../../../../redux/selectedRoomInfo/slice";
 
 const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
@@ -33,23 +35,20 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
 
   const joinRoom = async () => {
     try {
-      await axios
-        .post("/room/group/in", {
-          roomId: roomId,
-        })
-        .then((res) => {
-          console.log(res.data.data);
-          const master = res.data.data.roomOwner;
-          dispatch(setSelectedUserInfo({ ...selectedUserInfo, master }));
-          navigate(`/main/${roomId}`);
-        });
+      const res = await axios.post("/room/group/in", {
+        roomId: roomId,
+      });
+      const master = res.data.data.roomOwner;
+      dispatch(setSelectedUserInfo({ ...selectedUserInfo, master }));
+      dispatch(setSelectedRoomInfo({ type: true }));
+      navigate(`/main/${roomId}`);
     } catch (err) {
       console.log(err);
     }
   };
 
   const onClick = () => {
-    setRoomInfoModalOpen({ open: true, roomId: roomId });
+    setRoomInfoModalOpen({ open: true, roomId: roomId, roomType: true });
   };
 
   return (

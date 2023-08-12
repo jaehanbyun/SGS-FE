@@ -7,6 +7,7 @@ import axios from "../../../api/core";
 const Collect = ({
   setNextRoomId,
   setModalOpen,
+  setGroupModalOpen,
   setRooms,
   setIsScroll,
   setIsData,
@@ -16,12 +17,16 @@ const Collect = ({
 }) => {
   const { selectedChannel } = useSelector((state) => state);
 
-  const onClick = () => {
+  const onCreate = () => {
     if (selectedChannel === 0) {
       alert("홈 채널에서는 방을 생성 할 수 없습니다.");
       return;
     }
     setModalOpen(true);
+  };
+
+  const onJoin = () => {
+    setGroupModalOpen(true);
   };
 
   const searchRoom = async () => {
@@ -65,12 +70,20 @@ const Collect = ({
       </div>
       <div className={`${styles.item} ${styles.btn}`}>
         <Button
-          text={"채팅방 생성"}
-          width={"120px"}
+          text={"그룹 가입"}
+          width={"100px"}
           height={"45px"}
           backgroundColor={"#ff7272"}
           color={"#e7e7e7"}
-          onClick={onClick}
+          onClick={onJoin}
+        />
+        <Button
+          text={"채팅방 생성"}
+          width={"100px"}
+          height={"45px"}
+          backgroundColor={"#ff7272"}
+          color={"#e7e7e7"}
+          onClick={onCreate}
         />
       </div>
     </div>
