@@ -9,10 +9,12 @@ import Chat from "../../components/Chat";
 const StudyRoom = () => {
   const { roomId } = useParams();
   const { selectedUserInfo } = useSelector((state) => state);
+  const { selectedRoomInfo } = useSelector((state) => state);
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
     subscribe(selectedUserInfo.client, roomId, setChatList);
+    console.log(selectedRoomInfo);
     return () => {
       unsubscribe(selectedUserInfo.client, roomId);
       disconnect(selectedUserInfo.client);

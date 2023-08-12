@@ -22,13 +22,8 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
 
   const getUserInfo = async () => {
     try {
-      console.log("id", selectedUserInfo.id);
-      const res = await axios.get("/auth/get-profile", {
-        params: {
-          id: selectedUserInfo.id,
-        },
-      });
-      let { name, profileImage, description } = res.data.data;
+      const res = await axios.get("/auth/get-profile");
+      let { name, profileImage, description, email, url } = res.data.data;
       if (name === null) {
         const ranNum = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
         name = `익명#${ranNum}`;
@@ -41,8 +36,10 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
         setSelectedUserInfo({
           ...selectedUserInfo,
           name,
+          email,
           profileImage,
           description,
+          url,
         })
       );
     } catch (err) {}
