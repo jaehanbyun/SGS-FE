@@ -1,4 +1,11 @@
 .members {
-  width: 100%;
   height: 20%;
+  display: flex;
+  width: 100%;
+}
+
+.ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }

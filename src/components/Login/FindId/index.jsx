@@ -20,7 +20,7 @@ const FindId = ({ setIsFindPage }) => {
         },
       });
       console.log(res);
-      const id = res.data.successCode.message;
+      const id = res.data.data.message;
       msgRef.current.innerHTML = `아이디는 <strong>${id}</strong>입니다.`;
       msgRef.current.style.color = "#03c75a";
     } catch (err) {

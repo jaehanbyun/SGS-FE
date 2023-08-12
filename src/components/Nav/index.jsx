@@ -2,12 +2,16 @@ import React from "react";
 import Button from "../Button";
 import styles from "./Nav.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Nav = () => {
   const navigate = useNavigate();
+  const { selectedUserInfo } = useSelector((state) => state);
   const onClick = () => {
-    navigate("/login");
+    if (selectedUserInfo.id) navigate("/main");
+    else navigate("/login");
   };
+  console.log(selectedUserInfo);
   return (
     <nav className={styles.nav}>
       <div className={styles.inner}>

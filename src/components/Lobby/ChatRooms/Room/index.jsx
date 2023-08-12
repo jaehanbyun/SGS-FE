@@ -3,8 +3,14 @@ import styles from "./Room.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../api/core";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedUserInfo } from "../../../../redux/selectedUserInfo/slice";
+import { setSelectedRoomInfo } from "../../../../redux/selectedRoomInfo/slice";
+
 const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
+  const { selectedUserInfo } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const getTimeDifference = (startDate, endDate) => {
     const timeDiff = endDate.getTime() - startDate.getTime();
@@ -23,14 +29,18 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
       return `${seconds}초전`;
     }
   };
+
   const diff = getTimeDifference(new Date(createdAt), new Date());
   const navigate = useNavigate();
 
   const joinRoom = async () => {
     try {
-      await axios.post("/room/group/in", {
+      const res = await axios.post("/room/group/in", {
         roomId: roomId,
       });
+      const master = res.data.data.roomOwner;
+      dispatch(setSelectedUserInfo({ ...selectedUserInfo, master }));
+      dispatch(setSelectedRoomInfo({ type: true }));
       navigate(`/main/${roomId}`);
     } catch (err) {
       console.log(err);
@@ -38,7 +48,7 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
   };
 
   const onClick = () => {
-    setRoomInfoModalOpen({ open: true, roomId: roomId });
+    setRoomInfoModalOpen({ open: true, roomId: roomId, roomType: true });
   };
 
   return (

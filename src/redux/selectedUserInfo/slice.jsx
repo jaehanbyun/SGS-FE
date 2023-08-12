@@ -2,12 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
   client: null,
+  master: true,
   id: "",
   name: "",
   email: "",
   profileImage: null,
-  studyTime: 0,
   description: "",
+  url: "",
 };
 
 const selectedUserInfoReducer = createSlice({
@@ -19,23 +20,26 @@ const selectedUserInfoReducer = createSlice({
       {
         payload: {
           client,
+          master,
           id,
           name,
           email,
           profileImage,
           studyTime,
           description,
+          url,
         },
       }
     ) => ({
       ...state,
       client,
+      master,
       id,
       name,
       email,
       profileImage,
-      studyTime,
       description,
+      url,
     }),
   },
 });

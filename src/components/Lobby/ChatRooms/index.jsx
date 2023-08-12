@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./ChatRooms.module.css";
 import Room from "./Room";
 import axios from "../../../api/core";
-import MockAdapter from "axios-mock-adapter";
 import { useSelector } from "react-redux";
 
 const channelName = [
@@ -15,6 +14,7 @@ const channelName = [
 ];
 
 const ChatRooms = ({
+  signaling,
   scrollRef,
   rooms,
   setRooms,
@@ -58,7 +58,7 @@ const ChatRooms = ({
           },
         });
       }
-      console.log(res);
+      // console.log(res);
       const newRooms = [...rooms, ...res.data.data];
       setRooms(newRooms);
       setNextRoomId(newRooms[newRooms.length - 1].roomId);
@@ -96,6 +96,7 @@ const ChatRooms = ({
       <div ref={roomRef}>
         {rooms.map((room) => (
           <Room
+            signaling={signaling}
             room={room}
             key={room.roomId}
             setRoomInfoModalOpen={setRoomInfoModalOpen}

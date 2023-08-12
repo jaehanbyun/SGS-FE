@@ -1,9 +1,11 @@
 import React, { useRef } from "react";
 import styles from "./ProfileModal.module.css";
 
-const ProfileModal = () => {
+const ProfileModal = ({ setOpen }) => {
   const ref = useRef();
-  const onClick = () => {};
+  const onClick = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={styles.container}>
