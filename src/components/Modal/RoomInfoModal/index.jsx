@@ -9,13 +9,19 @@ const RoomInfoModal = ({ roomInfoModalOpen, setRoomInfoModalOpen }) => {
     channel: null,
     roomName: null,
     roomOwner: null,
+    roomNotice: null,
     curUser: null,
     maxUser: null,
     createdAt: null,
   });
 
   const getRoomInfo = async () => {
-    const res = await axios.get(`/room/group/${roomInfoModalOpen.roomId}`);
+    console.log(roomInfoModalOpen);
+    const res = await axios.get(`/room/group/${roomInfoModalOpen.roomId}`, {
+      params: {
+        roomType: roomInfoModalOpen.roomType,
+      },
+    });
     let channel;
     switch (res.data.data.channel) {
       case "ELEMENTARY_SCHOOL":
@@ -80,6 +86,10 @@ const RoomInfoModal = ({ roomInfoModalOpen, setRoomInfoModalOpen }) => {
               <li>
                 <p className={styles.option}>채팅방 제목</p>
                 <p>{roomInfo.roomName}</p>
+              </li>
+              <li>
+                <p className={styles.option}>공지사항</p>
+                <p>{roomInfo.roomNotice}</p>
               </li>
               <li>
                 <p className={styles.option}>방장</p>

@@ -89,7 +89,7 @@ export default function Signup({ isLoginPage, toggleSign }) {
           },
         }
       );
-      setSuccessCode(res.data.successCode.message);
+      setSuccessCode(res.data.data.message);
       emailErrRef.current.style.display = "none";
       authRef.current.style.display = "block";
       authBtnRef.current.style.display = "block";

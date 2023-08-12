@@ -5,7 +5,6 @@ import Collect from "./Collect";
 import styles from "./Lobby.module.css";
 import LobbyHeader from "./LobbyHeader";
 import RoomCreateModal from "./RoomCreateModal";
-import MockAdapter from "axios-mock-adapter";
 import axios from "../../api/core";
 import GroupJoinModal from "./GroupJoinModal";
 
@@ -18,7 +17,7 @@ const channelName = [
   "BUSINESS",
 ];
 
-const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
+const Lobby = React.memo(({ setRoomInfoModalOpen, signaling }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [modalOpen, setModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
@@ -72,6 +71,7 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
       <LobbyHeader setRefresh={setRefresh} />
       <ChatRooms
         scrollRef={scrollRef}
+        signaling={signaling}
         rooms={rooms}
         setRooms={setRooms}
         nextRoomId={nextRoomId}
@@ -98,7 +98,9 @@ const Lobby = React.memo(({ setRoomInfoModalOpen }) => {
       {groupModalOpen && (
         <GroupJoinModal setGroupModalOpen={setGroupModalOpen} />
       )}
-      {modalOpen && <RoomCreateModal setModalOpen={setModalOpen} />}
+      {modalOpen && (
+        <RoomCreateModal signaling={signaling} setModalOpen={setModalOpen} />
+      )}
     </div>
   );
 });

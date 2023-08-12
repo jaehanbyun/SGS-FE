@@ -1,29 +1,22 @@
 import React, { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useOnClickOutside } from "../../../hooks";
+import styles from "./RoomEditModal.module.css";
 import Button from "../../Button";
-import styles from "./RoomCreateModal.module.css";
+import { useSelector } from "react-redux";
+import { useOnClickOutside } from "../../../hooks";
 import axios from "../../../api/core";
-import { setSelectedRoomInfo } from "../../../redux/selectedRoomInfo/slice";
-import { setSelectedUpdate } from "../../../redux/selectedUpdate/slice";
-import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
-const RoomCreateModal = ({ setModalOpen }) => {
+const RoomEditModal = ({ roomId, setRoomEditModalOpen }) => {
   const { selectedChannel } = useSelector((state) => state);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);
-  const { selectedUserInfo } = useSelector((state) => state);
-  const dispatch = useDispatch();
+
   const ref = useRef();
   const roomNameRef = useRef();
 
-  const navigate = useNavigate();
-
-  const createRoom = async () => {
+  const editRoom = async () => {
     try {
       const roomName = roomNameRef.current.value;
       if (roomName === "") {
@@ -58,28 +51,17 @@ const RoomCreateModal = ({ setModalOpen }) => {
         roomChannel: age,
       };
 
-      const res = await axios.post("/room/group", room);
-      setModalOpen(false);
-      dispatch(
-        setSelectedUserInfo({
-          ...selectedUserInfo,
-          master: selectedUserInfo.id,
-        })
-      );
-      dispatch(
-        setSelectedRoomInfo({ type: isPublic === "public" ? true : false })
-      );
-      dispatch(setSelectedUpdate());
-      if (isPublic === "public") {
-        navigate(`/main/${res.data.data.roomId}`);
-      }
+      const res = await axios.put("/room/group", room);
+      setRoomEditModalOpen(false);
     } catch (err) {
       console.log(err);
     }
   };
+
   const closeModal = () => {
-    setModalOpen(false);
+    setRoomEditModalOpen(false);
   };
+
   const handlePublicity = (e) => {
     setIsPublic(e.target.value);
   };
@@ -87,16 +69,15 @@ const RoomCreateModal = ({ setModalOpen }) => {
     setMaxUser(e.target.value);
   };
   useOnClickOutside(ref, () => {
-    setModalOpen(false);
+    setRoomEditModalOpen(false);
   });
-
   return (
     <div className={styles.container}>
       <div className={styles.modalWrapper}>
         <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
-            <p>채팅방 생성</p>
-            <img src="/images/exit.svg" alt="exit" onClick={closeModal} />
+            <p>채팅방 수정</p>
+            <img src="images/exit.svg" alt="exit" onClick={closeModal} />
           </div>
           <div className={styles.contents}>
             <ul>
@@ -128,35 +109,12 @@ const RoomCreateModal = ({ setModalOpen }) => {
                     onChange={handleMaxUser}
                     value={maxUser}
                   >
-                    <option value={3}>3</option>
-                    <option value={5}>5</option>
-                    <option value={7}>7</option>
-                    <option value={10}>10</option>
+                    <option value="three">3</option>
+                    <option value="five">5</option>
+                    <option value="seven">7</option>
+                    <option value="ten">10</option>
                   </select>
                   명
-                </div>
-              </li>
-              <li>
-                <p className={styles.option}>방 구분</p>
-                <div className={styles.separation}>
-                  <label htmlFor="public">공개</label>
-                  <input
-                    type="radio"
-                    id="public"
-                    value="public"
-                    name="separation"
-                    checked={isPublic === "public"}
-                    onChange={handlePublicity}
-                  />
-                  <label htmlFor="private">비공개 그룹</label>
-                  <input
-                    type="radio"
-                    id="private"
-                    value="private"
-                    name="separation"
-                    checked={isPublic === "private"}
-                    onChange={handlePublicity}
-                  />
                 </div>
               </li>
             </ul>
@@ -169,7 +127,7 @@ const RoomCreateModal = ({ setModalOpen }) => {
               backgroundColor={"#535353"}
               color={"#fff"}
               fontsize={18}
-              onClick={createRoom}
+              onClick={editRoom}
             />
             <Button
               width={"100px"}
@@ -187,4 +145,4 @@ const RoomCreateModal = ({ setModalOpen }) => {
   );
 };
 
-export default RoomCreateModal;
+export default RoomEditModal;

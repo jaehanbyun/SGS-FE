@@ -19,6 +19,7 @@ const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
         name: info.name,
         profileImage: info.profileImage,
         description: info.description,
+        url: info.url,
       });
       console.log(res);
       setProfileModalOpen(false);
@@ -84,7 +85,13 @@ const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
           </div>
           <div className={`${styles.site} ${styles.content}`}>
             <p>웹사이트</p>
-            <input type="text" />
+            <input
+              type="text"
+              value={info.url}
+              onChange={(e) => {
+                setInfo({ ...info, url: e.target.value });
+              }}
+            />
           </div>
           <div className={`${styles.introduce} ${styles.content}`}>
             <p>소개</p>

@@ -1,0 +1,11 @@
+.li {
+  color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  padding-left: 8px;
+  gap: 16px;
+  width: 100%;
+  font-size: 32px;
+  background: "#4A4F5A";
+  /* align-items: center; */
+}

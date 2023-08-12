@@ -16,6 +16,7 @@
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "kurento-browser-extensions": "^0.0.2",
     "kurento-utils": "^7.0.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",

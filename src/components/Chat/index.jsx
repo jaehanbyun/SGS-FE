@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Chat.module.css";
 import ChatArea from "./ChatArea";
 import Members from "./Members";
 
-const Chat = ({ roomId, chatList, setChatList }) => {
+const Chat = ({ participants, roomId, chatList, setChatList }) => {
   return (
     <div className={styles.container}>
-      <Members />
+      <Members participants={participants} />
       <ChatArea roomId={roomId} chatList={chatList} setChatList={setChatList} />
     </div>
   );

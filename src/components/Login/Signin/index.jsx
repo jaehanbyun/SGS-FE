@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedUserState } from "../../../redux/selectedUserState/slice";
 import ToggleSign from "../ToggleSign";
@@ -20,6 +20,7 @@ export default function Signin({
   const dispatch = useDispatch();
   const errRef = useRef();
   const pwdRef = useRef();
+  const { selectedUserInfo } = useSelector((state) => state);
 
   useEffect(() => {
     if (isError) {
@@ -49,10 +50,9 @@ export default function Signin({
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${res.data.data.accessToken}`;
-      console.log(res);
-      dispatch(setSelectedUserInfo({ id: id }));
+      dispatch(setSelectedUserInfo({ ...selectedUserInfo, id: id }));
       dispatch(setSelectedUserState(true));
-      navigate("/main");
+      navigate("/main", { id });
     } catch (err) {
       console.log(err);
       setIsError(true);
