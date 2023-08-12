@@ -13,10 +13,13 @@ const Participant = ({
   tmp,
   roomId,
   isPublic,
+  mainVidRef,
 }) => {
   const vidRef = useRef();
   const [xy, setXY] = useState({ x: 0, y: 0 });
   const [openProfile, setOpenProfile] = useState(false);
+  const [shareState, setShareState] = useState(false);
+  const [screenMedia, setScreenMedia] = useState();
   const { selectedUserInfo } = useSelector((state) => state);
 
   const alertUser = (e) => {
@@ -53,15 +56,31 @@ const Participant = ({
     });
     console.log(selectedUserInfo);
   };
+
+  const fixVideo = (e) => {
+    if (shareState) {
+      vidRef.current.srcObject = screenMedia;
+    } else {
+      mainVidRef.current.srcObject =
+        participant.type === "local"
+          ? participant.rtcPeer?.getLocalStream()
+          : participant.rtcPeer?.getRemoteStream();
+    }
+    e.preventDefault();
+    mainVidRef.muted = true;
+  };
   useEffect(() => {
-    vidRef.current.srcObject =
-      participant.type === "local"
-        ? participant.rtcPeer?.getLocalStream()
-        : participant.rtcPeer?.getRemoteStream();
+    if (shareState) {
+      vidRef.current.srcObject = screenMedia;
+    } else {
+      vidRef.current.srcObject =
+        participant.type === "local"
+          ? participant.rtcPeer?.getLocalStream()
+          : participant.rtcPeer?.getRemoteStream();
+    }
     vidRef.current.muted = !participant.audio;
     participant.video ? vidRef.current.play() : vidRef.current.pause();
-    console.log(participant.audio);
-  }, [participant, tmp, selectedUserInfo.master]);
+  }, [participant, tmp, selectedUserInfo.master, screenMedia]);
 
   const openMenu = (e) => {
     e.preventDefault();
@@ -69,23 +88,31 @@ const Participant = ({
     setClickedParticipant(participant);
     setDisplayMenu(true);
   };
-
+  const screenShare = async () => {
+    let mediaStream = null;
+    try {
+      mediaStream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          cursor: "always",
+        },
+        audio: false,
+      });
+      setShareState(true);
+      setScreenMedia(mediaStream);
+    } catch (ex) {
+      console.log("Error occurred", ex);
+    }
+  };
   return (
     <>
-      <li className={styles.participant} onClick={openMenu}>
-        <video
-          id={participant.id}
-          className={styles.video}
-          ref={vidRef}
-          autoPlay
-          playsInline
-        />
+      <li onClick={openMenu}>
+        <video className={styles.video} ref={vidRef} autoPlay playsInline />
         <p className={styles.name}>{participant.id}</p>
       </li>
       {displayMenu && clickedParticipant === participant && (
         <ul
           className={styles.menuList}
-          style={{ top: `${xy.y}px`, left: `${xy.x}px` }}
+          style={{ top: `${xy.y}px`, left: `calc(${xy.x}px - 28%)` }}
         >
           <li
             className={`${
@@ -120,7 +147,10 @@ const Participant = ({
           >
             방장 위임
           </li>
-          <li className={styles.profileLi} onClick={() => setOpenProfile(true)}>
+          <li className={styles.li} onClick={fixVideo}>
+            화면 고정
+          </li>
+          <li className={styles.li} onClick={() => setOpenProfile(true)}>
             프로필 보기
           </li>
         </ul>

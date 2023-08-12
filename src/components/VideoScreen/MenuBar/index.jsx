@@ -4,46 +4,27 @@ import styles from "./MenuBar.module.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useTimer from "../../../hooks/useTimer";
-import moment, { now } from "moment";
+import moment from "moment";
 import axios from "../../../api/core";
+import RoomCodeModal from "./RoomCodeModal/RoomCodeModal";
 
-const MenuBar = ({
-  participants,
-  signaling,
-  myVideo,
-  myAudio,
-  setMyVideo,
-  setMyAudio,
-  roomId,
-}) => {
+const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
   const navigate = useNavigate();
   const {
-    selectedUserInfo: { id },
+    selectedUserInfo: { id, master },
   } = useSelector((state) => state);
   const [timerText, setTimerText] = useState("타이머 시작");
   const [timerState, setTimerState] = useState(false);
   const [showTime, setShowTime] = useState(participants[id]?.studyTime);
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);
-  const [isPrivate, setIsPrivate] = useState(false);
+  const [codeModalOpen, setCodeModalOpen] = useState(false);
+  const [code, setCode] = useState("");
   const formattedTime = useTimer(participants[id]?.studyTime, timerState);
 
   useEffect(() => {
     setShowTime(formattedTime);
   }, [formattedTime]);
-
-  useEffect(() => {
-    const privateOrNot = async () => {
-      const res = await axios.get("/room/group/private");
-      if (
-        res.data &&
-        res.data.data.some((obj) => obj.roomId === Number(roomId))
-      ) {
-        setIsPrivate(true);
-      }
-    };
-    privateOrNot();
-  }, [roomId]);
 
   const handleVideo = () => {
     signaling.sendMessage({
@@ -51,27 +32,31 @@ const MenuBar = ({
       userId: id,
       video: !participants[id].video,
     });
-    if (video) {
-      setVideo(false);
-      setMyVideo(false);
-    } else {
-      setVideo(true);
-      setMyVideo(true);
-    }
     setVideo(!video);
   };
+
   const handleAudio = () => {
     signaling.sendMessage({
       id: "audioState",
       userId: id,
       audio: !participants[id].audio,
     });
-    if (audio) {
-      setAudio(false);
-      setMyAudio(true);
-    } else {
-      setAudio(true);
-      setMyAudio(false);
+    setAudio(!audio);
+  };
+
+  const screenShare = async () => {
+    let mediaStream = null;
+    try {
+      mediaStream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          cursor: "always",
+        },
+        audio: true,
+      });
+      // participants[id].rtcPeer.srcObject
+      console.log(mediaStream);
+    } catch (ex) {
+      console.log("Error occurred", ex);
     }
   };
   const handleTimer = () => {
@@ -96,15 +81,25 @@ const MenuBar = ({
   };
   const privateRoom = async () => {
     const res = await axios.get("/room/group/private");
-    console.log(res);
     if (res.data.data.some((obj) => obj.roomId === Number(roomId))) {
-      axios.patch("/room/group/private", { room_id: roomId }).then(console.log);
-      console.log("good");
+      axios.patch("/room/group/private", { roomId: roomId }).then((res) => {
+        if (res.status === 200) {
+          console.log(res.data.data);
+          setCode(res.data.data.roomCode);
+          setCodeModalOpen(true);
+        }
+      });
     }
   };
-  const roomExit = () => {
+  const roomExit = async () => {
+    console.log(participants);
+    for (const key in signaling._participants) {
+      participants[key].rtcPeer.dispose();
+    }
+    await signaling.socket.close();
+    signaling._participants = {};
     navigate("/main");
-    signaling.socket.close();
+    console.log("roomexit");
   };
 
   return (
@@ -120,14 +115,18 @@ const MenuBar = ({
           src={video ? "/images/video.svg" : "/images/video_off.svg"}
           alt="이미지"
         />
-        <img src="/images/screen_share.svg" alt="이미지" />
+        <img
+          onClick={screenShare}
+          src="/images/screen_share.svg"
+          alt="이미지"
+        />
       </div>
       <div className={styles.studyTime}>
         <div>총 공부 시간</div>
         <div>{showTime}</div>
       </div>
       <div className={styles.buttons}>
-        {isPrivate && (
+        {!isPublic && (
           <div className={styles.button}>
             <Button
               width={"108px"}
@@ -160,6 +159,9 @@ const MenuBar = ({
           />
         </div>
       </div>
+      {codeModalOpen && (
+        <RoomCodeModal code={code} setCodeModalOpen={setCodeModalOpen} />
+      )}
     </footer>
   );
 };

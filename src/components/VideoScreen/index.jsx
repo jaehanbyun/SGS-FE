@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./VideoScreen.module.css";
 // import SockJS from "sockjs-client";
 import MenuBar from "./MenuBar";
@@ -14,6 +14,8 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
   const [displayMenu, setDisplayMenu] = useState(false);
   const [clickedParticipant, setClickedParticipant] = useState(null);
   const [isPublic, setIsPublic] = useState(true);
+
+  const mainVidRef = useRef();
 
   const handleVideo = () => {
     setTmp((prev) => !prev);
@@ -58,18 +60,31 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
               tmp={tmp}
               roomId={roomId}
               isPublic={isPublic}
+              mainVidRef={mainVidRef}
             />
           ))}
         </ul>
       </div>
 
-      <button onClick={handleVideo}>비디오 켜기</button>
+      {/* <button onClick={handleVideo}>비디오 켜기</button> */}
+      <video className={styles.fixed} ref={mainVidRef} autoPlay playsInline />
+      <button
+        className={styles.unfix}
+        onClick={() => {
+          mainVidRef.current.srcObject = null;
+        }}
+      >
+        {mainVidRef.current &&
+          mainVidRef.current.srcObject &&
+          "고정된 화면 제거"}
+      </button>
       {participants[id] && (
         <MenuBar
           participants={participants}
           signaling={signaling}
           roomId={roomId}
           isPublic={isPublic}
+          mainVidRef={mainVidRef}
         />
       )}
       {/* <Chatting /> */}

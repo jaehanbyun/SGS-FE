@@ -24,7 +24,7 @@
 }
 
 .master:hover,
-.profileLi:hover {
+.li:hover {
   background: skyblue;
   cursor: pointer;
 }

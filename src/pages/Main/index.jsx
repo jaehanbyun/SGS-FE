@@ -25,18 +25,19 @@ const Main = ({ signaling }) => {
   useEffect(() => {
     signaling.uid = selectedUserInfo.id;
 
-    // client = connect(client);
-    // dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
+    client = connect(client);
+    dispatch(setSelectedUserInfo({ ...selectedUserInfo, client }));
 
-    // return () => {
-    //   if (client.connected) {
-    //     unsubscribe(client, 0);
-    //   }
-    // };
+    return () => {
+      if (client.connected) {
+        unsubscribe(client, 0);
+      }
+    };
   }, []);
 
   return (
     <div className={styles.main}>
+      {/* <button onClick={() => console.log(signaling)}>ddd</button> */}
       <Lobby
         signaling={signaling}
         setRoomInfoModalOpen={setRoomInfoModalOpen}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./StudyRoom.module.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { disconnect, subscribe, unsubscribe } from "../../utils/stomp";
 import VideoScreen from "../../components/VideoScreen";
@@ -13,29 +13,24 @@ const StudyRoom = ({ signaling }) => {
   const [chatList, setChatList] = useState([]);
   const [participants, setParticipants] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    signaling.socket = new WebSocket("wss://localhost:8443/socket");
+    signaling.socket = new WebSocket("wss://sgs.p-e.kr:8051/socket");
+    // signaling.socket = new WebSocket("wss://localhost:8443/socket");
     signaling.socket.onopen = () => {
-      console.log(chatList);
+      console.log("signaling socket open");
       signaling.joinRoom(selectedUserInfo.id, roomId);
       signaling.socket.onmessage = async (message) => {
         const parsedMessage = JSON.parse(message.data);
         if (parsedMessage.id !== "onIceCandidate")
           console.info("Received message: ", parsedMessage);
-
         switch (parsedMessage.id) {
           case "existingParticipants":
-            if (parsedMessage.members.length === 0) {
-              dispatch(
-                setSelectedUserInfo({ ...selectedUserInfo, master: true })
-              );
-            }
             await signaling.onExistingParticipants(parsedMessage);
-            setParticipants({ ...signaling._participants });
             break;
           case "newParticipantArrived":
             await signaling.receiveVideo(parsedMessage.member);
-            setParticipants({ ...signaling._participants });
             break;
           case "participantLeft":
             await signaling.onParticipantLeft(parsedMessage);
@@ -43,7 +38,6 @@ const StudyRoom = ({ signaling }) => {
             break;
           case "receiveVideoAnswer":
             await signaling.receiveVideoResponse(parsedMessage);
-            setParticipants({ ...signaling._participants });
             break;
           case "onIceCandidate":
             signaling._participants[
@@ -58,10 +52,11 @@ const StudyRoom = ({ signaling }) => {
                 }
               }
             );
+            setParticipants({ ...signaling._participants });
             break;
           case "myInfo":
-            signaling.myInfo(parsedMessage);
-            setParticipants({ ...signaling._participants });
+            await signaling.myInfo(parsedMessage);
+            // setParticipants({ ...signaling._participants });
             break;
           case "videoStateAnswer":
             signaling._participants[parsedMessage.userId].video =
@@ -80,17 +75,40 @@ const StudyRoom = ({ signaling }) => {
               parsedMessage.timer;
             setParticipants({ ...signaling._participants });
             break;
-
+          case "ALERT":
+            alert(`경고 ${parsedMessage.alertCount}회`);
+            break;
+          case "KICK_OUT":
+            for (const key in signaling._participants) {
+              signaling._participants[key].rtcPeer.dispose();
+              console.log(participants);
+            }
+            signaling._participants = {};
+            setParticipants({ ...signaling._participants });
+            await signaling.socket.close();
+            navigate("/main");
+            break;
+          case "DELEGATE":
+            dispatch(
+              setSelectedUserInfo({
+                ...selectedUserInfo,
+                master: parsedMessage.userId,
+              })
+            );
+            alert(`${parsedMessage.userId}가 방장이 되었습니다.`);
+            setParticipants({ ...signaling._participants });
+            break;
           default:
             console.error("Unrecognized message", parsedMessage);
         }
       };
     };
-    // subscribe(selectedUserInfo.client, roomId, setChatList);
-    // return () => {
-    //   unsubscribe(selectedUserInfo.client, roomId);
-    //   disconnect(selectedUserInfo.client);
-    // };
+    subscribe(selectedUserInfo.client, roomId, setChatList);
+    return () => {
+      signaling.socket.close();
+      unsubscribe(selectedUserInfo.client, roomId);
+      disconnect(selectedUserInfo.client);
+    };
   }, [selectedUserInfo.client, roomId]);
 
   return (
@@ -107,6 +125,7 @@ const StudyRoom = ({ signaling }) => {
         chatList={chatList}
         setChatList={setChatList}
       />
+      {/* <button onClick={() => console.log(signaling)}>signaling</button> */}
     </div>
   );
 };

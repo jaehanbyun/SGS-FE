@@ -48,12 +48,6 @@ const RoomCreateModal = ({ setModalOpen }) => {
         default:
           break;
       }
-      // const res = await axios.post("/room/group", {
-      //   roomType: isPublic === "public" ? true : false,
-      //   roomName,
-      //   maxUser,
-      //   roomChannel: age,
-      // });
       await axios
         .post("/room/group", {
           roomType: isPublic === "public" ? true : false,
@@ -64,7 +58,12 @@ const RoomCreateModal = ({ setModalOpen }) => {
         .then((res) => {
           if (res.data.result === "SUCCESS") {
             navigate(`/main/${res.data.data.roomId}`);
-            dispatch(setSelectedUserInfo({...selectedUserInfo, master: selectedUserInfo.id}))
+            dispatch(
+              setSelectedUserInfo({
+                ...selectedUserInfo,
+                master: selectedUserInfo.id,
+              })
+            );
             setModalOpen(false);
           }
         });
