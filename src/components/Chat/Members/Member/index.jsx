@@ -16,15 +16,10 @@ const Member = ({ userId, participant, idx }) => {
     setShowTime(formattedTime);
   }, [participant, formattedTime]);
 
-  const setColor = (idx) => {
-    if (idx === 0) return "#DDC365";
-    else if (idx === 1) return "#B7B7B7";
-    else if (idx === 2) return "#CA994F";
-  };
   return (
     <>
       {showTime && (
-        <li className={styles.li} style={{ background: setColor(idx) }}>
+        <li className={styles.li}>
           <img src="/images/profile.svg" alt="profile" />
           <div className={styles.userId}>{userId}</div>
           <div className={styles.studyTime}>{showTime}</div>
