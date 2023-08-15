@@ -8,7 +8,14 @@ import moment from "moment";
 import axios from "../../../api/core";
 import RoomCodeModal from "./RoomCodeModal/RoomCodeModal";
 
-const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
+const MenuBar = ({
+  participants,
+  signaling,
+  roomId,
+  isPublic,
+  setShareState,
+  setScreenMedia,
+}) => {
   const navigate = useNavigate();
   const {
     selectedUserInfo: { id },
@@ -19,6 +26,7 @@ const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);
   const [codeModalOpen, setCodeModalOpen] = useState(false);
+  const [isShared, setIsShared] = useState(false);
   const [code, setCode] = useState("");
   const formattedTime = useTimer(participants[id]?.studyTime, timerState);
 
@@ -49,20 +57,38 @@ const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
   };
 
   const screenShare = async () => {
-    let mediaStream = null;
     try {
-      mediaStream = await navigator.mediaDevices.getDisplayMedia({
+      const mediaStream = await navigator.mediaDevices.getDisplayMedia({
         video: {
           cursor: "always",
         },
-        audio: true,
+        audio: false,
       });
-      // participants[id].rtcPeer.srcObject
-      console.log(mediaStream);
+      setShareState(id);
+      setScreenMedia(mediaStream);
+      setIsShared(true);
+      participants[id].rtcPeer.peerConnection.getSenders().forEach((sender) => {
+        if (sender.track.kind === "video") {
+          sender.replaceTrack(mediaStream.getVideoTracks()[0]);
+        }
+      });
     } catch (ex) {
       console.log("Error occurred", ex);
     }
   };
+
+  const stopShare = async () => {
+    const stream = participants[id].rtcPeer.getLocalStream();
+    setShareState("");
+    setScreenMedia(stream);
+    setIsShared(false);
+    participants[id].rtcPeer.peerConnection.getSenders().forEach((sender) => {
+      if (sender.track.kind === "video") {
+        sender.replaceTrack(stream.getVideoTracks()[0]);
+      }
+    });
+  };
+
   const handleTimer = () => {
     if (timerState) {
       setTimerState(false);
@@ -112,17 +138,17 @@ const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
         <img
           onClick={handleAudio}
           src={audio ? "/images/microphone.svg" : "/images/mic_off.svg"}
-          alt="이미지"
+          alt="microphone"
         />
         <img
           onClick={handleVideo}
           src={video ? "/images/video.svg" : "/images/video_off.svg"}
-          alt="이미지"
+          alt="cam"
         />
         <img
-          onClick={screenShare}
-          src="/images/screen_share.svg"
-          alt="이미지"
+          onClick={isShared ? stopShare : screenShare}
+          src={isShared ? "/images/shared.svg" : "/images/unshared.svg"}
+          alt="screenShare"
         />
       </div>
       <div className={styles.studyTime}>
