@@ -32,8 +32,7 @@ const RoomCodeModal = ({ code, setCodeModalOpen }) => {
                 onClick={() => copyToClipboard(code)}
               />
             </div>
-
-            {copied && "  ✅클립보드에 복사됨"}
+            <p className={styles.copied}>{copied && "  ✅클립보드에 복사됨"}</p>
           </div>
         </div>
       </div>
