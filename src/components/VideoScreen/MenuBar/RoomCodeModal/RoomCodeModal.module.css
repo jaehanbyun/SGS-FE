@@ -70,6 +70,10 @@
   align-self: center;
   justify-content: center;
 }
+
+.copied {
+  margin-left: 16px;
+}
 .input {
   display: flex;
   width: 80%;

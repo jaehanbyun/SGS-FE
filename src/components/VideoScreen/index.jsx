@@ -14,12 +14,10 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
   const [displayMenu, setDisplayMenu] = useState(false);
   const [clickedParticipant, setClickedParticipant] = useState(null);
   const [isPublic, setIsPublic] = useState(true);
-
+  const [shareState, setShareState] = useState("");
+  const [screenMedia, setScreenMedia] = useState();
   const mainVidRef = useRef();
 
-  const handleVideo = () => {
-    setTmp((prev) => !prev);
-  };
   useEffect(() => {
     setTmp((prev) => !prev);
   }, [participants]);
@@ -61,12 +59,14 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
               roomId={roomId}
               isPublic={isPublic}
               mainVidRef={mainVidRef}
+              shareState={shareState}
+              screenMedia={screenMedia}
             />
           ))}
         </ul>
       </div>
 
-      {/* <button onClick={handleVideo}>비디오 켜기</button> */}
+      {/* <button onClick={() => setTmp(!tmp)}>비디오 켜기</button> */}
       <video className={styles.fixed} ref={mainVidRef} autoPlay playsInline />
       <button
         className={styles.unfix}
@@ -85,6 +85,8 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
           roomId={roomId}
           isPublic={isPublic}
           mainVidRef={mainVidRef}
+          setShareState={setShareState}
+          setScreenMedia={setScreenMedia}
         />
       )}
       {/* <Chatting /> */}

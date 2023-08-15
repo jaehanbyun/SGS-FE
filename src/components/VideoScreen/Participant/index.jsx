@@ -14,12 +14,13 @@ const Participant = ({
   roomId,
   isPublic,
   mainVidRef,
+  shareState,
+  screenMedia,
 }) => {
   const vidRef = useRef();
   const [xy, setXY] = useState({ x: 0, y: 0 });
   const [openProfile, setOpenProfile] = useState(false);
-  const [shareState, setShareState] = useState(false);
-  const [screenMedia, setScreenMedia] = useState();
+
   const { selectedUserInfo } = useSelector((state) => state);
 
   const alertUser = (e) => {
@@ -54,12 +55,11 @@ const Participant = ({
       roomId,
       targetId: participant.id,
     });
-    console.log(selectedUserInfo);
   };
 
   const fixVideo = (e) => {
     if (shareState) {
-      vidRef.current.srcObject = screenMedia;
+      mainVidRef.current.srcObject = screenMedia;
     } else {
       mainVidRef.current.srcObject =
         participant.type === "local"
@@ -67,10 +67,10 @@ const Participant = ({
           : participant.rtcPeer?.getRemoteStream();
     }
     e.preventDefault();
-    mainVidRef.muted = true;
+    mainVidRef.current.muted = true;
   };
   useEffect(() => {
-    if (shareState) {
+    if (shareState === participant.id) {
       vidRef.current.srcObject = screenMedia;
     } else {
       vidRef.current.srcObject =
@@ -78,9 +78,15 @@ const Participant = ({
           ? participant.rtcPeer?.getLocalStream()
           : participant.rtcPeer?.getRemoteStream();
     }
+  }, [tmp, selectedUserInfo.master, screenMedia]);
+
+  useEffect(() => {
     vidRef.current.muted = !participant.audio;
+  }, [participant.audio]);
+
+  useEffect(() => {
     participant.video ? vidRef.current.play() : vidRef.current.pause();
-  }, [participant, tmp, selectedUserInfo.master, screenMedia]);
+  }, [participant.video, tmp]);
 
   const openMenu = (e) => {
     e.preventDefault();
@@ -88,21 +94,7 @@ const Participant = ({
     setClickedParticipant(participant);
     setDisplayMenu(true);
   };
-  const screenShare = async () => {
-    let mediaStream = null;
-    try {
-      mediaStream = await navigator.mediaDevices.getDisplayMedia({
-        video: {
-          cursor: "always",
-        },
-        audio: false,
-      });
-      setShareState(true);
-      setScreenMedia(mediaStream);
-    } catch (ex) {
-      console.log("Error occurred", ex);
-    }
-  };
+
   return (
     <>
       <li onClick={openMenu}>
