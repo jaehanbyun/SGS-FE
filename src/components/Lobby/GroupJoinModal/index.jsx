@@ -20,7 +20,7 @@ const GroupJoinModal = ({ setGroupModalOpen }) => {
   const joinGroup = async () => {
     try {
       const res = await axios.post("room/group/private", {
-        roomCode: "4ef44023-c2ec-47aa-bfd3-75698242ff4b",
+        roomCode: code,
       });
       console.log(res);
       alert("그룹에 가입 되었습니다.");
