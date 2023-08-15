@@ -20,7 +20,6 @@ class Signaling {
 
   sendMessage = (msg) => {
     const jsonReq = JSON.stringify(msg);
-    console.log("Sending message: " + jsonReq);
     this.socket.send(jsonReq);
   };
 
@@ -46,6 +45,7 @@ class Signaling {
       video: sender.video,
       audio: sender.audio,
     };
+    console.log("sender at receiveVideo", sender);
     this._participants[user.id] = user;
 
     const options = {
@@ -54,7 +54,6 @@ class Signaling {
         offerToReceiveVideo: true,
       },
       onicecandidate: (candidate) => {
-        console.log("IceCandidate in receiveVideo");
         this.sendMessage({
           id: "onIceCandidate",
           userId: user.id,
@@ -65,7 +64,6 @@ class Signaling {
     user.rtcPeer = WebRtcPeer.WebRtcPeerRecvonly(options);
     user.rtcPeer.generateOffer((err, offerSdp) => {
       if (err) console.error("sdp offer error");
-      console.log("Invoking SDP offer callback function ###receiveVideo###");
       var msg = {
         id: "receiveVideoFrom",
         userId: user.id,
@@ -105,7 +103,6 @@ class Signaling {
     const options = {
       mediaConstraints: constraints,
       onicecandidate: (candidate) => {
-        console.log("IceCandidate in onExistingParticipants");
         this.sendMessage({
           id: "onIceCandidate",
           userId: this.userId,
@@ -121,9 +118,6 @@ class Signaling {
       }
       user.rtcPeer.generateOffer((err, offerSdp) => {
         if (err) console.error("sdp offer error");
-        console.log(
-          "Invoking SDP offer callback function ###onExistingParticipants###"
-        );
         var msg = {
           id: "receiveVideoFrom",
           userId: this.userId,
@@ -139,7 +133,6 @@ class Signaling {
     this._participants[result.userId].rtcPeer.processAnswer(
       result.sdpAnswer,
       function (error) {
-        console.log("receiveVideoResponse function");
         if (error) {
           alert(error);
           return console.error(error);
@@ -150,16 +143,11 @@ class Signaling {
 
   onParticipantLeft(request) {
     console.log("Participant " + request.userId + " left");
-    // var participant = this._participants[request.userId];
-    // participant[request.userId].dispose();
     delete this._participants[request.userId];
   }
 
   leaveRoom = () => {
     this.socket.send(JSON.stringify({ id: "leaveRoom" }));
-    // for (const participant of this._participants.values()) {
-    //   participant.dispose();
-    // }
     this._participants = {};
   };
 
