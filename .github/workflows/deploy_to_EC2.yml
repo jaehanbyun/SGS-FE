@@ -1,9 +1,14 @@
 name: Deploy to EC2
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
 
 env:
-  ECR_REPOSITORY: sgs-frontend
+  AWS_REGION: 'ap-northeast-2'
+  ECR_REPOSITORY: 'sgs-frontend'
 
 jobs:
   build_push:
@@ -29,14 +34,14 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION : ap-northeast-2
+        AWS_REGION : ${{ env.AWS_REGION }}
         
-    - name: Build Docker image
-      id: build_image
+    - name: Build and Push Docker Image
+      id: build_push_image
       run: |
-          docker build -t ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }} .
-          docker push ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
-          echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version}}"
+        docker build -t ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }} .
+        docker push ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+        echo "::set-output name=image::${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}"
 
     - name: Set up SSH
       uses: appleboy/ssh-action@master
@@ -45,7 +50,10 @@ jobs:
         host: ${{ secrets.EC2_IP }}
         username: ec2-user
         script: |
-          docker pull ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
-          docker stop ${{ env.ECR_REPOSITORY }} || true
-          docker rm ${{ env.ECR_REPOSITORY }} || true
-          docker run -d --name ${{ env.ECR_REPOSITORY }} -p 80:3000 ${{ steps.build_image.outputs.image }}
+          if [ "$(docker ps -qa -f name=${{ env.ECR_REPOSITORY }})" ]; then
+              docker rm -f ${{ env.ECR_REPOSITORY }}
+            fi
+            
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login_ecr.outputs.registry }} 
+            docker pull ${{ steps.login_ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.image.outputs.version }}
+            docker run -d --name ${{ env.ECR_REPOSITORY }} -p 3000:3000 ${{ steps.build_push_image.outputs.image }}
