@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Button from "../../Button";
 import styles from "./MenuBar.module.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useTimer from "../../../hooks/useTimer";
 import moment from "moment";
 import axios from "../../../api/core";
 import RoomCodeModal from "./RoomCodeModal/RoomCodeModal";
+import { setSelectedChannel } from "../../../redux/selectedChannel/slice";
 
 const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
   const [codeModalOpen, setCodeModalOpen] = useState(false);
   const [code, setCode] = useState("");
   const formattedTime = useTimer(participants[id]?.studyTime, timerState);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setShowTime(formattedTime);
@@ -96,6 +99,7 @@ const MenuBar = ({ participants, signaling, roomId, isPublic, mainVidRef }) => {
     }
   };
   const roomExit = async () => {
+    dispatch(setSelectedChannel(0));
     console.log(participants);
     for (const key in signaling._participants) {
       participants[key].rtcPeer.dispose();
