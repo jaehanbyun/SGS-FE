@@ -13,11 +13,11 @@ const ProfileModal = ({ setOpen }) => {
         <div className={styles.modal} ref={ref}>
           <div className={styles.top}>
             <p>프로필</p>
-            <img src="images/exit.svg" alt="exit" onClick={onClick} />
+            <img src="/images/exit.svg" alt="exit" onClick={onClick} />
           </div>
           <div className={`${styles.imageWrapper} ${styles.content}`}>
             <div className={styles.image}>
-              <img src="images/account_circle.svg" alt="profileImage" />
+              <img src="/images/account_circle.svg" alt="profileImage" />
             </div>
           </div>
           <div className={`${styles.nickname} ${styles.content}`}>
