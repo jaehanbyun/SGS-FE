@@ -6,6 +6,7 @@ import { disconnect, subscribe, unsubscribe } from "../../utils/stomp";
 import VideoScreen from "../../components/VideoScreen";
 import Chat from "../../components/Chat";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
+import moment from "moment";
 
 const StudyRoom = ({ signaling }) => {
   const { roomId } = useParams();
@@ -57,7 +58,6 @@ const StudyRoom = ({ signaling }) => {
             break;
           case "myInfo":
             await signaling.myInfo(parsedMessage);
-            // setParticipants({ ...signaling._participants });
             break;
           case "videoStateAnswer":
             signaling._participants[parsedMessage.userId].video =
@@ -98,6 +98,14 @@ const StudyRoom = ({ signaling }) => {
             );
             alert(`${parsedMessage.userId}가 방장이 되었습니다.`);
             setParticipants({ ...signaling._participants });
+            break;
+          case "RESET":
+            await signaling.sendMessage({
+              id: "timerState",
+              timerState: false,
+              time: moment().format("HH:mm:ss"),
+            });
+            setParticipants({ ...participants, studyTime: "00:00:00" });
             break;
           default:
             console.error("Unrecognized message", parsedMessage);

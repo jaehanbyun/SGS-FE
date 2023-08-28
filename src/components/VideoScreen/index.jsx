@@ -16,6 +16,7 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
   const [isPublic, setIsPublic] = useState(true);
   const [shareState, setShareState] = useState("");
   const [screenMedia, setScreenMedia] = useState();
+  const [fixedId, setFixedId] = useState("");
   const mainVidRef = useRef();
 
   useEffect(() => {
@@ -34,7 +35,13 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
     };
     publicOrNot();
   }, [roomId, id]);
-
+  useEffect(() => {
+    if (fixedId && !participants[fixedId].video) {
+      mainVidRef.current.srcObject = null;
+      alert(`${fixedId}님이 비디오를 중단하였습니다.`);
+      setFixedId("");
+    }
+  }, [participants]);
   return (
     <div
       onClick={() => {
@@ -61,23 +68,28 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
               mainVidRef={mainVidRef}
               shareState={shareState}
               screenMedia={screenMedia}
+              setFixedId={setFixedId}
             />
           ))}
         </ul>
       </div>
 
       {/* <button onClick={() => setTmp(!tmp)}>비디오 켜기</button> */}
+
       <video className={styles.fixed} ref={mainVidRef} autoPlay playsInline />
+
       <button
         className={styles.unfix}
         onClick={() => {
           mainVidRef.current.srcObject = null;
+          setFixedId("");
         }}
       >
         {mainVidRef.current &&
           mainVidRef.current.srcObject &&
           "고정된 화면 제거"}
       </button>
+
       {participants[id] && (
         <MenuBar
           participants={participants}

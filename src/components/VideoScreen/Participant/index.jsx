@@ -16,6 +16,7 @@ const Participant = ({
   mainVidRef,
   shareState,
   screenMedia,
+  setFixedId,
 }) => {
   const vidRef = useRef();
   const [xy, setXY] = useState({ x: 0, y: 0 });
@@ -66,6 +67,7 @@ const Participant = ({
           ? participant.rtcPeer?.getLocalStream()
           : participant.rtcPeer?.getRemoteStream();
     }
+    setFixedId(participant.id);
     e.preventDefault();
     mainVidRef.current.muted = true;
   };
