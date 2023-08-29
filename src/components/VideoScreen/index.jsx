@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./VideoScreen.module.css";
-// import SockJS from "sockjs-client";
 import MenuBar from "./MenuBar";
-// import Chatting from "./Chatting";
 import { useSelector } from "react-redux";
 import Participant from "./Participant";
 import axios from "../../api/core";
-const VideoScreen = ({ participants, signaling, roomId }) => {
+const VideoScreen = ({
+  participants,
+  signaling,
+  roomId,
+  timerText,
+  timerState,
+  setTimerText,
+  setTimerState,
+}) => {
   const {
     selectedUserInfo: { id },
   } = useSelector((state) => state);
@@ -41,7 +47,7 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
       alert(`${fixedId}님이 비디오를 중단하였습니다.`);
       setFixedId("");
     }
-  }, [participants]);
+  }, [participants, fixedId]);
   return (
     <div
       onClick={() => {
@@ -73,11 +79,7 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
           ))}
         </ul>
       </div>
-
-      {/* <button onClick={() => setTmp(!tmp)}>비디오 켜기</button> */}
-
       <video className={styles.fixed} ref={mainVidRef} autoPlay playsInline />
-
       <button
         className={styles.unfix}
         onClick={() => {
@@ -99,9 +101,12 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
           mainVidRef={mainVidRef}
           setShareState={setShareState}
           setScreenMedia={setScreenMedia}
+          timerState={timerState}
+          timerText={timerText}
+          setTimerState={setTimerState}
+          setTimerText={setTimerText}
         />
       )}
-      {/* <Chatting /> */}
     </div>
   );
 };

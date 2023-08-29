@@ -11,15 +11,15 @@ import moment from "moment";
 const StudyRoom = ({ signaling }) => {
   const { roomId } = useParams();
   const { selectedUserInfo } = useSelector((state) => state);
-  const { selectedRoomInfo } = useSelector((state) => state);
   const [chatList, setChatList] = useState([]);
   const [participants, setParticipants] = useState({});
+  const [timerText, setTimerText] = useState("타이머 시작");
+  const [timerState, setTimerState] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     signaling.socket = new WebSocket("wss://sgs.p-e.kr:8051/socket");
-    // signaling.socket = new WebSocket("wss://localhost:8443/socket");
     signaling.socket.onopen = () => {
       console.log("signaling socket open");
       signaling.joinRoom(selectedUserInfo.id, roomId);
@@ -100,12 +100,17 @@ const StudyRoom = ({ signaling }) => {
             setParticipants({ ...signaling._participants });
             break;
           case "RESET":
+            Object.keys(signaling._participants).map(
+              (k) => (signaling._participants[k].studyTime = "00:00:00")
+            );
+            setParticipants({ ...signaling._participants });
+            setTimerState(false);
+            setTimerText("타이머 시작");
             await signaling.sendMessage({
               id: "timerState",
               timerState: false,
               time: moment().format("HH:mm:ss"),
             });
-            setParticipants({ ...participants, studyTime: "00:00:00" });
             break;
           default:
             console.error("Unrecognized message", parsedMessage);
@@ -126,6 +131,10 @@ const StudyRoom = ({ signaling }) => {
         participants={participants}
         signaling={signaling}
         roomId={roomId}
+        timerState={timerState}
+        timerText={timerText}
+        setTimerState={setTimerState}
+        setTimerText={setTimerText}
       />
 
       <Chat
@@ -134,7 +143,7 @@ const StudyRoom = ({ signaling }) => {
         chatList={chatList}
         setChatList={setChatList}
       />
-      {/* <button onClick={() => console.log(signaling)}>signaling</button> */}
+      <button onClick={() => console.log(participants)}>signaling</button>
     </div>
   );
 };
