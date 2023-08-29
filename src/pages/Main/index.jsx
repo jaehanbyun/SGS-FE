@@ -40,7 +40,6 @@ const Main = ({ signaling }) => {
 
   return (
     <div className={styles.main}>
-      {/* <button onClick={() => console.log(signaling)}>ddd</button> */}
       <Lobby
         signaling={signaling}
         setRoomInfoModalOpen={setRoomInfoModalOpen}
