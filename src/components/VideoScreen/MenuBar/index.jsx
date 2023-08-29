@@ -16,13 +16,15 @@ const MenuBar = ({
   isPublic,
   setShareState,
   setScreenMedia,
+  timerText,
+  timerState,
+  setTimerText,
+  setTimerState,
 }) => {
   const navigate = useNavigate();
   const {
     selectedUserInfo: { id },
   } = useSelector((state) => state);
-  const [timerText, setTimerText] = useState("타이머 시작");
-  const [timerState, setTimerState] = useState(false);
   const [showTime, setShowTime] = useState(participants[id]?.studyTime);
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);
