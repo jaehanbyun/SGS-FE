@@ -3,7 +3,7 @@ import styles from "./LobbyHeader.module.css";
 
 const LobbyHeader = ({ setRefresh }) => {
   return (
-    <div className={styles.header}>
+    <header className={styles.header}>
       <div className={styles.item}>
         <p>채팅방 이름</p>
       </div>
@@ -25,7 +25,7 @@ const LobbyHeader = ({ setRefresh }) => {
       <div className={styles.item}>
         <p>더보기</p>
       </div>
-    </div>
+    </header>
   );
 };
 

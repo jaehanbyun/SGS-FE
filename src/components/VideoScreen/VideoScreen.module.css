@@ -37,3 +37,7 @@
   position: absolute;
   top: 80px;
 }
+
+.loading {
+  font-size: large;
+}

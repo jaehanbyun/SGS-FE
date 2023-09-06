@@ -90,7 +90,7 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
           "고정된 화면 제거"}
       </button>
 
-      {participants[id] && (
+      {participants[id] ? (
         <MenuBar
           participants={participants}
           signaling={signaling}
@@ -100,6 +100,8 @@ const VideoScreen = ({ participants, signaling, roomId }) => {
           setShareState={setShareState}
           setScreenMedia={setScreenMedia}
         />
+      ) : (
+        <h2 className={styles.loading}>비디오 로딩중...</h2>
       )}
       {/* <Chatting /> */}
     </div>

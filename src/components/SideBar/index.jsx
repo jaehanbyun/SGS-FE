@@ -17,19 +17,29 @@ const SideBar = React.memo(() => {
   }, [selectedChannel]);
 
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.frame}>
-        <Header title={"채널"} />
-        <Channels
-          currentIndex={currentIndex}
-          setCurrentIndex={setCurrentIndex}
-        />
+    <>
+      <input className={styles.hiddenCheck} type="checkbox" id="navigation" />
+      <label className={styles.check} for="navigation">
+        <img src="/images/menu-3lines.svg" alt="menu" />
+      </label>
+      <div className={styles.sidebar}>
+        <div className={styles.frame}>
+          <Header title={"채널"} />
+          <Channels
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+          />
+        </div>
+        <div className={styles.frame}>
+          <Header title={"그룹"} />
+          <Groups
+            currentIndex={currentIndex}
+            setCurrentIndex={setCurrentIndex}
+          />
+        </div>
       </div>
-      <div className={styles.frame}>
-        <Header title={"그룹"} />
-        <Groups currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
-      </div>
-    </div>
+      <div className={styles.obfuscator}></div>
+    </>
   );
 });
 
