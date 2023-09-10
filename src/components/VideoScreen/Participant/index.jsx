@@ -87,7 +87,7 @@ const Participant = ({
   }, [participant.audio]);
 
   useEffect(() => {
-    participant.video ? vidRef.current.play() : vidRef.current.pause();
+    participant.video ? vidRef.current.load() : vidRef.current.pause();
   }, [participant.video, tmp]);
 
   const openMenu = (e) => {

@@ -13,13 +13,12 @@ const SideBar = React.memo(() => {
     if (selectedChannel === 0) {
       setCurrentIndex(0);
     }
-    console.log(selectedChannel);
   }, [selectedChannel]);
 
   return (
     <>
       <input className={styles.hiddenCheck} type="checkbox" id="navigation" />
-      <label className={styles.check} for="navigation">
+      <label className={styles.check} htmlFor="navigation">
         <img src="/images/menu-3lines.svg" alt="menu" />
       </label>
       <div className={styles.sidebar}>

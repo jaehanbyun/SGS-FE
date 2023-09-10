@@ -143,7 +143,6 @@ const StudyRoom = ({ signaling }) => {
         chatList={chatList}
         setChatList={setChatList}
       />
-      <button onClick={() => console.log(participants)}>signaling</button>
     </div>
   );
 };
