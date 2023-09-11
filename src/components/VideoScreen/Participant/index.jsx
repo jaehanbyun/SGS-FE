@@ -21,8 +21,8 @@ const Participant = ({
   const vidRef = useRef();
   const [xy, setXY] = useState({ x: 0, y: 0 });
   const [openProfile, setOpenProfile] = useState(false);
-
-  const { selectedUserInfo } = useSelector((state) => state);
+  const id = useSelector((state) => state.selectedUserInfo.id);
+  const master = useSelector((state) => state.selectedUserInfo.mater);
 
   const alertUser = (e) => {
     e.preventDefault();
@@ -38,7 +38,6 @@ const Participant = ({
   };
 
   const kickout = (e) => {
-    console.log(participant);
     e.preventDefault();
     axios
       .patch("/room/group/kickout", {
@@ -80,10 +79,11 @@ const Participant = ({
           ? participant.rtcPeer?.getLocalStream()
           : participant.rtcPeer?.getRemoteStream();
     }
-  }, [tmp, selectedUserInfo.master, screenMedia]);
+  }, [tmp, master, screenMedia]);
 
   useEffect(() => {
-    vidRef.current.muted = !participant.audio;
+    if (participant.id === id) vidRef.current.muted = true;
+    else vidRef.current.muted = !participant.audio;
   }, [participant.audio]);
 
   useEffect(() => {
@@ -100,7 +100,13 @@ const Participant = ({
   return (
     <>
       <li onClick={openMenu}>
-        <video className={styles.video} ref={vidRef} autoPlay playsInline />
+        <video
+          className={styles.video}
+          ref={vidRef}
+          autoPlay
+          playsInline
+          muted={id === participant.id}
+        />
         <p className={styles.name}>{participant.id}</p>
       </li>
       {displayMenu && clickedParticipant === participant && (
@@ -110,8 +116,7 @@ const Participant = ({
         >
           <li
             className={`${
-              selectedUserInfo.id === selectedUserInfo.master &&
-              participant.id !== selectedUserInfo.id
+              id === master && participant.id !== id
                 ? styles.master
                 : styles.normal
             }`}
@@ -121,8 +126,7 @@ const Participant = ({
           </li>
           <li
             className={`${
-              selectedUserInfo.id === selectedUserInfo.master &&
-              participant.id !== selectedUserInfo.id
+              id === master && participant.id !== id
                 ? styles.master
                 : styles.normal
             }`}
@@ -132,8 +136,7 @@ const Participant = ({
           </li>
           <li
             className={`${
-              selectedUserInfo.id === selectedUserInfo.master &&
-              participant.id !== selectedUserInfo.id
+              id === master && participant.id !== id
                 ? styles.master
                 : styles.normal
             }`}
