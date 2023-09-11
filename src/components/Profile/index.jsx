@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../Button";
 import styles from "./Profile.module.css";
@@ -10,9 +10,9 @@ import axios from "../../api/core";
 import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
 
 const Profile = React.memo(({ setProfileModalOpen, update }) => {
+  const [studyTime, setStudyTime] = useState("00:00:00");
   const { selectedUserInfo } = useSelector((state) => state);
-  const { name, email, profileImage, studyTime, description } =
-    selectedUserInfo;
+  const { name, email, profileImage, description } = selectedUserInfo;
 
   const dispatch = useDispatch();
 
@@ -23,7 +23,8 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
   const getUserInfo = async () => {
     try {
       const res = await axios.get("/auth/get-profile");
-      let { name, profileImage, description, email, url } = res.data.data;
+      let { name, profileImage, description, email, studyTime, url } =
+        res.data.data;
       if (name === null) {
         const ranNum = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
         name = `익명#${ranNum}`;
@@ -31,6 +32,8 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
       if (profileImage === null) {
         profileImage = "/images/profile.svg";
       }
+      studyTime ? setStudyTime(studyTime) : setStudyTime("00:00:00");
+
       console.log(selectedUserInfo);
       dispatch(
         setSelectedUserInfo({
@@ -39,6 +42,7 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
           email,
           profileImage,
           description,
+          studyTime,
           url,
         })
       );
@@ -63,7 +67,7 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
         fontweight={700}
         onClick={onClick}
       />
-      <StudyTime studyTime={0} />
+      <StudyTime studyTime={studyTime} />
       <ProfileBtns />
     </div>
   );
