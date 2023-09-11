@@ -25,7 +25,6 @@ const selectedUserInfoReducer = createSlice({
           name,
           email,
           profileImage,
-          studyTime,
           description,
           url,
         },
