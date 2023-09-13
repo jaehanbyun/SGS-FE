@@ -11,10 +11,70 @@
   margin-top: 20px;
 }
 .profile button:hover {
-  background-color: #cdcdcd !important;
+  background-color: #cdcdcd;
+}
+.profileHiddenCheck {
+  display: none;
+}
+
+.profileCheck {
+  display: none;
 }
 @media (max-width: 1200px) {
   .profile {
-    display: none;
+    position: fixed;
+    width: 280px;
+    height: 100%;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    margin: 0 -280px 0 0;
+  }
+  .profileCheck {
+    display: block;
+    position: fixed;
+    z-index: 3;
+    top: 72px;
+    right: 8px;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    cursor: pointer;
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 8px;
+  }
+  .profileHiddenCheck:checked ~ .profile {
+    margin-right: 0;
+  }
+  .profileHiddenCheck:checked ~ .profileCheck {
+    right: 288px;
+    background-color: whitesmoke;
+  }
+
+  .obfuscator {
+    visibility: hidden;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .profileHiddenCheck:checked ~ .obfuscator {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 0.5;
+    background: #111;
+    margin-right: 280px;
+    z-index: 2;
   }
 }

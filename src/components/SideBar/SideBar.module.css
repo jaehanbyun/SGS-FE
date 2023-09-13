@@ -26,9 +26,12 @@
 }
 
 @media (max-width: 900px) {
+  .frame {
+    height: 30%;
+  }
   .sidebar {
     position: fixed;
-    width: 250px;
+    width: 280px;
     height: 100%;
     -moz-transition: all 200ms ease-in;
     -webkit-transition: all 200ms ease-in;
@@ -37,7 +40,7 @@
     z-index: 2;
     top: 0;
     left: 0;
-    margin: 0 0 0 -250px;
+    margin: 0 0 0 -280px;
   }
   .check {
     display: block;
@@ -57,7 +60,7 @@
     margin-left: 0;
   }
   .hiddenCheck:checked ~ .check {
-    left: 256px;
+    left: 288px;
     background-color: whitesmoke;
   }
 
@@ -79,7 +82,7 @@
     pointer-events: auto;
     opacity: 0.5;
     background: #111;
-    margin-left: 250px;
+    margin-left: 280px;
     z-index: 2;
   }
 }

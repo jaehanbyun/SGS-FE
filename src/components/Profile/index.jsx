@@ -54,22 +54,33 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
   }, [update]);
 
   return (
-    <div className={styles.profile}>
-      <ProfileImg profileImage={profileImage} />
-      <ProfileInfo name={name} email={email} />
-      <Button
-        width={"80%"}
-        height={"4.5%"}
-        text={"프로필 수정"}
-        backgroundColor={"#e0e0e0"}
-        color={"#000"}
-        fontsize={18}
-        fontweight={700}
-        onClick={onClick}
+    <>
+      <input
+        className={styles.profileHiddenCheck}
+        type="checkbox"
+        id="progileToggle"
       />
-      <StudyTime studyTime={studyTime} />
-      <ProfileBtns />
-    </div>
+      <label className={styles.profileCheck} htmlFor="progileToggle">
+        <img src="/images/profile_drawler.svg" alt="menu" />
+      </label>
+      <div className={styles.profile}>
+        <ProfileImg profileImage={profileImage} />
+        <ProfileInfo name={name} email={email} />
+        <Button
+          width={"80%"}
+          height={"4.5%"}
+          text={"프로필 수정"}
+          backgroundColor={"#e0e0e0"}
+          color={"#000"}
+          fontsize={18}
+          fontweight={700}
+          onClick={onClick}
+        />
+        <StudyTime studyTime={studyTime} />
+        <ProfileBtns />
+      </div>
+      <div className={styles.obfuscator}></div>
+    </>
   );
 });
 
