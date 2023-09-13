@@ -9,7 +9,7 @@
   justify-content: center;
 }
 .modal {
-  width: 460px;
+  width: 400px;
   height: 240px;
   background-color: #e0e0e0;
   position: absolute;
@@ -36,13 +36,13 @@
   cursor: pointer;
 }
 .modal .contents {
-  width: 400px;
+  width: 360px;
   height: 160px;
   background-color: #fff;
   box-sizing: border-box;
   position: absolute;
   top: 50px;
-  left: 30px;
+  left: 20px;
   border: 1px solid #707070;
 }
 
