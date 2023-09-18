@@ -87,7 +87,7 @@ const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
             <p>웹사이트</p>
             <input
               type="text"
-              value={info.url}
+              value={info.url || ""}
               onChange={(e) => {
                 setInfo({ ...info, url: e.target.value });
               }}
@@ -98,7 +98,7 @@ const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
             <textarea
               cols="30"
               rows="6"
-              value={info.description}
+              value={info.description || ""}
               onChange={(e) => {
                 setInfo({ ...info, description: e.target.value });
               }}

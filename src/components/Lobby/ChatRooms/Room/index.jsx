@@ -34,6 +34,10 @@ const Room = ({ room, setRoomInfoModalOpen }) => {
   const navigate = useNavigate();
 
   const joinRoom = async () => {
+    if (curUser === maxUser) {
+      alert("인원이 가득찼습니다.");
+      return;
+    }
     try {
       const res = await axios.post("/room/group/in", {
         roomId: roomId,
