@@ -20,17 +20,10 @@ ChartJS.register(
   Legend
 );
 
-const Chart = () => {
-  const [studyTime, setStudyTime] = useState([1.5, 4.4, 6, 2, 7, 9, 6]);
-  const [studyDate, setStudyDate] = useState([
-    "03-01",
-    "03-02",
-    "03-03",
-    "03-04",
-    "03-05",
-    "03-06",
-    "03-07",
-  ]);
+const Chart = ({ studyTimes, studyDates }) => {
+  // const [studyTime, setStudyTime] = useState([1.5, 4.4, 6, 2, 7, 9, 6]);
+  console.log(studyTimes);
+  console.log(studyDates);
   const options = {
     scales: {
       x: {
@@ -54,12 +47,12 @@ const Chart = () => {
     },
   };
   const data = {
-    labels: studyDate,
+    labels: studyDates,
     datasets: [
       {
         type: "bar",
         label: "공부시간",
-        data: studyTime,
+        data: studyTimes,
         backgroundColor: "rgba(255, 99, 132, 0.5)",
         borderColor: "#36A2EB",
         color: "rgba(255, 99, 132, 0.5)",
