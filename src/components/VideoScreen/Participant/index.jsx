@@ -22,7 +22,7 @@ const Participant = ({
   const [xy, setXY] = useState({ x: 0, y: 0 });
   const [openProfile, setOpenProfile] = useState(false);
   const id = useSelector((state) => state.selectedUserInfo.id);
-  const master = useSelector((state) => state.selectedUserInfo.mater);
+  const master = useSelector((state) => state.selectedUserInfo.master);
 
   const alertUser = (e) => {
     e.preventDefault();
