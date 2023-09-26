@@ -22,9 +22,7 @@ const MenuBar = ({
   setTimerState,
 }) => {
   const navigate = useNavigate();
-  const {
-    selectedUserInfo: { id },
-  } = useSelector((state) => state);
+  const id = useSelector((state) => state.selectedUserInfo.id);
   const [showTime, setShowTime] = useState(participants[id]?.studyTime);
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);

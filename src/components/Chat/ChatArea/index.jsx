@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { publish } from "../../../utils/stomp";
 
 const ChatArea = React.memo(({ roomId, chatList, setChatList }) => {
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
 
   const [message, setMessage] = useState("");
 

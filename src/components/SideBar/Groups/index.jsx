@@ -11,8 +11,8 @@ import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 const Groups = ({ currentIndex, setCurrentIndex }) => {
   const dispatch = useDispatch();
   const [groups, setGroups] = useState([]);
-  const { selectedUpdate } = useSelector((state) => state);
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUpdate = useSelector((state) => state.selectedUpdate);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
   const navigate = useNavigate();
 
   const getGroups = async () => {

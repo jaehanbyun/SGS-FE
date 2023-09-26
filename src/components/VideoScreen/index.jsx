@@ -13,9 +13,7 @@ const VideoScreen = ({
   setTimerText,
   setTimerState,
 }) => {
-  const {
-    selectedUserInfo: { id },
-  } = useSelector((state) => state);
+  const id = useSelector((state) => state.selectedUserInfo.id);
   const [tmp, setTmp] = useState(false);
   const [displayMenu, setDisplayMenu] = useState(false);
   const [clickedParticipant, setClickedParticipant] = useState(null);

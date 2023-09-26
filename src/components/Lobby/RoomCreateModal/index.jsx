@@ -12,11 +12,12 @@ import { setSelectedUserInfo } from "../../../redux/selectedUserInfo/slice";
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
 const RoomCreateModal = ({ setModalOpen }) => {
-  const { selectedChannel } = useSelector((state) => state);
+  const selectedChannel = useSelector((state) => state.selectedChannel);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);
-  const { selectedUserInfo } = useSelector((state) => state);
+
   const dispatch = useDispatch();
   const ref = useRef();
   const roomNameRef = useRef();

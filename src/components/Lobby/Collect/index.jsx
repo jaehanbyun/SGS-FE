@@ -15,7 +15,7 @@ const Collect = ({
   searchValue,
   setSearchValue,
 }) => {
-  const { selectedChannel } = useSelector((state) => state);
+  const selectedChannel = useSelector((state) => state.selectedChannel);
 
   const onCreate = () => {
     if (selectedChannel === 0) {
