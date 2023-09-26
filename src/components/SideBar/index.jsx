@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const SideBar = React.memo(() => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { selectedChannel } = useSelector((state) => state);
+  const selectedChannel = useSelector((state) => state.selectedChannel);
 
   useEffect(() => {
     if (selectedChannel === 0) {

@@ -20,7 +20,7 @@ export default function Signin({
   const dispatch = useDispatch();
   const errRef = useRef();
   const pwdRef = useRef();
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
 
   useEffect(() => {
     if (isError) {

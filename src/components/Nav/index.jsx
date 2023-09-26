@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
   const onClick = () => {
     if (selectedUserInfo.id) navigate("/main");
     else navigate("/login");

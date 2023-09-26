@@ -8,7 +8,7 @@ import axios from "../../../api/core";
 const channelName = ["home", "초등", "중등", "고등", "대학생", "취업준비"];
 
 const RoomEditModal = ({ roomId, setRoomEditModalOpen }) => {
-  const { selectedChannel } = useSelector((state) => state);
+  const selectedChannel = useSelector((state) => state.selectedChannel);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPublic, setIsPublic] = useState("public");
   const [maxUser, setMaxUser] = useState(3);

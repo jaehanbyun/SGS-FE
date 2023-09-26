@@ -18,8 +18,8 @@ const Main = ({ signaling }) => {
     roomId: null,
     roomType: true,
   });
-  const { selectedProfileIcon } = useSelector((state) => state);
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedProfileIcon = useSelector((state) => state.selectedProfileIcon);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
 
   const [update, setUpdate] = useState(false);
 

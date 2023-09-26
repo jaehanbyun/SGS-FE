@@ -10,7 +10,7 @@ import moment from "moment";
 
 const StudyRoom = ({ signaling }) => {
   const { roomId } = useParams();
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
   const [chatList, setChatList] = useState([]);
   const [participants, setParticipants] = useState({});
   const [timerText, setTimerText] = useState("타이머 시작");

@@ -8,7 +8,7 @@ import axios from "../../../api/core";
 const ProfileEditModal = ({ setProfileModalOpen, setUpdate }) => {
   const ref = useRef();
   const fileRef = useRef();
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
   const [info, setInfo] = useState(selectedUserInfo);
 
   const onEdit = async () => {

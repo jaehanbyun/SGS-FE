@@ -18,7 +18,7 @@ const channelName = [
 ];
 
 const Lobby = React.memo(({ setRoomInfoModalOpen, signaling }) => {
-  const { selectedChannel } = useSelector((state) => state);
+  const selectedChannel = useSelector((state) => state.selectedChannel);
   const [modalOpen, setModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [rooms, setRooms] = useState([]);

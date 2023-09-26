@@ -28,7 +28,7 @@ const ChatRooms = ({
   isSearch,
   searchValue,
 }) => {
-  const { selectedChannel } = useSelector((state) => state);
+  const selectedChannel = useSelector((state) => state.selectedChannel);
   const target = useRef();
   const roomRef = useRef();
 

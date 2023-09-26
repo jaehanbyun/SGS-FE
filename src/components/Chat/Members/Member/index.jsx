@@ -3,9 +3,7 @@ import useTimer from "../../../../hooks/useTimer";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const Member = ({ userId, participant, idx }) => {
-  const {
-    selectedUserInfo: { master },
-  } = useSelector((state) => state);
+  const master = useSelector((state) => state.selectedUserInfo.master);
   const formattedTime = useTimer(
     participant.studyTime,
     participant.timer,

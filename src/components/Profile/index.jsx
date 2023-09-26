@@ -11,8 +11,8 @@ import { setSelectedUserInfo } from "../../redux/selectedUserInfo/slice";
 
 const Profile = React.memo(({ setProfileModalOpen, update }) => {
   const [studyTime, setStudyTime] = useState("00:00:00");
-  const { selectedUserInfo } = useSelector((state) => state);
-  const { name, email, profileImage, description } = selectedUserInfo;
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
+  const { name, email, profileImage } = selectedUserInfo;
 
   const dispatch = useDispatch();
 

@@ -9,7 +9,7 @@ import { setSelectedRoomInfo } from "../../../../redux/selectedRoomInfo/slice";
 
 const Room = ({ room, setRoomInfoModalOpen }) => {
   const { roomId, roomName, curUser, maxUser, createdAt } = room;
-  const { selectedUserInfo } = useSelector((state) => state);
+  const selectedUserInfo = useSelector((state) => state.selectedUserInfo);
   const dispatch = useDispatch();
 
   const getTimeDifference = (startDate, endDate) => {
