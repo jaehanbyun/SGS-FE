@@ -1,4 +1,71 @@
-.container {
+.chat {
   width: 25%;
   background-color: blue;
+}
+
+.chatHiddenCheck {
+  display: none;
+}
+
+.chatCheck {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .chat {
+    position: fixed;
+    width: 280px;
+    height: 100%;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    margin: 0 -280px 0 0;
+  }
+  .chatCheck {
+    display: block;
+    position: fixed;
+    z-index: 3;
+    top: 72px;
+    right: 8px;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    cursor: pointer;
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 8px;
+  }
+  .chatHiddenCheck:checked ~ .chat {
+    margin-right: 0;
+  }
+  .chatHiddenCheck:checked ~ .chatCheck {
+    right: 288px;
+    background-color: whitesmoke;
+  }
+
+  .obfuscator {
+    visibility: hidden;
+    -moz-transition: all 200ms ease-in;
+    -webkit-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .chatHiddenCheck:checked ~ .obfuscator {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 0.5;
+    background: #111;
+    margin-right: 280px;
+    z-index: 2;
+  }
 }
