@@ -58,9 +58,9 @@ const Profile = React.memo(({ setProfileModalOpen, update }) => {
       <input
         className={styles.profileHiddenCheck}
         type="checkbox"
-        id="progileToggle"
+        id="profileToggle"
       />
-      <label className={styles.profileCheck} htmlFor="progileToggle">
+      <label className={styles.profileCheck} htmlFor="profileToggle">
         <img src="/images/profile_drawler.svg" alt="menu" />
       </label>
       <div className={styles.profile}>
